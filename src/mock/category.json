@@ -1,0 +1,30 @@
+[
+    {
+        "createTime": "Sat Jan 23 2021 10:47:35 GMT+0000 (UTC)",
+        "description": "暂无描述",
+        "id": "60701f3412eaff82aa9b2ecb",
+        "name": "单人间",
+        "updateTime": "Sun Mar 28 2021 00:37:43 GMT+0000 (UTC)"
+    },
+    {
+        "createTime": "Mon Jan 25 2021 13:10:53 GMT+0000 (UTC)",
+        "description": "暂无描述",
+        "id": "60701f347dddfbc1a4e749f3",
+        "name": "两人间",
+        "updateTime": "Sun Mar 21 2021 04:47:26 GMT+0000 (UTC)"
+    },
+    {
+        "createTime": "Mon Jan 25 2021 19:20:59 GMT+0000 (UTC)",
+        "description": "暂无描述",
+        "id": "60701f348e0e382716c33180",
+        "name": "四人间",
+        "updateTime": "Wed Mar 10 2021 10:32:11 GMT+0000 (UTC)"
+    },
+    {
+        "createTime": "Sat Jan 09 2021 19:35:44 GMT+0000 (UTC)",
+        "description": "暂无描述",
+        "id": "60701f34834374bfacebee6f",
+        "name": "钟点房",
+        "updateTime": "Sun Mar 07 2021 18:08:09 GMT+0000 (UTC)"
+    }
+]

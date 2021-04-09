@@ -1,29 +1,30 @@
 <template>
-  <el-card class="notice">
+  <el-card class="room">
     <!--  -->
     <el-form v-model="searchForm" :inline="true" size="small">
       <el-row>
         <el-col :span="6" :offset="1">
-          <el-form-item label="标题">
-            <el-input v-model="searchForm.number" placeholder="请输入公告标题" clearable />
+          <el-form-item label="客房类型">
+            <el-select v-model="searchForm.sex" placeholder="请选择客房类型" clearable>
+              <el-option :key="item.flag" :label="item.value" :value="item.flag"
+                v-for="item in roomType">
+              </el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="5">
           <el-form-item>
             <el-button type="primary" icon="el-icon-search">查询</el-button>
-            <el-button type="success" icon="el-icon-plus">发布</el-button>
+            <el-button type="success" icon="el-icon-plus">新增</el-button>
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
     <!--  -->
     <el-table :data="tableData" style="width: 100%" max-height="650px">
-      <el-table-column prop="url" label="封面" min-width="200">
-        <template v-slot="{row}">
-          <img :src="row.url" alt="" class="cover">
-        </template>
+      <el-table-column prop="name" label="客房类型" min-width="100">
       </el-table-column>
-      <el-table-column prop="title" label="标题" min-width="150">
+      <el-table-column prop="description" label="客房描述" min-width="150">
       </el-table-column>
       <el-table-column prop="createTime" label="创建时间" min-width="150">
         <template v-slot="{row}">
@@ -36,8 +37,8 @@
         </template>
       </el-table-column>
       <el-table-column label="操作" min-width="100">
-        <el-link type="primary">修改公告</el-link>
-        <el-link type="danger">删除公告</el-link>
+        <el-link type="primary">修改类型</el-link>
+        <el-link type="danger">删除类型</el-link>
       </el-table-column>
     </el-table>
     <!--  -->
@@ -49,27 +50,24 @@
 </template>
 
 <script>
+import { category } from '@mock'
 import { aMixin } from '@mixins'
-import { notice } from '@mock'
+import { roomType } from '@static'
 export default {
   data() {
     return {
       searchForm: {},
-      tableData: notice
+      tableData: category,
+      roomType
     }
   },
   mixins: [aMixin],
   created() {
-    this.total = 7
+    this.total = 4
   }
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 @import '~@css/acommon.less';
-.cover {
-  width: 200px;
-  // height: auto;
-  height: 100%;
-}
 </style>
