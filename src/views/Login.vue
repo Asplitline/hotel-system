@@ -1,13 +1,11 @@
 <template>
-  <div class="home">home</div>
+  <div class="login">login</div>
 </template>
 
 <script>
 /**
- * 个人信息
- * 预定
- * 留言评论
- * 订单查看
+ * 用户注册
+ * 用户登录
  */
 export default {}
 </script>

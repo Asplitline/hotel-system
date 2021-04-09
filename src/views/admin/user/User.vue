@@ -1,14 +1,8 @@
 <template>
-  <div class="home">home</div>
+  <div class="user">user</div>
 </template>
 
 <script>
-/**
- * 个人信息
- * 预定
- * 留言评论
- * 订单查看
- */
 export default {}
 </script>
 
