@@ -7,6 +7,10 @@ export const aMenuList = [
     { name: '公告管理', index: 'notice', icon: 'iconfont icon-notice' }
 ]
 
+export const hMenuList = [
+    { name: '首页', index: 'index', icon: 'iconfont icon-user' },
+    { name: '酒店', index: 'hotel', icon: 'iconfont icon-ConferenceRoom' }
+]
 export const miniAMenuList = ['user', 'category', 'room', 'order', 'comment', 'notice']
 
 export const levelInfo = [

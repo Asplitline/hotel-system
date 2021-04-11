@@ -15,13 +15,23 @@ const Notice = () => import(/* webpackChunkName:'admin_notice' */'@views/admin/n
 const User = () => import(/* webpackChunkName:'admin_user' */'@views/admin/user/User')
 const Category = () => import(/* webpackChunkName:'admin_category' */'@views/admin/category/Category')
 
+// --
+const Info = () => import(/* webpackChunkName:'home_info' */'@views/home/info/Info')
+const Hotel = () => import(/* webpackChunkName:'home_hotel' */'@views/home/hotel/Hotel')
+const Index = () => import(/* webpackChunkName:'home_index' */'@views/home/index/Index')
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/home',
     name: 'home',
-    component: Home
+    component: Home,
+    redirect: '/index',
+    children: [
+      { path: '/hotel', name: 'hotel', component: Hotel },
+      { path: '/info', name: 'info', component: Info },
+      { path: '/index', name: 'index', component: Index }
+    ]
   },
   {
     path: '/admin',
@@ -37,6 +47,7 @@ const routes = [
       { path: '/category', name: 'category', component: Category }
     ]
   },
+  { path: '/', redirect: '/login' },
   { path: '/login', name: 'login', component: Login }
 ]
 

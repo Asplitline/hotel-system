@@ -1,16 +1,85 @@
 <template>
-  <div class="home">home</div>
+  <el-container class="home">
+    <el-header style="height:70px">
+      <div class="w">
+        <el-menu :default-active="activeIndex" mode="horizontal"
+          background-color="#003366" text-color="#eee" active-text-color="#fff" router>
+          <el-menu-item :index="item.index" v-for="item in hMenuList" :key="item.index">
+            {{item.name}}
+          </el-menu-item>
+        </el-menu>
+        <el-dropdown trigger="click" @command="handleCommand">
+          <span class="el-dropdown-link">
+            <el-avatar
+              src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png">
+            </el-avatar>
+            <i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="goInfo">个人信息</el-dropdown-item>
+            <el-dropdown-item command="logout">退出系统</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
+    </el-header>
+    <el-main class="w">
+      <router-view />
+    </el-main>
+  </el-container>
 </template>
 
 <script>
 /**
- * 个人信息
- * 预定
- * 留言评论
- * 订单查看
+ * 首页 - 含公告
+ * 房间 - 房间列表 + 房间详情(预定+留言)
+ * 个人信息 - 个人信息修改 + 订单查询
  */
-export default {}
+import { hMenuList } from '@static'
+export default {
+  data() {
+    return {
+      activeIndex: '',
+      hMenuList
+    }
+  },
+  methods: {
+    handleCommand(command) {
+      this.$options.methods[command](this)
+    },
+    goInfo(vm) {
+      vm.$router.push('/info')
+    },
+    logout() {}
+  }
+}
 </script>
 
 <style lang="less" scoped>
+@import '~@css/variables.less';
+.el-header {
+  background-color: @color-main;
+  .w {
+    display: flex;
+    justify-content: space-between;
+  }
+  .el-dropdown-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: inherit;
+  }
+  .el-dropdown {
+    height: 70px;
+    color: #fff;
+  }
+  .el-menu-item {
+    font-size: 20px;
+  }
+  /deep/.el-avatar {
+    border: 2px solid #f0f0f0;
+  }
+  .el-menu.el-menu--horizontal {
+    border-bottom: none;
+  }
+}
 </style>

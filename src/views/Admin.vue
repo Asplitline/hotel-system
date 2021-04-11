@@ -21,9 +21,9 @@
       </div>
     </el-header>
     <el-container>
-      <el-aside width="300px">
-        <el-menu :default-active="active" background-color="#324157"
-          active-text-color="#409eff" router>
+      <el-aside :width="isFold?'64px':'300px'">
+        <el-menu :default-active="active" background-color="#324157" :collapse="isFold"
+          :collapse-transition="false" active-text-color="#409eff" router>
           <el-menu-item :index="item.index" v-for="item in aMenuList" :key="item.index">
             <i :class="item.icon"></i>
             <span slot="title">{{item.name}}</span>
