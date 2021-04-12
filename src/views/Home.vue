@@ -56,8 +56,12 @@ export default {
 
 <style lang="less" scoped>
 @import '~@css/variables.less';
+.home {
+  height: 100vh;
+  background-color: #e5e5e5;
+}
 .el-header {
-  background-color: @color-main;
+  background-color: #003366;
   .w {
     display: flex;
     justify-content: space-between;
@@ -81,5 +85,8 @@ export default {
   .el-menu.el-menu--horizontal {
     border-bottom: none;
   }
+}
+.el-main {
+  background-color: #fff;
 }
 </style>

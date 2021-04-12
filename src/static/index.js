@@ -38,9 +38,29 @@ export const roomType = [
     { flag: 2, value: '四人间' },
     { flag: 3, value: '钟点房' }
 ]
+export const priceList = [
+    { flag: 0, min: 0, max: 100, value: '100元以下' },
+    { flag: 1, min: 100, max: 200, value: '100-200元' },
+    { flag: 2, min: 200, max: 300, value: '200-300元' },
+    { flag: 3, min: 300, max: 9999, value: '300元以上' }
+]
+export const floorList = [
+    { flag: 0, value: '1楼' },
+    { flag: 1, value: '2楼' },
+    { flag: 2, value: '3楼' },
+    { flag: 3, value: '4楼' },
+    { flag: 4, value: '5楼' },
+    { flag: 5, value: '6楼' },
+    { flag: 6, value: '7楼' },
+    { flag: 7, value: '8楼' },
+    { flag: 8, value: '9楼' },
+    { flag: 9, value: '10楼' }
+]
 export const orderInfo = [
     { flag: 0, value: '预定中', type: 'info' },
     { flag: 1, value: '入住中', type: 'primary' },
     { flag: 2, value: '已驳回', type: 'danger' },
     { flag: 3, value: '已退房', type: 'success' }
 ]
+
+export const cChar = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十']
