@@ -1,21 +1,43 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import _api from '@api'
 import { getSession, setSession } from '@utils'
 Vue.use(Vuex)
 
-export default new Vuex.Store({
-  state: {
-    aIndex: getSession('aIndex')
+const state = {
+  aIndex: getSession('aIndex'),
+  allCategory: getSession('allCategory')
+}
+const mutations = {
+  setAIndex (state, index) {
+    setSession('aIndex', index)
+    state.aIndex = index
   },
-  mutations: {
-    setAIndex (state, index) {
-      setSession('aIndex', index)
-      state.aIndex = index
-    }
-  },
-  actions: {
-  },
-  modules: {
+  setAllCategory (state, data) {
+    setSession('allCategory', data)
+    state.allCategory = data
   }
+}
+const getters = {
+  getMiniCategory: (state) => () => {
+    return state.allCategory.filter(({ id, name }) => {
+      return { id, name }
+    })
+  }
+}
+const actions = {
+  async fetchAllCategory ({ commit }, query = { size: 999 }) {
+    const { list } = await _api.getCategoryList(query)
+    console.log(list)
+    commit('setAllCategory', list)
+  }
+}
+const modules = {
+}
+export default new Vuex.Store({
+  state,
+  mutations,
+  getters,
+  actions,
+  modules
 })

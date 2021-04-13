@@ -1,5 +1,4 @@
 import { pad0 } from '@utils'
-
 const myPlugin = {}
 
 myPlugin.install = function (Vue) {
@@ -22,6 +21,9 @@ myPlugin.install = function (Vue) {
         } else if (model === 1) {
             return `${year}-${month}-${day}`
         }
+    })
+    Vue.filter('string', (data) => {
+        return String(data)
     })
 }
 

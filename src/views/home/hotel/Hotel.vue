@@ -10,6 +10,7 @@
             <hotel-nav :data="roomType" text="房间类型" @h-tag="handleTag()" :flag="0" />
             <hotel-nav :data="priceList" text="价格范围" @h-tag="handleTag()" :flag="1" />
             <hotel-nav :data="floorList" text="楼层选择" @h-tag="handleTag()" :flag="2" />
+            <!-- todo : no idea -->
             <hotel-tag />
           </div>
           <div class="main-content">

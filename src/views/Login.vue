@@ -46,10 +46,10 @@
             <el-input type="password" placeholder="邮箱验证" v-model="loginForm.password"
               @keyup.enter.native="submitForm()">
               <el-button slot="prepend" icon="el-icon-message"></el-button>
-              <el-button slot="append" icon="el-icon-position" v-if="!isClickEmail"
-                @click="toggleIcon()">
+              <el-button class="toggle-button" slot="append" icon="el-icon-position"
+                v-if="!isClickEmail" @click="toggleIcon()">
               </el-button>
-              <el-button slot="append" icon="el-icon-loading" v-else
+              <el-button class="toggle-button" slot="append" icon="el-icon-loading" v-else
                 @click="toggleIcon()">
               </el-button>
 
@@ -177,6 +177,9 @@ export default {
     width: 100%;
     height: 36px;
     margin-bottom: 10px;
+  }
+  .toggle-button {
+    border-radius: 0;
   }
 }
 

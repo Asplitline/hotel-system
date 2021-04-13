@@ -24,19 +24,20 @@
         <el-col :span="5">
           <el-form-item>
             <el-button type="primary" icon="el-icon-search">查询</el-button>
-            <el-button type="success" icon="el-icon-plus">新增</el-button>
+            <el-button type="success" icon="el-icon-plus" @click="showDialog(0)">新增
+            </el-button>
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
     <!--  -->
     <el-table :data="tableData" style="width: 100%" max-height="650px">
-      <el-table-column prop="url" label="头像" min-width="120">
+      <el-table-column prop="url" label="头像" min-width="100">
         <template v-slot="{row}">
           <img :src="row.url" alt="">
         </template>
       </el-table-column>
-      <el-table-column prop="username" label="用户名" min-width="100">
+      <el-table-column prop="username" label="账号" min-width="100">
       </el-table-column>
       <el-table-column prop="sex" label="性别" min-width="60">
         <template v-slot="{row}">
@@ -55,39 +56,161 @@
       </el-table-column>
       <el-table-column prop="level" label="身份" min-width="60">
         <template v-slot="{row}">
-          <el-tag :type="levelInfo[row.state].type"> {{levelInfo[row.state].value}}
+          <el-tag :type="levelInfo[row.level].type"> {{levelInfo[row.level].value}}
           </el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" min-width="120">
-        <el-link type="primary">修改用户</el-link>
-        <el-link type="info">重置密码</el-link>
-        <el-link type="danger">删除用户</el-link>
+        <template v-slot="{row}">
+          <el-link type="primary" @click="showDialog(1,row)">修改用户</el-link>
+          <el-link type="info" @click="resetPassword()">重置密码</el-link>
+          <el-link type="danger" @click="deleteById(deleteUser,fetchUser,row.id,'用户')">
+            删除用户</el-link>
+        </template>
       </el-table-column>
     </el-table>
     <!--  -->
-    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-      :current-page="query.page" :page-sizes="[1, 2, 5, 10]" :page-size="query.size"
+    <el-pagination @size-change="handleSizeChange(fetchUser,$event)"
+      @current-change="handleCurrentChange(fetchUser,$event)" :current-page="query.page"
+      :page-sizes="[1, 2, 5, 10]" :page-size="query.size"
       layout="total, sizes, prev, pager, next, jumper" :total="total">
     </el-pagination>
+    <!--  -->
+    <el-dialog :title="userForm.flag === 0?'添加用户':'修改用户'" :visible.sync="dialogVisible"
+      width="30%" class="a-dialog" @close="clearDialog('userForm')"
+      :close-on-click-modal="false">
+      <el-form :model="userForm" :rules="userRules" ref="userForm" size="small"
+        label-width="100px">
+        <el-form-item label="头像" prop="url">
+          <el-upload class="avatar-uploader" :action="bindURL('/uploadfile')"
+            :show-file-list="false" :on-success="handleAvatarSuccess">
+            <img v-if="userForm.url" :src="bindIMG(userForm.url)" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="账号" prop="username">
+          <el-input v-model="userForm.username" placeholder="用户账号"></el-input>
+        </el-form-item>
+        <el-form-item label="性别" prop="sex">
+          <el-radio v-model="userForm.sex" v-for="item in sexInfo" :key="item.flag"
+            :label="item.flag|string">{{item.value}}</el-radio>
+        </el-form-item>
+        <el-form-item label="号码" prop="phone">
+          <el-input v-model="userForm.phone" placeholder="手机号码"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="userForm.email" placeholder="电子邮箱"></el-input>
+        </el-form-item>
+        <el-form-item label="身份" prop="level">
+          <el-radio v-model="userForm.level" v-for="item in levelInfo" :key="item.flag"
+            :label="item.flag|string">{{item.value}}</el-radio>
+        </el-form-item>
+        <el-form-item label="状态" prop="state">
+          <el-radio v-model="userForm.state" v-for="item in stateInfo" :key="item.flag"
+            :label="item.flag">{{item.value}}</el-radio>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="info" @click="dialogVisible = false" size="small">取 消
+        </el-button>
+        <el-button type="success" @click="submitDialog('userForm',userForm.flag)"
+          size="small">
+          {{userForm.flag === 0?'添加':'修改'}}
+        </el-button>
+      </span>
+    </el-dialog>
   </el-card>
 </template>
 
 <script>
-import { user } from '@mock'
-import { levelInfo, sexInfo, stateInfo } from '@static'
+import { levelInfo, sexInfo, stateInfo, ADD, EDIT } from '@static'
 import { aMixin } from '@mixins'
+import _api from '@api'
+import {
+  deepClone,
+  getUid,
+  bindURL,
+  bindIMG,
+  checkPhone,
+  checkEmail
+} from '@utils'
 export default {
   data() {
     return {
       searchForm: {},
-      tableData: user,
+      tableData: [],
       sexInfo,
       stateInfo,
-      levelInfo
+      levelInfo,
+      userForm: {},
+      userRules: {
+        url: [{ required: true, message: '请选择头像', trigger: 'blur' }],
+        username: [{ required: true, message: '请输入账号', trigger: 'blur' }],
+        sex: [{ required: true, message: '请选择性别', trigger: 'blur' }],
+        phone: [
+          { required: true, message: '请输入电话号码', trigger: 'blur' },
+          { validator: checkPhone, trigger: 'blur' }
+        ],
+        email: [
+          { required: true, message: '请输入电子邮箱', trigger: 'blur' },
+          { validator: checkEmail, trigger: 'blur' }
+        ],
+        level: [{ required: true, message: '请设置用户身份', trigger: 'blur' }],
+        state: [
+          { required: true, message: '请请设置用户权限', trigger: 'blur' }
+        ]
+      },
+      dialogVisible: false
     }
   },
-  mixins: [aMixin]
+  methods: {
+    bindURL,
+    bindIMG,
+    deleteUser: _api.deleteUser,
+    async fetchUser() {
+      const { total, list } = await _api.getUserList(this.query)
+      this.total = total
+      this.tableData = list
+    },
+    // 显示对话框
+    showDialog(flag, data) {
+      this.dialogVisible = true
+      if (flag === ADD) {
+        //
+      } else if (flag === EDIT) {
+        this.userForm = deepClone(data)
+      }
+      this.userForm.flag = flag
+    },
+    // 提交对话框
+    submitDialog(formName, flag) {
+      this.$refs[formName].validate(async (valid) => {
+        if (!valid) return
+        this[formName].updateTime = Date.now()
+        delete this[formName].flag
+        if (flag === ADD) {
+          Object.assign(this.userForm, {
+            id: getUid(),
+            createTime: Date.now()
+          })
+          const { success } = await _api.addUser(this.userForm)
+          this.handleSuccess(success, '添加', this.fetchUser)
+        } else if (flag === EDIT) {
+          const { success } = await _api.editUser(this.userForm)
+          this.handleSuccess(success, '修改', this.fetchUser)
+        }
+        this.dialogVisible = false
+      })
+    },
+    // 头像上传
+    handleAvatarSuccess(res, file) {
+      this.$set(this.userForm, 'url', res)
+    }
+  },
+  mixins: [aMixin],
+  created() {
+    this.fetchUser()
+  }
 }
 </script>
 
