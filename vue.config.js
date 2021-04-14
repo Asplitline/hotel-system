@@ -31,5 +31,8 @@ module.exports = {
       .set('@api', load('./src/api'))
       .set('@mock', load('./src/mock'))
       .set('@store', load('./src/store'))
+  },
+  configureWebpack: {
+    devtool: '#eval-source-map'
   }
 }

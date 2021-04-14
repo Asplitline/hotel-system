@@ -63,7 +63,7 @@
       <el-table-column label="操作" min-width="120">
         <template v-slot="{row}">
           <el-link type="primary" @click="showDialog(1,row)">修改用户</el-link>
-          <el-link type="info" @click="resetPassword()">重置密码</el-link>
+          <el-link type="info" @click="resetPassword(row.id)">重置密码</el-link>
           <el-link type="danger" @click="deleteById(deleteUser,fetchUser,row.id,'用户')">
             删除用户</el-link>
         </template>
@@ -123,7 +123,7 @@
 </template>
 
 <script>
-import { levelInfo, sexInfo, stateInfo, ADD, EDIT } from '@static'
+import { levelInfo, sexInfo, stateInfo, ADD, EDIT, DEFAULT_PWD } from '@static'
 import { aMixin } from '@mixins'
 import _api from '@api'
 import {
@@ -189,14 +189,14 @@ export default {
         this[formName].updateTime = Date.now()
         delete this[formName].flag
         if (flag === ADD) {
-          Object.assign(this.userForm, {
+          Object.assign(this[formName], {
             id: getUid(),
             createTime: Date.now()
           })
-          const { success } = await _api.addUser(this.userForm)
+          const { success } = await _api.addUser(this[formName])
           this.handleSuccess(success, '添加', this.fetchUser)
         } else if (flag === EDIT) {
-          const { success } = await _api.editUser(this.userForm)
+          const { success } = await _api.editUser(this[formName])
           this.handleSuccess(success, '修改', this.fetchUser)
         }
         this.dialogVisible = false
@@ -205,6 +205,29 @@ export default {
     // 头像上传
     handleAvatarSuccess(res, file) {
       this.$set(this.userForm, 'url', res)
+    },
+    // 重置密码
+    resetPassword(id) {
+      this.$confirm('此操作将重置密码是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true
+      })
+        .then(async () => {
+          const { success } = await _api.changePwd({
+            id,
+            password: DEFAULT_PWD
+          })
+          if (success) {
+            this.$message.success('重置密码成功，新密码为:123456')
+          } else {
+            this.$message.error('重置密码失败')
+          }
+        })
+        .catch(() => {
+          this.$message.warning('已取消操作')
+        })
     }
   },
   mixins: [aMixin],

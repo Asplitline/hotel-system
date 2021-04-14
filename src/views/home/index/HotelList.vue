@@ -5,7 +5,7 @@
       <li class="h-item" v-for="item in filterRoom" :key="item.id">
         <a href="javascript:;">
           <img :src="item.url">
-          <p class="h-title">{{item.lx}}</p>
+          <p class="h-title">{{item.name}}</p>
           <div class="h-info">
             <span class="h-tag-num">No.{{item.number}}</span>
             <span class="h-tag-price">￥{{item.price}}.00</span>
@@ -89,6 +89,8 @@ export default {
         height: 100%;
         img {
           width: 100%;
+          height: 170px;
+          vertical-align: bottom;
         }
       }
       &:hover {
@@ -96,11 +98,10 @@ export default {
         box-shadow: 0px 0px 4px 2px rgba(102, 102, 102, 0.2);
       }
       .h-title {
-        margin: 0;
+        margin: 7px 0;
         font-size: 16px;
         text-align: center;
         color: #555;
-        margin-bottom: 6px;
         letter-spacing: 0.1em;
         &:hover {
           color: @color-main;

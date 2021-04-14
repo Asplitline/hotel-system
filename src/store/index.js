@@ -23,6 +23,11 @@ const getters = {
     return state.allCategory.filter(({ id, name }) => {
       return { id, name }
     })
+  },
+  getCategoryById: (state) => (id) => {
+    return state.allCategory.find(item => {
+      return item.id === id
+    })
   }
 }
 const actions = {

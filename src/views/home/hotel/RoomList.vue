@@ -20,14 +20,19 @@ export default {
   name: 'room-list',
   props: {
     data: {
-      type: Array
+      type: Array,
+      default: function () {
+        return []
+      }
     }
   },
   data() {
     return {
-      roomList: []
+      roomList: [],
+      initNum: 4
     }
   },
+  methods: {},
   computed: {
     totalNum() {
       return this.roomList.length
@@ -36,6 +41,14 @@ export default {
       return this.totalNum % 4 === 0 ? 0 : 4 - (this.totalNum % 4)
     }
   },
+  /* note  parent -> children (async data) #1
+   * children -> watch data
+   */
+  // watch: {
+  //   data(val) {
+  //     this.roomList = val
+  //   }
+  // },
   created() {
     this.roomList = this.data
   }
@@ -61,6 +74,7 @@ export default {
       height: 100%;
       img {
         width: 100%;
+        height: 170px;
       }
     }
     &:hover {

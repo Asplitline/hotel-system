@@ -7,14 +7,19 @@
       <el-container class="main">
         <el-main>
           <div class="main-header">
-            <hotel-nav :data="roomType" text="房间类型" @h-tag="handleTag()" :flag="0" />
+            <hotel-nav :data="getMiniCategory()" text="房间类型" @h-tag="handleTag()"
+              :flag="0" />
             <hotel-nav :data="priceList" text="价格范围" @h-tag="handleTag()" :flag="1" />
             <hotel-nav :data="floorList" text="楼层选择" @h-tag="handleTag()" :flag="2" />
             <!-- todo : no idea -->
             <hotel-tag />
           </div>
           <div class="main-content">
-            <room-list :data="room" />
+            <!-- note  parent -> children (async data) #2
+                 parent -> v-if  exist?data
+                 reason# parent updated
+             -->
+            <room-list :data="room" v-if="room" />
           </div>
         </el-main>
       </el-container>
@@ -27,8 +32,10 @@ import search from '../common/Search'
 import hotelNav from './HotelNav'
 import hotelTag from './HotelTag'
 import roomList from './RoomList'
-import { room } from '@mock'
-import { roomType, priceList, floorList } from '@static'
+// import { room } from '@mock'
+import { priceList, floorList } from '@static'
+import _api from '@api'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'hotel',
   components: {
@@ -39,17 +46,32 @@ export default {
   },
   data() {
     return {
-      roomType,
       priceList,
       floorList,
       arrayTag: [{}],
-      room
+      room: null,
+      initNum: 8
     }
   },
   methods: {
+    ...mapActions(['fetchAllCategory']),
+    async fetchRoom() {
+      const { list } = await _api.getRoomList({ size: 999 })
+      list.forEach((item) => {
+        item.category = this.getCategoryById(item.lx)
+      })
+      this.room = list
+    },
     handleTag(val) {
       // this.push()
     }
+  },
+  computed: {
+    ...mapGetters(['getCategoryById', 'getMiniCategory'])
+  },
+  created() {
+    this.fetchRoom()
+    this.fetchAllCategory()
   }
 }
 </script>

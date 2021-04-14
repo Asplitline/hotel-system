@@ -5,9 +5,9 @@
       <dt class="nav-td" :class="{'active':active===9999}" @click="setActive()"><a
           href="javascript:;">不限</a>
       </dt>
-      <dd v-for="item in roomType" :key="item.flag" class="nav-bd"
-        :class="{'active':active===item.flag}" @click="setActive(item.flag)"><a
-          href="javascript:;">{{item.value}}</a>
+      <dd v-for="item in list" :key="item.id" class="nav-bd"
+        :class="{'active':active===item.id}" @click="setActive(item.id)"><a
+          href="javascript:;">{{item.name}}</a>
       </dd>
     </dl>
   </div>
@@ -29,18 +29,26 @@ export default {
   },
   data() {
     return {
-      roomType: [],
+      list: [],
       active: 9999
     }
   },
   methods: {
     setActive(index = 9999) {
       this.active = index
-      this.$emit('h-tag', { flag: this.flag, value: index })
+      this.$emit('h-tag', { id: this.id, name: index })
+    }
+  },
+  // tag async-data
+  watch: {
+    data(val) {
+      this.list = val
+      console.log(val)
     }
   },
   created() {
-    this.roomType = this.data
+    // tag sync-data
+    this.list = this.data
   }
 }
 </script>

@@ -117,7 +117,6 @@ export default {
         //
       } else if (flag === EDIT) {
         this.categoryForm = deepClone(data)
-        getUid()
       }
       this.categoryForm.flag = flag
     },
@@ -125,18 +124,18 @@ export default {
     submitDialog(formName, flag) {
       this.$refs[formName].validate(async (valid) => {
         if (!valid) return
-        this.categoryForm.updateTime = Date.now()
+        this[formName].updateTime = Date.now()
         // 删除flag属性
-        delete this.categoryForm.flag
+        delete this[formName].flag
         if (flag === ADD) {
-          Object.assign(this.categoryForm, {
+          Object.assign(this[formName], {
             id: getUid(),
             createTime: Date.now()
           })
-          const { success } = await _api.addCategory(this.categoryForm)
+          const { success } = await _api.addCategory(this[formName])
           this.handleSuccess(success, '添加', this.fetchCategory)
         } else if (flag === EDIT) {
-          const { success } = await _api.editCategory(this.categoryForm)
+          const { success } = await _api.editCategory(this[formName])
           this.handleSuccess(success, '修改', this.fetchCategory)
         }
         this.dialogVisible = false
