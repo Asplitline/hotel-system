@@ -29,6 +29,7 @@
 import hotelList from './HotelList'
 import search from '../common/Search'
 import _api from '@api'
+import { mapActions, mapGetters } from 'vuex'
 // import { mapActions } from 'vuex'
 export default {
   components: {
@@ -45,8 +46,12 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['fetchAllCategory']),
     async fetchRoom() {
       const { list } = await _api.getRoomList({ size: 999 })
+      list.forEach((item) => {
+        item.category = this.getCategoryById(item.lx)
+      })
       this.room = list
     },
     async fetchNotice() {
@@ -64,6 +69,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['getCategoryById']),
     sortRoom() {
       const temp = this.room
       return temp.sort((a, b) => {
@@ -74,6 +80,7 @@ export default {
   created() {
     this.fetchNotice()
     this.fetchRoom()
+    this.fetchAllCategory()
   }
 }
 </script>

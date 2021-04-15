@@ -6,16 +6,26 @@ Vue.use(Vuex)
 
 const state = {
   aIndex: getSession('aIndex'),
-  allCategory: getSession('allCategory')
+  hIndex: getSession('hIndex'),
+  allCategory: getSession('allCategory'),
+  currentHotel: getSession('currentHotel')
 }
 const mutations = {
   setAIndex (state, index) {
     setSession('aIndex', index)
     state.aIndex = index
   },
+  setHIndex (state, index) {
+    setSession('hIndex', index)
+    state.hIndex = index
+  },
   setAllCategory (state, data) {
     setSession('allCategory', data)
     state.allCategory = data
+  },
+  setCurrentHotel (state, data) {
+    setSession('currentHotel', data)
+    state.currentHotel = data
   }
 }
 const getters = {
@@ -33,7 +43,7 @@ const getters = {
 const actions = {
   async fetchAllCategory ({ commit }, query = { size: 999 }) {
     const { list } = await _api.getCategoryList(query)
-    console.log(list)
+    // console.log(list)
     commit('setAllCategory', list)
   }
 }

@@ -2,9 +2,10 @@
   <el-container class="home">
     <el-header style="height:70px">
       <div class="w">
-        <el-menu :default-active="activeIndex" mode="horizontal"
-          background-color="#003366" text-color="#eee" active-text-color="#fff" router>
-          <el-menu-item :index="item.index" v-for="item in hMenuList" :key="item.index">
+        <el-menu :default-active="'/'+hIndex" mode="horizontal" background-color="#003366"
+          text-color="#eee" active-text-color="#fff" router>
+          <el-menu-item :index="'/'+item.index" v-for="item in hMenuList"
+            :key="item.index">
             {{item.name}}
           </el-menu-item>
         </el-menu>
@@ -35,10 +36,10 @@
  * 个人信息 - 个人信息修改 + 订单查询
  */
 import { hMenuList } from '@static'
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
-      activeIndex: '',
       hMenuList
     }
   },
@@ -50,6 +51,9 @@ export default {
       vm.$router.push('/info')
     },
     logout() {}
+  },
+  computed: {
+    ...mapState(['hIndex'])
   }
 }
 </script>

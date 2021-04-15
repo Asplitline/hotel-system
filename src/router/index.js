@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import { miniAMenuList } from '@static'
+import { miniAMenuList, miniHMenuList } from '@static'
 import store from '@store'
 // -
 const Admin = () => import(/* webpackChunkName:'admin' */'@views/Admin')
@@ -18,7 +18,9 @@ const Category = () => import(/* webpackChunkName:'admin_category' */'@views/adm
 // --
 const Info = () => import(/* webpackChunkName:'home_info' */'@views/home/info/Info')
 const Hotel = () => import(/* webpackChunkName:'home_hotel' */'@views/home/hotel/Hotel')
+const HotelDetail = () => import(/* webpackChunkName:'home_hotel' */'@views/home/hotel/HotelDetail')
 const Index = () => import(/* webpackChunkName:'home_index' */'@views/home/index/Index')
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -29,6 +31,7 @@ const routes = [
     redirect: '/index',
     children: [
       { path: '/hotel', name: 'hotel', component: Hotel },
+      { path: '/hotel/:id', name: 'hotel-detail', component: HotelDetail, props: true },
       { path: '/info', name: 'info', component: Info },
       { path: '/index', name: 'index', component: Index }
     ]
@@ -59,6 +62,8 @@ router.beforeEach((to, from, next) => {
   const path = to.path.split('/')[1]
   if (miniAMenuList.includes(path)) {
     store.commit('setAIndex', path)
+  } else if (miniHMenuList.includes(path)) {
+    store.commit('setHIndex', path)
   }
   next()
 })

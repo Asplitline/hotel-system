@@ -25,6 +25,12 @@ myPlugin.install = function (Vue) {
     Vue.filter('string', (data) => {
         return String(data)
     })
+    Vue.filter('$', (data) => {
+        return `￥${data}.00`
+    })
+    Vue.filter('floor', (data) => {
+        return data.toString().substr(0, 1) + '楼'
+    })
 }
 
 export default myPlugin

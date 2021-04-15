@@ -3,12 +3,13 @@
     <dl class="nav-item">
       <dt class="nav-info">{{text}}</dt>
       <dt class="nav-td" :class="{'active':active===9999}" @click="setActive()"><a
-          href="javascript:;">不限</a>
+          href="javascript:;">全部</a>
       </dt>
       <dd v-for="item in list" :key="item.id" class="nav-bd"
-        :class="{'active':active===item.id}" @click="setActive(item.id)"><a
-          href="javascript:;">{{item.name}}</a>
+        :class="{'active':active===item.id}" @click="setActive(item.id)">
+        <a href="javascript:;">{{item.name}}</a>
       </dd>
+      <!-- {{list}} -->
     </dl>
   </div>
 </template>
@@ -23,32 +24,54 @@ export default {
     text: {
       type: String
     },
-    name: {
+    flag: {
+      type: Number
+    },
+    dActive: {
       type: Number
     }
   },
   data() {
     return {
       list: [],
-      active: 9999
+      active: ''
     }
   },
   methods: {
     setActive(index = 9999) {
       this.active = index
-      this.$emit('h-tag', { id: this.id, name: index })
+      this.$emit('h-tag', { value: index, flag: this.flag })
     }
   },
   // tag async-data
   watch: {
     data(val) {
       this.list = val
-      console.log(val)
+    },
+    dActive(val) {
+      this.active = val
     }
+  },
+  computed: {
+    // done #2 nav is valid
+    // active: {
+    //   set(val) {
+    //     // this.active = val
+    //   },
+    //   get() {
+    //     return this.dActive
+    //   }
+    // }
   },
   created() {
     // tag sync-data
     this.list = this.data
+    /* ques #1 only the first nav is valid
+     * other nav is invalid
+     */
+    // guess sync data dont trigger watch ?
+    // done #1 no init active
+    this.active = this.dActive
   }
 }
 </script>

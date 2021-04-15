@@ -1,21 +1,29 @@
 <template>
+  <!-- todo infiniteScroll -->
   <ul class="room-list">
-    <li class="room-item" v-for="item in roomList" :key="item.id">
-      <a href="javascript:;">
-        <img :src="item.url" alt="">
-        <p class="r-title">{{item.lx}}</p>
-        <div class="r-info">
-          <span class="r-type">{{item.lx}}</span>
-          <span class="r-price">￥{{item.price}}.00</span>
-          <span class="r-floor">{{item.number.toString().substr(0, 1)}}楼</span>
-        </div>
-      </a>
-    </li>
-    <li class="room-item hidden-vs" v-for="index in blankNum" :key="index"></li>
+    <!-- {{roomList}} -->
+    <template v-if="roomList.length!==0">
+      <li class="room-item" v-for="item in roomList" :key="item.id">
+        <a href="javascript:;" @click="goHotelDetail(item)">
+          <img :src="item.url" alt="">
+          <p class="r-title">{{item.name}}</p>
+          <div class="r-info">
+            <span class="r-type">{{item.category.name}}</span>
+            <span class="r-price">{{item.price | $}}</span>
+            <span class="r-floor">{{item.number | floor}}</span>
+          </div>
+        </a>
+      </li>
+      <li class="room-item hidden-vs" v-for="index in blankNum" :key="index"></li>
+    </template>
+    <template v-else>
+      <div class="not-found">暂无房间信息</div>
+    </template>
   </ul>
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 export default {
   name: 'room-list',
   props: {
@@ -28,11 +36,16 @@ export default {
   },
   data() {
     return {
-      roomList: [],
-      initNum: 4
+      roomList: []
     }
   },
-  methods: {},
+  methods: {
+    ...mapMutations(['setCurrentHotel']),
+    goHotelDetail(data) {
+      this.setCurrentHotel(data)
+      this.$router.push({ name: 'hotel-detail', params: { id: data.id } })
+    }
+  },
   computed: {
     totalNum() {
       return this.roomList.length
@@ -44,14 +57,19 @@ export default {
   /* note  parent -> children (async data) #1
    * children -> watch data
    */
-  // watch: {
-  //   data(val) {
-  //     this.roomList = val
-  //   }
-  // },
+  watch: {
+    data(val) {
+      this.roomList = val
+    }
+  },
+  /* ques [√]data [x]roomList
+   */
   created() {
     this.roomList = this.data
   }
+  // updated() {
+  //   console.log(123)
+  // }
 }
 </script>
 

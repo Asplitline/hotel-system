@@ -40,10 +40,18 @@ const notice = {
     editNotice: _put('/notice/updateIgnoreNull'),
     deleteNotice: _delete('/notice/delete', TRADITION_MODEL)
 }
+//
+const comment = {
+    getCommentList: _get('/comment/page'),
+    addComment: _post('/comment/insert'),
+    editComment: _put('/comment/updateIgnoreNull'),
+    deleteComment: _delete('/comment/delete', TRADITION_MODEL)
+}
 export default {
     ...base,
     ...user,
     ...category,
     ...room,
-    ...notice
+    ...notice,
+    ...comment
 }

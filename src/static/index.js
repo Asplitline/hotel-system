@@ -19,7 +19,7 @@ export const hMenuList = [
     { name: '酒店', index: 'hotel', icon: 'iconfont icon-ConferenceRoom' }
 ]
 export const miniAMenuList = ['user', 'category', 'room', 'order', 'comment', 'notice']
-
+export const miniHMenuList = ['index', 'hotel']
 export const levelInfo = [
     { flag: 0, value: '用户', type: 'success' },
     { flag: 1, value: '管理员', type: 'danger' }
@@ -56,12 +56,12 @@ export const floorList = [
     { id: 1, name: '2楼' },
     { id: 2, name: '3楼' },
     { id: 3, name: '4楼' },
-    { id: 4, name: '5楼' },
-    { id: 5, name: '6楼' },
-    { id: 6, name: '7楼' },
-    { id: 7, name: '8楼' },
-    { id: 8, name: '9楼' },
-    { id: 9, name: '10楼' }
+    { id: 4, name: '5楼' }
+    // { id: 5, name: '6楼' },
+    // { id: 6, name: '7楼' },
+    // { id: 7, name: '8楼' },
+    // { id: 8, name: '9楼' },
+    // { id: 9, name: '10楼' }
 ]
 export const orderInfo = [
     { flag: 0, value: '预定中', type: 'info' },

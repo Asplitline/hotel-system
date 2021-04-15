@@ -3,7 +3,7 @@
     <h2>酒店{{cChar[this.floor]}}楼</h2>
     <ul class="h-list" v-if="roomNum">
       <li class="h-item" v-for="item in filterRoom" :key="item.id">
-        <a href="javascript:;">
+        <a href="javascript:;" @click="goHotelDetail(item)">
           <img :src="item.url">
           <p class="h-title">{{item.name}}</p>
           <div class="h-info">
@@ -20,6 +20,7 @@
 
 <script>
 import { cChar } from '@static'
+import { mapMutations } from 'vuex'
 export default {
   name: 'hotel-list',
   props: {
@@ -39,7 +40,14 @@ export default {
       cChar
     }
   },
-  methods: {},
+  methods: {
+    ...mapMutations(['setCurrentHotel']),
+    // 跳转到房间详情
+    goHotelDetail(data) {
+      this.setCurrentHotel(data)
+      this.$router.push({ name: 'hotel-detail', params: { id: data.id } })
+    }
+  },
   computed: {
     filterRoom() {
       return this.data
