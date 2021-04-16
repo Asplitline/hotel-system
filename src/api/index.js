@@ -3,7 +3,9 @@ import { _get, _delete, _put, _post } from './helper'
 const TRADITION_MODEL = 2
 // ques [login / register / changePwd]
 const base = {
-    changePwd: _get('/login/changePassword')
+    changePwd: _get('/login/changePassword'),
+    login: _post('/login/api/login'),
+    register: _post('/login/api/regist')
 }
 
 // ques [fileURL?]

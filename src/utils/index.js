@@ -26,6 +26,15 @@ export function bindIMG (url) {
     return FILE_PREFIX + url
 }
 
+export function convertURL (obj) {
+    const arr = []
+    for (const key in obj) {
+        arr.push(`${key}=${obj[key]}`)
+    }
+    console.log(arr)
+    return arr.join('&')
+}
+
 export function deepClone (obj = {}) {
     // Array or Object ?
     /* note [obj === null]

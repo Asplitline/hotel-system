@@ -1,14 +1,27 @@
 <template>
   <div class="search">
-    <el-input placeholder="搜索你需要的房间">
-      <el-button slot="append" icon="el-icon-search"></el-button>
+    <el-input placeholder="搜索你需要的房间" :value="value" @input="$emit('input', $event)"
+      @clear="clear" :clearable="true">
+      <el-button slot="append" icon="el-icon-search" @click="submit()"></el-button>
     </el-input>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'search'
+  props: ['value'],
+  name: 'search',
+  methods: {
+    submit() {
+      this.$emit('s-click')
+    },
+    clear() {
+      this.$emit('s-clear')
+    }
+  },
+  created() {
+    console.log(this.value)
+  }
 }
 </script>
 

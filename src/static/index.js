@@ -5,6 +5,8 @@ export const REG_PHONE = /(13\d|14[579]|15[^4\D]|17[^49\D]|18\d)\d{8}/
 export const ADD = 0
 export const EDIT = 1
 export const DEFAULT_PWD = 123456
+export const LOGIN = 0
+export const REGISTER = 1
 export const aMenuList = [
     { name: '用户管理', index: 'user', icon: 'iconfont icon-user' },
     { name: '房型管理', index: 'category', icon: 'iconfont icon-ConferenceRoom' },
@@ -16,10 +18,12 @@ export const aMenuList = [
 
 export const hMenuList = [
     { name: '首页', index: 'index', icon: 'iconfont icon-user' },
-    { name: '酒店', index: 'hotel', icon: 'iconfont icon-ConferenceRoom' }
+    { name: '酒店', index: 'hotel', icon: 'iconfont icon-ConferenceRoom' },
+    { name: '个人', index: 'info', icon: 'iconfont icon-ConferenceRoom' }
 ]
 export const miniAMenuList = ['user', 'category', 'room', 'order', 'comment', 'notice']
-export const miniHMenuList = ['index', 'hotel']
+export const miniHMenuList = ['index', 'hotel', 'info']
+
 export const levelInfo = [
     { flag: 0, value: '用户', type: 'success' },
     { flag: 1, value: '管理员', type: 'danger' }
@@ -71,3 +75,7 @@ export const orderInfo = [
 ]
 
 export const cChar = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十']
+export const loadBtn = [
+    { id: 0, icon: 'el-icon-position' },
+    { id: 1, icon: 'el-icon-loading' }
+]

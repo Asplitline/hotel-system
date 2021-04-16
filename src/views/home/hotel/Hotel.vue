@@ -2,7 +2,7 @@
   <div class="hotel">
     <el-container class="container">
       <el-header class="header">
-        <search />
+        <search v-model="keyWord" @s-click="handleKeyword()" @s-clear="handleClear()" />
       </el-header>
       <el-container class="main">
         <el-main>
@@ -55,7 +55,9 @@ export default {
       arrayTag: [{}],
       room: null,
       initNum: 8,
-      tagArr: [9999, 9999, 9999]
+      tagArr: [9999, 9999, 9999],
+      keyWord: null,
+      hasSearch: false
     }
   },
   methods: {
@@ -72,6 +74,14 @@ export default {
     },
     handleTagClose({ index }) {
       this.$set(this.tagArr, index, 9999)
+    },
+    handleKeyword() {
+      this.hasSearch = true
+      console.log(this.keyWord)
+    },
+    handleClear() {
+      this.hasSearch = false
+      // this.keyWord = null
     }
   },
   computed: {
@@ -97,6 +107,12 @@ export default {
         data = data.filter(({ number }) => {
           // console.log(item.number.substr(0, 1))
           return floor + 1 === Number(number.substr(0, 1))
+        })
+      }
+      // 搜索
+      if (this.hasSearch && data) {
+        data = data.filter((item) => {
+          return item.name.indexOf(this.keyWord) !== -1
         })
       }
       return data

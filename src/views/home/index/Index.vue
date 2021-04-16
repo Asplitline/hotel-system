@@ -1,8 +1,8 @@
 <template>
   <div class="index">
-    <div class="header">
+    <!-- <div class="header">
       <search />
-    </div>
+    </div> -->
     <div class="banner">
       <el-carousel trigger="click" height="510px" :autoplay="autoplay">
         <el-carousel-item v-for="item in list" :key="item.id">
@@ -27,14 +27,14 @@
 <script>
 // import { notice, room } from '@mock'
 import hotelList from './HotelList'
-import search from '../common/Search'
+// import search from '../common/Search'
 import _api from '@api'
 import { mapActions, mapGetters } from 'vuex'
 // import { mapActions } from 'vuex'
 export default {
   components: {
-    hotelList,
-    search
+    hotelList
+    // search
   },
   data() {
     return {
@@ -90,6 +90,7 @@ export default {
 .index {
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 .header {
   padding: 0 30% 4%;

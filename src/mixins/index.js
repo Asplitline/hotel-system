@@ -70,3 +70,17 @@ export const aMixin = {
         }
     }
 }
+
+export const hMixin = {
+    methods: {
+        // 处理成功标志
+        handleSuccess (success, info, callback) {
+            if (success) {
+                this.$message.success(`${info}成功`)
+                callback && callback()
+            } else {
+                this.$message.error(`${info}失败`)
+            }
+        }
+    }
+}
