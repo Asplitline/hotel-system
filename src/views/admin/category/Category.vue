@@ -3,7 +3,7 @@
     <!--  -->
     <el-form v-model="searchForm" :inline="true" size="small">
       <el-row>
-        <el-col :span="6" :offset="1">
+        <!-- <el-col :span="6" :offset="1">
           <el-form-item label="客房类型">
             <el-select v-model="searchForm.sex" placeholder="请选择客房类型" clearable>
               <el-option :key="item.id" :label="item.name" :value="item.id"
@@ -11,10 +11,10 @@
               </el-option>
             </el-select>
           </el-form-item>
-        </el-col>
-        <el-col :span="5">
+        </el-col> -->
+        <el-col :span="2" offset="22">
           <el-form-item>
-            <el-button type="primary" icon="el-icon-search">查询</el-button>
+            <!-- <el-button type="primary" icon="el-icon-search">查询</el-button> -->
             <el-button type="success" icon="el-icon-plus" @click="showDialog(0)">新增
             </el-button>
           </el-form-item>

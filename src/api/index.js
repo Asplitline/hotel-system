@@ -4,8 +4,9 @@ const TRADITION_MODEL = 2
 // ques [login / register / changePwd]
 const base = {
     changePwd: _get('/login/changePassword'),
-    login: _post('/login/api/login'),
-    register: _post('/login/api/regist')
+    login: _post('/login/api/login', TRADITION_MODEL),
+    register: _post('/login/api/regist'),
+    checkCode: _get('/login/getCheckCode')
 }
 
 // ques [fileURL?]
@@ -15,7 +16,8 @@ const user = {
     getUserList: _get('/user/page'),
     addUser: _post('/user/insert'),
     editUser: _put('/user/updateIgnoreNull'),
-    deleteUser: _delete('/user/delete', TRADITION_MODEL)
+    deleteUser: _delete('/user/delete', TRADITION_MODEL),
+    getUserByUsername: _get('/login/getUserByUsername')
 }
 // todo [search]
 // done [delete / add / edit / page]

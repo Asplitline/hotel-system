@@ -5,25 +5,30 @@
       <el-row>
         <el-col :span="6" :offset="1">
           <el-form-item label="账号">
-            <el-input v-model="searchForm.number" placeholder="请输入账号" clearable />
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">
-          <el-form-item label="姓名">
-            <el-input v-model="searchForm.readName" placeholder="请输入姓名" clearable />
+            <el-input v-model="searchForm.username" placeholder="请输入账号" clearable />
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="性别">
-            <el-select v-model="searchForm.sex" placeholder="请输入性别" clearable>
-              <el-option key="1" label="男" value="男"></el-option>
-              <el-option key="2" label="女" value="女"></el-option>
+            <el-select v-model="searchForm.sex" placeholder="请选择性别" clearable>
+              <el-option v-for="item in sexInfo" :key="item.flag" :label="item.value"
+                :value="item.flag">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="身份">
+            <el-select v-model="searchForm.level" placeholder="请选择身份" clearable>
+              <el-option :key="item.flag" v-for="item in levelInfo" :label="item.value"
+                :value="item.flag"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="5">
           <el-form-item>
-            <el-button type="primary" icon="el-icon-search">查询</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="search()">查询
+            </el-button>
             <el-button type="success" icon="el-icon-plus" @click="showDialog(0)">新增
             </el-button>
           </el-form-item>
@@ -31,7 +36,7 @@
       </el-row>
     </el-form>
     <!--  -->
-    <el-table :data="tableData" style="width: 100%" max-height="650px">
+    <el-table :data="filterTableData" style="width: 100%" max-height="650px">
       <el-table-column prop="url" label="头像" min-width="100">
         <template v-slot="{row}">
           <img :src="row.url" alt="">
@@ -160,7 +165,8 @@ export default {
           { required: true, message: '请请设置用户权限', trigger: 'blur' }
         ]
       },
-      dialogVisible: false
+      dialogVisible: false,
+      hasFilter: false
     }
   },
   methods: {
@@ -168,7 +174,10 @@ export default {
     bindIMG,
     deleteUser: _api.deleteUser,
     async fetchUser() {
-      const { total, list } = await _api.getUserList(this.query)
+      const { total, list } = await _api.getUserList({
+        ...this.query,
+        size: 999
+      })
       this.total = total
       this.tableData = list
     },
@@ -228,6 +237,37 @@ export default {
         .catch(() => {
           this.$message.warning('已取消操作')
         })
+    },
+    search() {
+      this.hasFilter = true
+    },
+    initSearch() {
+      this.hasFilter = false
+    }
+  },
+  computed: {
+    filterTableData() {
+      if (this.hasFilter) {
+        let data = deepClone(this.tableData)
+        const { username, sex, level } = this.searchForm
+        // 账号
+        if (data && username && username.trim().length > 0) {
+          data = data.filter(
+            (item) =>
+              item.username.toLowerCase().indexOf(username.toLowerCase()) !== -1
+          )
+        }
+        if (data && sex >= 0 && sex !== '') {
+          data = data.filter((item) => Number(item.sex) === sex)
+        }
+        if (data && level >= 0 && level !== '') {
+          data = data.filter((item) => Number(item.level) === level)
+        }
+        this.initSearch()
+        return data
+      } else {
+        return this.tableData
+      }
     }
   },
   mixins: [aMixin],

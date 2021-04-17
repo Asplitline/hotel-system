@@ -5,12 +5,14 @@
       <el-row>
         <el-col :span="6" :offset="1">
           <el-form-item label="标题">
-            <el-input v-model="searchForm.number" placeholder="请输入公告标题" clearable />
+            <el-input v-model="query.keyword" placeholder="请输入公告标题" clearable
+              @clear="fetchNotice" />
           </el-form-item>
         </el-col>
         <el-col :span="5">
           <el-form-item>
-            <el-button type="primary" icon="el-icon-search">查询</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="fetchNotice">查询
+            </el-button>
             <el-button type="success" icon="el-icon-plus" @click="showDialog(0)">发布
             </el-button>
           </el-form-item>

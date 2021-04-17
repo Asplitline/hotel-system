@@ -5,15 +5,14 @@
       <div class="ms-login" :class="{'active':isLogin}">
         <div class="ms-title">酒店管理系统 - 登录界面</div>
         <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="0px"
-          class="ms-content">
+          class="ms-content" key="loginForm">
           <el-form-item prop="username">
             <el-input v-model="loginForm.username" placeholder="账号">
               <el-button slot="prepend" icon="el-icon-user"></el-button>
             </el-input>
           </el-form-item>
           <el-form-item prop="password">
-            <el-input type="password" placeholder="密码" v-model="loginForm.password"
-              @keyup.enter.native="submitForm()">
+            <el-input type="password" placeholder="密码" v-model="loginForm.password">
               <el-button slot="prepend" icon="el-icon-lock"></el-button>
             </el-input>
           </el-form-item>
@@ -33,7 +32,7 @@
       <div class="ms-register" :class="{'active':!isLogin}">
         <div class="ms-title">酒店管理系统 - 注册界面</div>
         <el-form :model="registerForm" :rules="rules" ref="registerForm" label-width="0px"
-          class="ms-content">
+          class="ms-content" key="registerForm">
           <el-form-item prop="username">
             <el-input v-model="registerForm.username" placeholder="账号">
               <el-button slot="prepend" icon="el-icon-user"></el-button>
@@ -45,17 +44,16 @@
             </el-input>
           </el-form-item>
           <el-form-item prop="email">
-            <el-input placeholder="邮箱验证" v-model="registerForm.email"
-              @keyup.enter.native="submitForm()">
+            <el-input placeholder="邮箱验证" v-model="registerForm.email">
               <el-button slot="prepend" icon="el-icon-message">
               </el-button>
             </el-input>
           </el-form-item>
-          <el-form-item prop="number">
-            <el-input v-model="registerForm.number" placeholder="验证码">
+          <el-form-item prop="checkCode">
+            <el-input v-model="registerForm.checkCode" placeholder="验证码">
               <el-button slot="prepend" icon="el-icon-unlock"> </el-button>
               <el-button class="toggle-button" slot="append"
-                :icon="loadBtn[loadFlag?1:0].icon" @click="toggleIcon()"
+                :icon="loadBtn[loadFlag?1:0].icon" @click="getValidateCode()"
                 :disabled="showEmail" :class="{disabled:showEmail}">
               </el-button>
             </el-input>
@@ -87,11 +85,12 @@ import { REG_EMAIL, loadBtn, LOGIN, REGISTER } from '@static'
 import _api from '@api'
 import { hMixin } from '@mixins'
 import { convertURL } from '@utils'
+import { mapMutations } from 'vuex'
 export default {
   mixins: [hMixin],
   data() {
     const validateEamil = (rule, value, callback) => {
-      this.showEmail = true
+      this.initEmail()
       if (!value) {
         return callback(new Error('邮箱不能为空'))
       }
@@ -103,48 +102,96 @@ export default {
       }
     }
     return {
-      loginForm: {},
-      registerForm: {},
+      loginForm: {
+        username: '',
+        password: ''
+      },
+      registerForm: {
+        password: '',
+        email: '',
+        checkCode: '',
+        username: ''
+      },
       isLogin: true,
       rules: {
         username: [{ required: true, message: '请输入账号', trigger: 'blur' }],
         password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-        number: [{ required: true, message: '请输入验证码', trigger: 'blur' }],
+        checkCode: [
+          { required: true, message: '请输入验证码', trigger: 'blur' }
+        ],
         email: [{ validator: validateEamil, trigger: 'blur' }]
       },
       loadFlag: false,
       showEmail: true,
-      loadBtn
+      loadBtn,
+      checkCode: ''
     }
   },
   methods: {
+    ...mapMutations(['setCurrentUser']),
     submitForm(formName, flag) {
       this.$refs[formName].validate(async (valid) => {
         if (!valid) return
         if (flag === LOGIN) {
-        } else if (flag === REGISTER) {
-          const { success } = await _api.register(
-            convertURL({
-              password: this[formName].password,
-              username: this[formName].username
-            })
-          )
-          this.handleSuccess(success, '注册', async () => {
-            // const { success } = await _api.editUser(
-            // )
+          const success = await _api.login(convertURL(this[formName]))
+          const data = await _api.getUserByUsername({
+            username: this[formName].username
           })
+          if (success) {
+            this.$message.success('登录成功，跳转中....')
+            this.setCurrentUser(data)
+            // console.log(data.level, typeof data.level)
+            if (Number(data.level) === 1) {
+              this.$router.push({ name: 'admin' })
+            } else if (Number(data.level) === 0) {
+              this.$router.push({ name: 'index' })
+            }
+          } else {
+            this.$message.error('账号或密码错误')
+          }
+        } else if (flag === REGISTER) {
+          // console.log(this.checkCode, this[formName].checkCode)
+          if (this.checkCode !== this[formName].checkCode) {
+            return this.$message.error('验证码错误')
+          }
+          const res = await _api.register(this.handleData(this[formName]))
+          if (res) {
+            this.handleSuccess(res.success, '注册')
+            this.toggleForm(formName)
+          } else {
+            this.$message.error('账号已存在')
+          }
         }
-        console.log(this[formName])
       })
     },
     toggleForm(formName) {
       this.isLogin = !this.isLogin
       this.$refs[formName].resetFields()
+      this.initEmail()
+    },
+    initEmail() {
       this.loadFlag = false
       this.showEmail = true
     },
-    toggleIcon() {
-      this.loadFlag = !this.loadFlag
+    async getValidateCode() {
+      this.loadFlag = true
+      this.checkCode = await _api.checkCode({
+        email: this.registerForm.email
+      })
+    },
+    handleData({ password, username, email }) {
+      // todo init avatar
+      return {
+        level: 0,
+        createTime: Date.now(),
+        updateTime: Date.now(),
+        state: 0,
+        password,
+        username,
+        email,
+        phone: 123456,
+        sex: 0
+      }
     }
   }
 }

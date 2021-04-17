@@ -28,7 +28,7 @@ export function _post (url, model = 1) {
                 }).catch(err => {
                     console.log(err)
                 })
-        } else if (model === 0) {
+        } else if (model === 2) {
             return $http.post(`${url}?${params}`)
                 .then(res => {
                     return res.data

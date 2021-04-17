@@ -8,7 +8,8 @@ const state = {
   aIndex: getSession('aIndex'),
   hIndex: getSession('hIndex'),
   allCategory: getSession('allCategory'),
-  currentHotel: getSession('currentHotel')
+  currentHotel: getSession('currentHotel'),
+  currentUser: getSession('currentUser')
 }
 const mutations = {
   setAIndex (state, index) {
@@ -26,6 +27,10 @@ const mutations = {
   setCurrentHotel (state, data) {
     setSession('currentHotel', data)
     state.currentHotel = data
+  },
+  setCurrentUser (state, data) {
+    setSession('currentUser', data)
+    state.currentUser = data
   }
 }
 const getters = {

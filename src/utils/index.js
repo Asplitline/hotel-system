@@ -54,7 +54,7 @@ export function deepClone (obj = {}) {
     for (const key in obj) {
         // self property ?
         if (Object.prototype.hasOwnProperty.call(obj, key)) {
-            console.log(key)
+            // console.log(key)
             result[key] = deepClone(obj[key])
         }
     }
