@@ -7,6 +7,9 @@ export const EDIT = 1
 export const DEFAULT_PWD = 123456
 export const LOGIN = 0
 export const REGISTER = 1
+export const ACCEPT = 3
+export const REJECT = 2
+export const FINISH = 0
 export const aMenuList = [
     { name: '用户管理', index: 'user', icon: 'iconfont icon-user' },
     { name: '房型管理', index: 'category', icon: 'iconfont icon-ConferenceRoom' },
@@ -42,7 +45,12 @@ export const roomInfo = [
     { flag: 1, value: '预定中', type: 'primary' },
     { flag: 2, value: '已入住', type: 'info' }
 ]
-
+export const roomState = [
+    { id: 0, value: '马上预定', type: '' },
+    { id: 1, value: '预定中...', type: 'primary' },
+    { id: 2, value: '预定失败', type: 'disable' },
+    { id: 3, value: '成功预定', type: 'success' }
+]
 export const roomType = [
     { flag: 0, value: '单人间' },
     { flag: 1, value: '两人间' },
@@ -68,10 +76,10 @@ export const floorList = [
     // { id: 9, name: '10楼' }
 ]
 export const orderInfo = [
-    { flag: 0, value: '预定中', type: 'info' },
-    { flag: 1, value: '入住中', type: 'primary' },
-    { flag: 2, value: '已驳回', type: 'danger' },
-    { flag: 3, value: '已退房', type: 'success' }
+    { id: 0, value: '已退房', type: 'info' },
+    { id: 1, value: '预定中', type: 'primary' },
+    { id: 2, value: '已驳回', type: 'danger' },
+    { id: 3, value: '入住中', type: 'success' }
 ]
 
 export const cChar = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十']

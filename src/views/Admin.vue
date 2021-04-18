@@ -6,7 +6,7 @@
         SSM酒店管理系统
       </div>
       <div class="r-header">
-        <el-dropdown trigger="click">
+        <el-dropdown trigger="click" @command="handleCommand">
           <span class="el-dropdown-link">
             <el-avatar
               src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png">
@@ -14,8 +14,8 @@
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>跳转前台</el-dropdown-item>
-            <el-dropdown-item>退出系统</el-dropdown-item>
+            <el-dropdown-item command="goIndex">跳转前台</el-dropdown-item>
+            <el-dropdown-item command="logOut">退出系统</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -39,7 +39,7 @@
 
 <script>
 import { aMenuList } from '@static'
-import { mapState } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 export default {
   data() {
     return {
@@ -52,8 +52,19 @@ export default {
     ...mapState(['aIndex'])
   },
   methods: {
+    ...mapMutations(['clearInfo']),
     toggleFold() {
       this.isFold = !this.isFold
+    },
+    handleCommand(command) {
+      this[command] && this[command]()
+    },
+    goIndex() {
+      this.$router.push({ name: 'index' })
+    },
+    logOut() {
+      this.clearInfo()
+      this.$router.push({ name: 'login' })
     }
   },
   created() {

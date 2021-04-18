@@ -1,13 +1,13 @@
 <template>
   <div class="info">
     <el-tabs type="border-card">
-      <el-tab-pane label="个人信息">
-        <profile />
+      <el-tab-pane label="个人信息" :lazy="true">
+        <profile :data="currentUser" />
       </el-tab-pane>
-      <el-tab-pane label="更改密码">
-        <change-password />
+      <el-tab-pane label="更改密码" :lazy="true">
+        <change-password :id="currentUser.id" />
       </el-tab-pane>
-      <el-tab-pane label="我的预定">
+      <el-tab-pane label="我的预定" :lazy="true">
         <my-order />
       </el-tab-pane>
     </el-tabs>
@@ -23,11 +23,16 @@
 import changePassword from './ChangePassword'
 import profile from './Profile'
 import myOrder from './MyOrder'
+import { mapState } from 'vuex'
 export default {
   components: {
     profile,
     changePassword,
     myOrder
+  },
+  methods: {},
+  computed: {
+    ...mapState(['currentUser'])
   }
 }
 </script>

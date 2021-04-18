@@ -165,8 +165,7 @@ export default {
           { required: true, message: '请请设置用户权限', trigger: 'blur' }
         ]
       },
-      dialogVisible: false,
-      hasFilter: false
+      dialogVisible: false
     }
   },
   methods: {
@@ -237,12 +236,6 @@ export default {
         .catch(() => {
           this.$message.warning('已取消操作')
         })
-    },
-    search() {
-      this.hasFilter = true
-    },
-    initSearch() {
-      this.hasFilter = false
     }
   },
   computed: {

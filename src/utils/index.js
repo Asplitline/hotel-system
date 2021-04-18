@@ -22,7 +22,7 @@ export function bindURL (url) {
     return SERVER_URL + '/' + url
 }
 export function bindIMG (url) {
-    console.log(FILE_PREFIX, url)
+    // console.log(FILE_PREFIX, url)
     return FILE_PREFIX + url
 }
 
@@ -31,7 +31,7 @@ export function convertURL (obj) {
     for (const key in obj) {
         arr.push(`${key}=${obj[key]}`)
     }
-    console.log(arr)
+    // console.log(arr)
     return arr.join('&')
 }
 

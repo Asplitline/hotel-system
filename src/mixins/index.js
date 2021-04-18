@@ -7,7 +7,8 @@ export const aMixin = {
                 size: 10,
                 keyword: null
             },
-            total: 10
+            total: 10,
+            hasFilter: false
         }
     },
     methods: {
@@ -20,7 +21,6 @@ export const aMixin = {
         // 当前页
         handleCurrentChange (callback, value) {
             this.query.page = value
-            console.log(this.query.page)
             callback()
         },
         // 清除搜索框
@@ -67,6 +67,12 @@ export const aMixin = {
         clearDialog (formName) {
             this.$refs[formName].resetFields()
             this[formName] = {}
+        },
+        search () {
+            this.hasFilter = true
+        },
+        initSearch () {
+            this.hasFilter = false
         }
     }
 }
@@ -81,6 +87,9 @@ export const hMixin = {
             } else {
                 this.$message.error(`${info}失败`)
             }
+        },
+        back () {
+            this.$router.go(-1)
         }
     }
 }

@@ -22,29 +22,77 @@
       <el-form-item label="邮箱" prop="email">
         <el-input v-model="userForm.email" placeholder="请输入电子邮箱"></el-input>
       </el-form-item>
-      <el-form-item label="简介" prop="email">
+      <el-form-item label="简介" prop="description">
         <el-input type="textarea" :autosize="{minRows:2,maxRows:4}" resize="none"
-          v-model="userForm.email" placeholder="请输入个人简介"></el-input>
+          v-model="userForm.description" placeholder="请输入个人简介"></el-input>
       </el-form-item>
     </el-form>
     <div class="btns">
-      <el-button type="success" size="small">提交</el-button>
+      <el-button type="success" size="small" @click="submitForm('userForm')">提交
+      </el-button>
     </div>
   </div>
 </template>
 
 <script>
-import { bindURL, bindIMG } from '@utils'
+import { bindURL, bindIMG, checkEmail, checkPhone } from '@utils'
+import { sexInfo } from '@static'
+import _api from '@api'
+import { mapMutations } from 'vuex'
 export default {
+  props: {
+    data: {
+      type: Object
+    }
+  },
   data() {
     return {
-      userForm: [],
-      userRules: {}
+      userForm: {},
+      userRules: {
+        url: [{ required: true, message: '请选择头像', trigger: 'blur' }],
+        username: [
+          { required: true, message: '请请输入用户名', trigger: 'blur' }
+        ],
+        sex: [{ required: true, message: '请选择性别', trigger: 'blur' }],
+        phone: [
+          { required: true, message: '请输入电话号码', trigger: 'blur' },
+          { validator: checkPhone, trigger: 'blur' }
+        ],
+        email: [
+          { required: true, message: '请输入电子邮箱', trigger: 'blur' },
+          { validator: checkEmail, trigger: 'blur' }
+        ],
+        description: [
+          { required: true, message: '请输入个人简介', trigger: 'blur' }
+        ]
+      },
+      sexInfo
     }
   },
   methods: {
     bindURL,
-    bindIMG
+    bindIMG,
+    ...mapMutations(['setCurrentUser']),
+    handleAvatarSuccess(res, file) {
+      console.log(res, file)
+    },
+    submitForm(formName) {
+      this.$refs[formName].validate(async (valid) => {
+        if (!valid) return
+        this[formName].updateTime = Date.now()
+        // console.log(this[formName])
+        const { success } = await _api.editUser(this[formName])
+        if (success) {
+          this.setCurrentUser(this[formName])
+          this.$message.success('修改成功')
+        } else {
+          this.$message.error('修改失败')
+        }
+      })
+    }
+  },
+  created() {
+    this.userForm = this.data
   }
 }
 </script>

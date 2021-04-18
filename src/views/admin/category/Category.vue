@@ -12,7 +12,7 @@
             </el-select>
           </el-form-item>
         </el-col> -->
-        <el-col :span="2" offset="22">
+        <el-col :span="2" :offset="22">
           <el-form-item>
             <!-- <el-button type="primary" icon="el-icon-search">查询</el-button> -->
             <el-button type="success" icon="el-icon-plus" @click="showDialog(0)">新增

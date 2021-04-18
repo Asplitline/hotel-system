@@ -22,7 +22,8 @@
           </p>
         </div>
         <div class="r-ft">
-          <a href="javascript:;">马上预定</a>
+          <a href="javascript:;" :class="roomState[hotel.state].type"
+            @click="orderRoom(hotel.state)">{{roomState[hotel.state].value}}</a>
           <!-- <a href="javascript:;" class="disable">无法预定</a> -->
           <!-- <a href="javascript:;" class="success">成功预定</a> -->
         </div>
@@ -31,27 +32,23 @@
     <div class="h-header">房间评论</div>
     <div class="h-comment">
       <div class="h-edit">
-        <!-- <input type="text"> -->
-        <!-- <button>评论</button> -->
-        <!-- <span>支持 Enter 键进行评论</span> -->
-        <p class="no-login">请先进行<a href="javascript:;">登录</a>，登陆后才能回复</p>
+        <template v-if="isLogin">
+          <input type="text" v-model="commentVal" @keyup.enter="comment()">
+          <button @click="comment()" :class="{'disabled':commentIsEmpty}">评论</button>
+          <span>支持 Enter 键进行评论</span>
+        </template>
+        <template v-else>
+          <p class="no-login">请先进行<a href="javascript:;">登录</a>，登陆后才能回复</p>
+        </template>
       </div>
       <ul class="h-list">
-        <li class="h-item">
+        <li class="h-item" v-for="item in commentList" :key="item.id">
           <img
             src="https://i.picsum.photos/id/536/800/340.jpg?hmac=Am7IKGaHvGRdAoU9egvOUkk-RG2CKHnSvg_MCyeIaAI"
             alt="">
-          <span class="h-author">Yhspehy</span>
-          <span class="h-date">评论于 <em>2020/12/31 12:00:31</em></span>
-          <div>123123123123</div>
-        </li>
-        <li class="h-item">
-          <img
-            src="https://i.picsum.photos/id/536/800/340.jpg?hmac=Am7IKGaHvGRdAoU9egvOUkk-RG2CKHnSvg_MCyeIaAI"
-            alt="">
-          <span class="h-author">Yhspehy</span>
-          <span class="h-date">评论于 <em>2020/12/31 12:00:31</em></span>
-          <div>123123123123</div>
+          <span class="h-author">{{item.user.name}}</span>
+          <span class="h-date">评论于 <em>{{item.createTime |formatDate }}</em></span>
+          <div>{{item.description}}</div>
         </li>
       </ul>
     </div>
@@ -59,28 +56,76 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapActions, mapGetters, mapMutations, mapState } from 'vuex'
 import _api from '@api'
+import { hMixin } from '@mixins'
+import { roomState } from '@static'
 export default {
   name: 'hotel-detail',
   props: ['id'],
   data() {
-    return {}
+    return {
+      commentVal: '',
+      commentList: [],
+      roomState
+    }
   },
+  mixins: [hMixin],
   methods: {
+    ...mapActions(['fetchAllUser']),
+    ...mapMutations(['setCurrentHotel']),
     async fetchCommment() {
-      const res = await _api.getCommentList({ size: 999 })
-      console.log(res)
+      const { list } = await _api.getCommentList({ size: 999 })
+      list.forEach((item) => {
+        item.user = this.getUserById(item.userId)
+      })
+      this.commentList = list
     },
-    back() {
-      this.$router.go(-1)
+    async comment() {
+      if (this.commentIsEmpty) return
+      const commentObj = {
+        description: this.commentVal,
+        roomId: this.id,
+        userId: this.user.id,
+        createTime: Date.now()
+      }
+      const { success } = await _api.addComment(commentObj)
+      this.handleSuccess(success, '评论', () => {
+        this.commentVal = ''
+        this.fetchCommment()
+      })
+    },
+    async orderRoom(flag) {
+      if (flag === 0) {
+        const obj = {
+          price: this.hotel.price,
+          roomId: this.hotel.id,
+          state: 1,
+          userId: this.user.id
+        }
+        const { success } = await _api.addOrder(obj)
+        this.handleSuccess(success, '预定中...等待管理员审核', async () => {
+          this.setCurrentHotel(Object.assign(this.hotel, { state: 1 }))
+          await _api.editRoom({ id: this.hotel.id, state: 1 })
+        })
+      }
     }
   },
   computed: {
-    ...mapState({ hotel: 'currentHotel' })
+    ...mapState({ hotel: 'currentHotel', user: 'currentUser' }),
+    ...mapGetters(['getUserById']),
+    isLogin() {
+      return this.user !== null
+    },
+    commentIsEmpty() {
+      return this.commentVal.trim().length === 0
+    }
   },
   created() {
+    // todo ? cache data | dont every time fetch
+    // tag update data -> update vuex data
     this.fetchCommment()
+    this.fetchAllUser()
   }
 }
 </script>
@@ -181,11 +226,15 @@ export default {
         color: #fff;
       }
       &.disable {
-        background-color: @color-gray;
-        cursor: not-allowed;
+        background-color: @color-yellow;
+        cursor: default;
       }
       &.success {
         background-color: @color-green;
+        cursor: default;
+      }
+      &.primary {
+        background-color: @color-main;
         cursor: default;
       }
     }
@@ -234,6 +283,13 @@ export default {
       &:hover {
         background-color: rgba(@color-green, 0.8);
       }
+      &.disabled {
+        cursor: not-allowed;
+        // background-color: @color-green;
+        background-color: transparent;
+        color: @color-green;
+        // color: #ddd;
+      }
     }
     span {
       position: absolute;
@@ -257,7 +313,7 @@ export default {
   margin-top: 20px;
   border: 1px solid #ccc;
   .h-item {
-    padding: 20px 0;
+    padding: 10px 0;
     border-bottom: 1px solid #ddd;
     img {
       width: 40px;
@@ -281,7 +337,7 @@ export default {
       }
     }
     div {
-      margin-left: 40px;
+      margin-left: 56px;
       width: 600px;
       padding: 14px 4px;
     }

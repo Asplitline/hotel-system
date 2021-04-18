@@ -51,11 +51,20 @@ const comment = {
     editComment: _put('/comment/updateIgnoreNull'),
     deleteComment: _delete('/comment/delete', TRADITION_MODEL)
 }
+//
+const order = {
+    getOrderList: _get('/order/page'),
+    addOrder: _post('/order/insert'),
+    editOrder: _put('/order/updateIgnoreNull'),
+    deleteOrder: _delete('/order/delete', TRADITION_MODEL)
+}
+
 export default {
     ...base,
     ...user,
     ...category,
     ...room,
     ...notice,
-    ...comment
+    ...comment,
+    ...order
 }

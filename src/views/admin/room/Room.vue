@@ -18,10 +18,10 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="客房费用" prop="startMoney">
-            <el-input v-model="searchForm.startPrice" placeholder="最低房费" clearable
+          <el-form-item label="客房费用">
+            <el-input v-model="searchForm.minPrice" placeholder="最低房费" clearable
               style="width:48%" />-
-            <el-input v-model="searchForm.endPrice" placeholder="最高房费" clearable
+            <el-input v-model="searchForm.maxPrice" placeholder="最高房费" clearable
               style="width:48%" />
           </el-form-item>
         </el-col>
@@ -38,7 +38,7 @@
         </el-col>
         <el-col :span="6">
           <el-form-item>
-            <el-button type="primary" icon="el-icon-search">
+            <el-button type="primary" icon="el-icon-search" @click="search()">
               查询
             </el-button>
             <el-button type="success" icon="el-icon-plus" @click="showDialog(0)">
@@ -49,7 +49,7 @@
       </el-row>
     </el-form>
     <!--  -->
-    <el-table :data="tableData" style="width: 100%" max-height="600px">
+    <el-table :data="filterTableData" style="width: 100%" max-height="600px">
       <el-table-column prop="url" label="展示图" min-width="120">
         <template v-slot="{row}">
           <img :src="row.url" alt="" class="cover">
@@ -187,7 +187,6 @@ export default {
         this.roomForm = deepClone(data)
       }
       this.roomForm.flag = flag
-      getUid()
     },
     // 提交对话框
     submitDialog(formName, flag) {
@@ -208,12 +207,47 @@ export default {
         this.dialogVisible = false
       })
     },
+    // 头像上传
     handleAvatarSuccess(res, file) {
       this.$set(this.roomForm, 'url', file.name)
     }
   },
   computed: {
-    ...mapGetters(['getMiniCategory', 'getCategoryById'])
+    ...mapGetters(['getMiniCategory', 'getCategoryById']),
+    filterTableData() {
+      const {
+        number,
+        roomType,
+        minPrice = 0,
+        maxPrice = 9999,
+        state
+      } = this.searchForm
+      if (this.hasFilter) {
+        let data = deepClone(this.tableData)
+        // 房号
+        if (data && number && number.trim().length > 0) {
+          data = data.filter((item) => item.number === number)
+        }
+        // 类型
+        if (data && typeof roomType === 'number') {
+          data = data.filter((item) => item.lx === roomType)
+        }
+        // 价格
+        if (data) {
+          data = data.filter(
+            (item) => item.price >= minPrice && item.price <= maxPrice
+          )
+        }
+        // 状态
+        if (data && typeof state === 'number') {
+          data = data.filter((item) => item.state === state)
+        }
+        this.initSearch()
+        return data
+      } else {
+        return this.tableData
+      }
+    }
   },
   created() {
     this.fetchRoom()

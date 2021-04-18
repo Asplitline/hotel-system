@@ -21,6 +21,7 @@ const Hotel = () => import(/* webpackChunkName:'home_hotel' */'@views/home/hotel
 const HotelDetail = () => import(/* webpackChunkName:'home_hotel' */'@views/home/hotel/HotelDetail')
 const Index = () => import(/* webpackChunkName:'home_index' */'@views/home/index/Index')
 
+const Error = () => import(/* webpackChunkName:'error' */'@views/404')
 Vue.use(VueRouter)
 
 const routes = [
@@ -51,7 +52,8 @@ const routes = [
     ]
   },
   { path: '/', redirect: '/login' },
-  { path: '/login', name: 'login', component: Login }
+  { path: '/login', name: 'login', component: Login },
+  { path: '*', name: 'error', component: Error }
 ]
 
 const router = new VueRouter({
@@ -59,13 +61,29 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  console.log(to)
   const path = to.path.split('/')[1]
   if (miniAMenuList.includes(path)) {
     store.commit('setAIndex', path)
   } else if (miniHMenuList.includes(path)) {
     store.commit('setHIndex', path)
   }
-  next()
+  // permission
+  // console.log(store.state.currentUser, path)
+  const user = store.state.currentUser
+  if (path !== 'login') {
+    if (user) {
+      next()
+    } else {
+      next({ name: 'login' })
+    }
+  } else {
+    if (user) {
+      next(false)
+    } else {
+      next()
+    }
+  }
 })
 
 export default router
