@@ -78,6 +78,16 @@ export const aMixin = {
 }
 
 export const hMixin = {
+    data () {
+        return {
+            query: {
+                page: 1,
+                size: 10,
+                keyword: null
+            },
+            total: 10
+        }
+    },
     methods: {
         // 处理成功标志
         handleSuccess (success, info, callback) {
@@ -90,6 +100,17 @@ export const hMixin = {
         },
         back () {
             this.$router.go(-1)
+        },
+        // 最大页
+        handleSizeChange (callback, value) {
+            this.query.size = value
+            this.query.page = 1
+            callback()
+        },
+        // 当前页
+        handleCurrentChange (callback, value) {
+            this.query.page = value
+            callback()
         }
     }
 }

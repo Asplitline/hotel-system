@@ -74,7 +74,8 @@ export default {
     bindIMG,
     ...mapMutations(['setCurrentUser']),
     handleAvatarSuccess(res, file) {
-      console.log(res, file)
+      this.$set(this.userForm, 'url', res)
+      // console.log(res, file)
     },
     submitForm(formName) {
       this.$refs[formName].validate(async (valid) => {

@@ -1,5 +1,5 @@
 export const SERVER_URL = 'http://localhost:8089'
-export const FILE_PREFIX = 'file:///'
+export const FILE_PREFIX = 'http://localhost:8089/images/'
 export const REG_EMAIL = /\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/
 export const REG_PHONE = /(13\d|14[579]|15[^4\D]|17[^49\D]|18\d)\d{8}/
 export const ADD = 0
@@ -43,7 +43,8 @@ export const stateInfo = [
 export const roomInfo = [
     { flag: 0, value: '空闲中', type: 'danger' },
     { flag: 1, value: '预定中', type: 'primary' },
-    { flag: 2, value: '已入住', type: 'info' }
+    { flag: 2, value: '已入住', type: 'info' },
+    { flag: 3, value: '已入住', type: 'success' }
 ]
 export const roomState = [
     { id: 0, value: '马上预定', type: '' },

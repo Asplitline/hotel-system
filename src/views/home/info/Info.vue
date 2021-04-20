@@ -7,7 +7,7 @@
       <el-tab-pane label="更改密码" :lazy="true">
         <change-password :id="currentUser.id" />
       </el-tab-pane>
-      <el-tab-pane label="我的预定" :lazy="true">
+      <el-tab-pane label="我的预定" :id="currentUser.id" :lazy="true">
         <my-order />
       </el-tab-pane>
     </el-tabs>

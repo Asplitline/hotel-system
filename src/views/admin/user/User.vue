@@ -39,7 +39,7 @@
     <el-table :data="filterTableData" style="width: 100%" max-height="650px">
       <el-table-column prop="url" label="头像" min-width="100">
         <template v-slot="{row}">
-          <img :src="row.url" alt="">
+          <img :src="bindIMG(row.url)" alt="" class="tb-avatar">
         </template>
       </el-table-column>
       <el-table-column prop="username" label="账号" min-width="100">
@@ -212,6 +212,7 @@ export default {
     },
     // 头像上传
     handleAvatarSuccess(res, file) {
+      console.log(res, file)
       this.$set(this.userForm, 'url', res)
     },
     // 重置密码

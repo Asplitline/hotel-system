@@ -8,8 +8,7 @@
       <div class="r-header">
         <el-dropdown trigger="click" @command="handleCommand">
           <span class="el-dropdown-link">
-            <el-avatar
-              src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png">
+            <el-avatar :src="bindIMG(currentUser.url)">
             </el-avatar>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
@@ -40,6 +39,7 @@
 <script>
 import { aMenuList } from '@static'
 import { mapMutations, mapState } from 'vuex'
+import { bindIMG } from '@utils'
 export default {
   data() {
     return {
@@ -49,10 +49,11 @@ export default {
     }
   },
   computed: {
-    ...mapState(['aIndex'])
+    ...mapState(['aIndex', 'currentUser'])
   },
   methods: {
     ...mapMutations(['clearInfo']),
+    bindIMG,
     toggleFold() {
       this.isFold = !this.isFold
     },

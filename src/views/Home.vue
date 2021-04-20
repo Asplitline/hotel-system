@@ -11,8 +11,7 @@
         </el-menu>
         <el-dropdown trigger="click" @command="handleCommand">
           <span class="el-dropdown-link">
-            <el-avatar
-              src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png">
+            <el-avatar :src="bindIMG(currentUser.url)">
             </el-avatar>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
@@ -37,6 +36,7 @@
  */
 import { hMenuList } from '@static'
 import { mapState } from 'vuex'
+import { bindIMG } from '@utils'
 export default {
   data() {
     return {
@@ -44,6 +44,7 @@ export default {
     }
   },
   methods: {
+    bindIMG,
     handleCommand(command) {
       this.$options.methods[command](this)
     },
@@ -53,7 +54,7 @@ export default {
     logout() {}
   },
   computed: {
-    ...mapState(['hIndex'])
+    ...mapState(['hIndex', 'currentUser'])
   }
 }
 </script>

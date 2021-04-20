@@ -185,7 +185,7 @@ export default {
         level: 0,
         createTime: Date.now(),
         updateTime: Date.now(),
-        state: 0,
+        state: 1,
         password,
         username,
         email,
@@ -193,6 +193,9 @@ export default {
         sex: 0
       }
     }
+  },
+  created() {
+    console.log(process)
   }
 }
 </script>

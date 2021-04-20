@@ -41,16 +41,17 @@
           <p class="no-login">请先进行<a href="javascript:;">登录</a>，登陆后才能回复</p>
         </template>
       </div>
-      <ul class="h-list">
+      <ul class="h-list" v-if="commentList.length">
         <li class="h-item" v-for="item in commentList" :key="item.id">
           <img
             src="https://i.picsum.photos/id/536/800/340.jpg?hmac=Am7IKGaHvGRdAoU9egvOUkk-RG2CKHnSvg_MCyeIaAI"
             alt="">
-          <span class="h-author">{{item.user.name}}</span>
+          <span class="h-author">{{item.user.username}}</span>
           <span class="h-date">评论于 <em>{{item.createTime |formatDate }}</em></span>
           <div>{{item.description}}</div>
         </li>
       </ul>
+      <div class="not-found" v-else>暂无评论</div>
     </div>
   </div>
 </template>
@@ -75,7 +76,10 @@ export default {
     ...mapActions(['fetchAllUser']),
     ...mapMutations(['setCurrentHotel']),
     async fetchCommment() {
-      const { list } = await _api.getCommentList({ size: 999 })
+      const { list } = await _api.getCommentList({
+        size: 999,
+        keyword: this.id
+      })
       list.forEach((item) => {
         item.user = this.getUserById(item.userId)
       })
@@ -337,10 +341,14 @@ export default {
       }
     }
     div {
-      margin-left: 56px;
+      margin-left: 50px;
       width: 600px;
       padding: 14px 4px;
     }
   }
+}
+
+.not-found {
+  margin-top: 10px;
 }
 </style>

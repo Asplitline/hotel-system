@@ -4,21 +4,30 @@ function load (url) {
 }
 module.exports = {
   chainWebpack: config => {
-    config.when(process.env.NODE_ENV = 'production', conf => {
+    config.when(process.env.NODE_ENV === 'production', config => {
       config.entry('app').clear().add('./src/main.prod.js')
+      // config.optimization.minimizer('terser').tap((args) => {
+      //   args[0].terserOptions.compress.drop_console = true
+      //   return args
+      // })
+      config.set('externals', {
+        vue: 'Vue',
+        'vue-router': 'VueRouter',
+        axios: 'axios',
+        'element-ui': 'ElementUI'
+      })
       config.plugin('html').tap(args => {
         args[0].isProd = true
         return args
       })
     })
-    config.when(process.env.NODE_ENV = 'development', conf => {
+    config.when(process.env.NODE_ENV === 'development', config => {
       config.entry('app').clear().add('./src/main.dev.js')
       config.plugin('html').tap(args => {
         args[0].isProd = false
         return args
       })
     })
-
     config.resolve.alias
       .set('@components', load('./src/components'))
       .set('@css', load('./src/assets/css'))
@@ -32,7 +41,7 @@ module.exports = {
       .set('@mock', load('./src/mock'))
       .set('@store', load('./src/store'))
   },
-  configureWebpack: {
-    devtool: '#eval-source-map'
-  }
+  // configureWebpack: {
+  //   devtool: '#eval-source-map'
+  // },
 }
