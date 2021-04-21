@@ -61,7 +61,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log(to)
+  // console.log(to)
   const path = to.path.split('/')[1]
   if (miniAMenuList.includes(path)) {
     store.commit('setAIndex', path)
@@ -69,11 +69,14 @@ router.beforeEach((to, from, next) => {
     store.commit('setHIndex', path)
   }
   // permission
-  // console.log(store.state.currentUser, path)
   const user = store.state.currentUser
   if (path !== 'login') {
     if (user) {
-      next()
+      if (miniAMenuList.includes(path) && Number(user.level) === 0) {
+        next(false)
+      } else {
+        next()
+      }
     } else {
       next({ name: 'login' })
     }

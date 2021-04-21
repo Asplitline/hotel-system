@@ -6,10 +6,10 @@ module.exports = {
   chainWebpack: config => {
     config.when(process.env.NODE_ENV === 'production', config => {
       config.entry('app').clear().add('./src/main.prod.js')
-      // config.optimization.minimizer('terser').tap((args) => {
-      //   args[0].terserOptions.compress.drop_console = true
-      //   return args
-      // })
+      config.optimization.minimizer('terser').tap((args) => {
+        args[0].terserOptions.compress.drop_console = true
+        return args
+      })
       config.set('externals', {
         vue: 'Vue',
         'vue-router': 'VueRouter',
