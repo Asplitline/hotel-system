@@ -6,7 +6,7 @@
     <div class="banner">
       <el-carousel trigger="click" height="510px" :autoplay="autoplay">
         <el-carousel-item v-for="item in list" :key="item.id">
-          <img :src="item.url" alt="" @click="showNotice(item)">
+          <img :src="bindIMG(item.url)" alt="" @click="showNotice(item)">
           <div class="mask">
             <p>{{item.title}}</p>
           </div>
@@ -14,7 +14,7 @@
       </el-carousel>
     </div>
     <div class="main">
-      <hotelList :data="sortRoom" :floor="index" v-for="index in 4" :key="index" />
+      <hotelList :data="sortRoom" :floor="index" v-for="index in 5" :key="index" />
     </div>
     <el-dialog :visible.sync="dialogVisible" width="30%" class="notice-dialog"
       @close="handleNotice()">
@@ -31,6 +31,7 @@ import hotelList from './HotelList'
 import _api from '@api'
 import { mapActions, mapGetters } from 'vuex'
 // import { mapActions } from 'vuex'
+import { bindIMG } from '@utils'
 export default {
   components: {
     hotelList
@@ -47,6 +48,7 @@ export default {
   },
   methods: {
     ...mapActions(['fetchAllCategory']),
+    bindIMG,
     async fetchRoom() {
       const { list } = await _api.getRoomList({ size: 999 })
       list.forEach((item) => {

@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { bindURL, bindIMG, checkEmail, checkPhone } from '@utils'
+import { bindURL, bindIMG, checkEmail, checkPhone, deepClone } from '@utils'
 import { sexInfo } from '@static'
 import _api from '@api'
 import { mapMutations } from 'vuex'
@@ -75,7 +75,6 @@ export default {
     ...mapMutations(['setCurrentUser']),
     handleAvatarSuccess(res, file) {
       this.$set(this.userForm, 'url', res)
-      // console.log(res, file)
     },
     submitForm(formName) {
       this.$refs[formName].validate(async (valid) => {
@@ -93,7 +92,7 @@ export default {
     }
   },
   created() {
-    this.userForm = this.data
+    this.userForm = deepClone(this.data)
   }
 }
 </script>

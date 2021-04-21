@@ -79,7 +79,7 @@
 <script>
 // import { category } from '@mock'
 import { aMixin } from '@mixins'
-import { roomType, ADD, EDIT } from '@static'
+import { ADD, EDIT } from '@static'
 import _api from '@api'
 import { getUid, deepClone } from '@utils'
 import { mapActions, mapGetters } from 'vuex'
@@ -88,7 +88,6 @@ export default {
     return {
       searchForm: {},
       tableData: [],
-      roomType,
       dialogVisible: false,
       categoryForm: {},
       categoryRules: {

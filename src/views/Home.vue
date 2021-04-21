@@ -35,7 +35,7 @@
  * 个人信息 - 个人信息修改 + 订单查询
  */
 import { hMenuList } from '@static'
-import { mapState } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 import { bindIMG } from '@utils'
 export default {
   data() {
@@ -44,14 +44,19 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['clearInfo']),
     bindIMG,
     handleCommand(command) {
       this.$options.methods[command](this)
     },
     goInfo(vm) {
-      vm.$router.push('/info')
+      console.log(this)
+      vm.$router.push({ name: 'info' })
     },
-    logout() {}
+    logout(vm) {
+      vm.clearInfo()
+      vm.$router.push({ name: 'login' })
+    }
   },
   computed: {
     ...mapState(['hIndex', 'currentUser'])

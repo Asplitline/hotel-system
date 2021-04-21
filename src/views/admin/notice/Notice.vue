@@ -23,7 +23,7 @@
     <el-table :data="tableData" style="width: 100%" max-height="650px">
       <el-table-column prop="url" label="封面" min-width="200">
         <template v-slot="{row}">
-          <img :src="row.url" alt="" class="cover">
+          <img :src="bindIMG(row.url)" alt="" class="cover">
         </template>
       </el-table-column>
       <el-table-column prop="title" label="标题" min-width="150">

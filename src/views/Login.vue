@@ -81,7 +81,7 @@
  * 用户注册
  * 用户登录
  */
-import { REG_EMAIL, loadBtn, LOGIN, REGISTER } from '@static'
+import { REG_EMAIL, loadBtn, LOGIN, REGISTER, DEFAULT_AVATAR } from '@static'
 import _api from '@api'
 import { hMixin } from '@mixins'
 import { convertURL } from '@utils'
@@ -190,7 +190,8 @@ export default {
         username,
         email,
         phone: 123456,
-        sex: 0
+        sex: 0,
+        url: DEFAULT_AVATAR
       }
     }
   },

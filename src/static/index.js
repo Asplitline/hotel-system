@@ -7,9 +7,11 @@ export const EDIT = 1
 export const DEFAULT_PWD = 123456
 export const LOGIN = 0
 export const REGISTER = 1
-export const ACCEPT = 3
 export const REJECT = 2
-export const FINISH = 0
+export const ACCEPT = 3
+export const APPLY = 4
+export const FINISH = 5
+export const DEFAULT_AVATAR = 'avatar_placeholder.png'
 export const aMenuList = [
     { name: '用户管理', index: 'user', icon: 'iconfont icon-user' },
     { name: '房型管理', index: 'category', icon: 'iconfont icon-ConferenceRoom' },
@@ -40,23 +42,18 @@ export const stateInfo = [
     { flag: 1, value: '正常', type: 'primary' }
 ]
 
-export const roomInfo = [
-    { flag: 0, value: '空闲中', type: 'danger' },
-    { flag: 1, value: '预定中', type: 'primary' },
-    { flag: 2, value: '已入住', type: 'info' },
-    { flag: 3, value: '已入住', type: 'success' }
-]
 export const roomState = [
-    { id: 0, value: '马上预定', type: '' },
-    { id: 1, value: '预定中...', type: 'primary' },
-    { id: 2, value: '预定失败', type: 'disable' },
-    { id: 3, value: '成功预定', type: 'success' }
+    { id: 0, value: '空闲中', type: 'success', text: '马上预定', class: '' },
+    { id: 1, value: '已住人', type: 'danger', text: '无法预定', class: 'disable' }
 ]
-export const roomType = [
-    { flag: 0, value: '单人间' },
-    { flag: 1, value: '两人间' },
-    { flag: 2, value: '四人间' },
-    { flag: 3, value: '钟点房' }
+export const orderState = [
+    { id: 0, value: '马上预订', type: '' },
+    { id: 1, value: '预订中', type: 'primary' },
+    { id: 2, value: '已取消', type: 'warning' },
+    // { id: 3, value: '预订失败', type: 'danger' },
+    { id: 3, value: '入住中', type: 'success' },
+    { id: 4, value: '退房中', type: 'info' },
+    { id: 5, value: '已退房', type: 'danger' }
 ]
 export const priceList = [
     { id: 0, min: 0, max: 100, name: '100元以下' },
@@ -78,7 +75,7 @@ export const floorList = [
 ]
 export const orderInfo = [
     { id: 0, value: '已退房', type: 'info' },
-    { id: 1, value: '预定中', type: 'primary' },
+    { id: 1, value: '预订中', type: 'primary' },
     { id: 2, value: '已驳回', type: 'danger' },
     { id: 3, value: '入住中', type: 'success' }
 ]

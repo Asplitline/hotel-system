@@ -173,10 +173,7 @@ export default {
     bindIMG,
     deleteUser: _api.deleteUser,
     async fetchUser() {
-      const { total, list } = await _api.getUserList({
-        ...this.query,
-        size: 999
-      })
+      const { total, list } = await _api.getUserList(this.query)
       this.total = total
       this.tableData = list
     },

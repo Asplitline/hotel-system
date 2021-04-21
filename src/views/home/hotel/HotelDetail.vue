@@ -3,7 +3,7 @@
     <div class="h-header">房间详情<a href="javascript:;" @click="back()">返回</a></div>
     <div class="h-content">
       <div class="l-content">
-        <img :src="hotel.url" alt="">
+        <img :src="bindIMG(hotel.url)" alt="">
       </div>
       <div class="r-content">
         <div class="r-hd">{{hotel.name}}</div>
@@ -20,12 +20,19 @@
           <p>
             <span>房间价格:</span><span class="h-price">{{hotel.price | $}}</span>
           </p>
+          <p>
+            <span>房间状态:</span>
+            <el-tag effect="plain" :type="roomState[hotel.state].type">
+              {{roomState[hotel.state].value}}</el-tag>
+          </p>
         </div>
         <div class="r-ft">
-          <a href="javascript:;" :class="roomState[hotel.state].type"
-            @click="orderRoom(hotel.state)">{{roomState[hotel.state].value}}</a>
           <!-- <a href="javascript:;" class="disable">无法预定</a> -->
           <!-- <a href="javascript:;" class="success">成功预定</a> -->
+          <a href="javascript:;" v-if="hotelState === 1" class="primary">预订中..</a>
+          <a href="javascript:;" class="success" v-else-if="hotelState === 3">预订成功</a>
+          <a href="javascript:;" :class="roomState[hotel.state].class"
+            @click="orderRoom(hotel.state)" v-else>{{roomState[hotel.state].text}}</a>
         </div>
       </div>
     </div>
@@ -43,9 +50,7 @@
       </div>
       <ul class="h-list" v-if="commentList.length">
         <li class="h-item" v-for="item in commentList" :key="item.id">
-          <img
-            src="https://i.picsum.photos/id/536/800/340.jpg?hmac=Am7IKGaHvGRdAoU9egvOUkk-RG2CKHnSvg_MCyeIaAI"
-            alt="">
+          <img :src="bindIMG(item.user.url)" alt="">
           <span class="h-author">{{item.user.username}}</span>
           <span class="h-date">评论于 <em>{{item.createTime |formatDate }}</em></span>
           <div>{{item.description}}</div>
@@ -60,7 +65,8 @@
 import { mapActions, mapGetters, mapMutations, mapState } from 'vuex'
 import _api from '@api'
 import { hMixin } from '@mixins'
-import { roomState } from '@static'
+import { orderState, roomState } from '@static'
+import { bindIMG } from '@utils'
 export default {
   name: 'hotel-detail',
   props: ['id'],
@@ -68,13 +74,16 @@ export default {
     return {
       commentVal: '',
       commentList: [],
-      roomState
+      orderState,
+      roomState,
+      hotelByOrder: []
     }
   },
   mixins: [hMixin],
   methods: {
     ...mapActions(['fetchAllUser']),
     ...mapMutations(['setCurrentHotel']),
+    bindIMG,
     async fetchCommment() {
       const { list } = await _api.getCommentList({
         size: 999,
@@ -109,10 +118,17 @@ export default {
         }
         const { success } = await _api.addOrder(obj)
         this.handleSuccess(success, '预定中...等待管理员审核', async () => {
-          this.setCurrentHotel(Object.assign(this.hotel, { state: 1 }))
-          await _api.editRoom({ id: this.hotel.id, state: 1 })
+          this.fetchOrderById(this.id)
         })
       }
+    },
+    async fetchOrderById(id) {
+      const { list } = await _api.getOrderList({
+        size: 999,
+        page: 1,
+        keyword: id
+      })
+      this.hotelByOrder = list.find((item) => item.userId === this.user.id)
     }
   },
   computed: {
@@ -123,6 +139,10 @@ export default {
     },
     commentIsEmpty() {
       return this.commentVal.trim().length === 0
+    },
+    hotelState() {
+      const { state = 0 } = this.hotelByOrder || {}
+      return state
     }
   },
   created() {
@@ -130,6 +150,7 @@ export default {
     // tag update data -> update vuex data
     this.fetchCommment()
     this.fetchAllUser()
+    this.fetchOrderById(this.id)
   }
 }
 </script>
@@ -230,7 +251,7 @@ export default {
         color: #fff;
       }
       &.disable {
-        background-color: @color-yellow;
+        background-color: @color-red;
         cursor: default;
       }
       &.success {

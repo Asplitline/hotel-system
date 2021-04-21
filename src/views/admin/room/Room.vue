@@ -30,8 +30,8 @@
         <el-col :span="6">
           <el-form-item label="客房状态">
             <el-select v-model="searchForm.state" placeholder="请选择客房状态" clearable>
-              <el-option :key="item.flag" :label="item.value" :value="item.flag"
-                v-for="item in roomInfo">
+              <el-option v-for="item in roomState" :key="item.id" :label="item.value"
+                :value="item.id">
               </el-option>
             </el-select>
           </el-form-item>
@@ -52,7 +52,7 @@
     <el-table :data="filterTableData" style="width: 100%" max-height="600px">
       <el-table-column prop="url" label="展示图" min-width="120">
         <template v-slot="{row}">
-          <img :src="row.url" alt="" class="cover">
+          <img :src="bindIMG(row.url)" alt="" class="cover">
         </template>
       </el-table-column>
       <el-table-column prop="number" label="房间号" min-width="100">
@@ -77,8 +77,8 @@
       </el-table-column>
       <el-table-column prop="state" label="客房状态" min-width="60">
         <template v-slot="{row}">
-          <el-tag :type="roomInfo[row.state].type" effect="dark">
-            {{roomInfo[row.state].value}}</el-tag>
+          <el-tag :type="roomState[row.state].type" effect="dark">
+            {{roomState[row.state].value}}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" min-width="120">
@@ -143,7 +143,7 @@
 <script>
 // import { room } from '@mock'
 import { aMixin } from '@mixins'
-import { roomInfo, ADD, EDIT } from '@static'
+import { roomState, ADD, EDIT } from '@static'
 import { mapActions, mapGetters } from 'vuex'
 import _api from '@api'
 import { bindURL, bindIMG, getUid, deepClone } from '@utils'
@@ -152,7 +152,7 @@ export default {
     return {
       searchForm: {},
       tableData: [],
-      roomInfo,
+      roomState,
       dialogVisible: false,
       roomRules: {
         url: [{ required: true, message: '请选择图片', trigger: 'blur' }],
@@ -209,7 +209,7 @@ export default {
     },
     // 头像上传
     handleAvatarSuccess(res, file) {
-      this.$set(this.roomForm, 'url', file.name)
+      this.$set(this.roomForm, 'url', res)
     }
   },
   computed: {
@@ -259,7 +259,7 @@ export default {
 <style lang="less" scoped>
 @import '~@css/acommon.less';
 .cover {
-  width: 160px;
+  width: 200px;
   height: auto;
 }
 </style>

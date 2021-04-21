@@ -5,7 +5,7 @@
     <template v-if="roomList.length!==0">
       <li class="room-item" v-for="item in roomList" :key="item.id">
         <a href="javascript:;" @click="goHotelDetail(item)">
-          <img :src="item.url" alt="">
+          <img :src="bindIMG(item.url)" alt="">
           <p class="r-title">{{item.name}}</p>
           <div class="r-info">
             <span class="r-type">{{item.category.name}}</span>
@@ -24,6 +24,7 @@
 
 <script>
 import { mapMutations } from 'vuex'
+import { bindIMG } from '@utils'
 export default {
   name: 'room-list',
   props: {
@@ -41,6 +42,7 @@ export default {
   },
   methods: {
     ...mapMutations(['setCurrentHotel']),
+    bindIMG,
     goHotelDetail(data) {
       this.setCurrentHotel(data)
       this.$router.push({ name: 'hotel-detail', params: { id: data.id } })

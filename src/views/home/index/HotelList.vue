@@ -4,7 +4,7 @@
     <ul class="h-list" v-if="roomNum">
       <li class="h-item" v-for="item in filterRoom" :key="item.id">
         <a href="javascript:;" @click="goHotelDetail(item)">
-          <img :src="item.url">
+          <img :src="bindIMG(item.url)">
           <p class="h-title">{{item.name}}</p>
           <div class="h-info">
             <span class="h-tag-num">No.{{item.number}}</span>
@@ -21,6 +21,7 @@
 <script>
 import { cChar } from '@static'
 import { mapMutations } from 'vuex'
+import { bindIMG } from '@utils'
 export default {
   name: 'hotel-list',
   props: {
@@ -42,6 +43,7 @@ export default {
   },
   methods: {
     ...mapMutations(['setCurrentHotel']),
+    bindIMG,
     // 跳转到房间详情
     goHotelDetail(data) {
       this.setCurrentHotel(data)
