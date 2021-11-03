@@ -41,6 +41,23 @@ module.exports = {
       .set('@mock', load('./src/mock'))
       .set('@store', load('./src/store'))
   },
+  devServer: {
+    // port: 8080,
+    open: true,
+    overlay: {
+      warnings: false,
+      errors: true
+    },
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8088/',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': '' //路径重写
+        }
+      }
+    }
+  }
   // configureWebpack: {
   //   devtool: '#eval-source-map'
   // },

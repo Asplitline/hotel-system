@@ -8,14 +8,6 @@ const Home = () => import(/* webpackChunkName:'home' */'@views/Home')
 const Login = () => import(/* webpackChunkName:'login' */'@views/Login')
 
 // --
-const Room = () => import(/* webpackChunkName:'admin_room' */'@views/admin/room/Room')
-const Order = () => import(/* webpackChunkName:'admin_order' */'@views/admin/order/Order')
-const Comment = () => import(/* webpackChunkName:'admin_comment' */'@views/admin/comment/Comment')
-const Notice = () => import(/* webpackChunkName:'admin_notice' */'@views/admin/notice/Notice')
-const User = () => import(/* webpackChunkName:'admin_user' */'@views/admin/user/User')
-const Category = () => import(/* webpackChunkName:'admin_category' */'@views/admin/category/Category')
-
-// --
 const Info = () => import(/* webpackChunkName:'home_info' */'@views/home/info/Info')
 const Hotel = () => import(/* webpackChunkName:'home_hotel' */'@views/home/hotel/Hotel')
 const HotelDetail = () => import(/* webpackChunkName:'home_hotel' */'@views/home/hotel/HotelDetail')
@@ -42,13 +34,80 @@ const routes = [
     name: 'admin',
     component: Admin,
     redirect: '/user',
+    isAuth: true,
     children: [
-      { path: '/room', name: 'room', component: Room },
-      { path: '/order', name: 'order', component: Order },
-      { path: '/comment', name: 'comment', component: Comment },
-      { path: '/notice', name: 'notice', component: Notice },
-      { path: '/user', name: 'user', component: User },
-      { path: '/category', name: 'category', component: Category }
+      {
+        path: '/room',
+        name: 'room',
+        component: () => import('@views/admin/room'),
+        meta: {
+          title: '科室信息',
+          icon: 'iconfont icon-LuggageBagsCases'
+        }
+      },
+      {
+        path: '/order',
+        name: 'order',
+        component: () => import('@views/admin/order'),
+        meta: {
+          title: '体检信息',
+          icon: 'iconfont icon-order'
+        }
+      },
+      {
+        path: '/comment',
+        name: 'comment',
+        component: () => import('@views/admin/comment'),
+        meta: {
+          title: '医嘱信息',
+          icon: 'iconfont icon-user'
+        }
+      },
+      {
+        path: '/notice',
+        name: 'notice',
+        component: () => import('@views/admin/notice'),
+        meta: {
+          title: '系统公告',
+          icon: 'iconfont icon-notice'
+        }
+      },
+      {
+        path: '/user',
+        name: 'user',
+        component: () => import('@views/admin/user'),
+        meta: {
+          title: '用户管理',
+          icon: 'iconfont icon-user'
+        }
+      },
+      {
+        path: '/category',
+        name: 'category',
+        component: () => import('@views/admin/category'),
+        meta: {
+          title: '体检类型',
+          icon: 'iconfont icon-ConferenceRoom'
+        }
+      },
+      {
+        path: '/category',
+        name: 'category',
+        component: () => import('@views/admin/category'),
+        meta: {
+          title: '体检反馈',
+          icon: 'iconfont icon-ConferenceRoom'
+        }
+      },
+      {
+        path: '/category',
+        name: 'category',
+        component: () => import('@views/admin/category'),
+        meta: {
+          title: '首页轮播图',
+          icon: 'iconfont icon-ConferenceRoom'
+        }
+      }
     ]
   },
   { path: '/', redirect: '/login' },
