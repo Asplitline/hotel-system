@@ -20,13 +20,10 @@
 			</div>
 		</el-header>
 		<el-container>
-			<el-aside :width="isFold?'64px':'300px'">
-				<el-menu :default-active="active" background-color="#324157" :collapse="isFold"
-					:collapse-transition="false" active-text-color="#409eff" router>
-					<el-menu-item :index="item.path" v-for="item in currentMenu" :key="item.index">
-						<i :class="item.meta.icon"></i>
-						<span slot="title">{{item.meta.title}}</span>
-					</el-menu-item>
+			<el-aside :width="isFold?'64px':'200px'" class="t-sider">
+				<el-menu background-color="#324157" active-text-color="#409eff" text-color="#fff"
+					:default-active="active" :collapse="isFold" :collapse-transition="false" router>
+					<SideMenu v-for="item in currentMenu" :key="item.name" :item="item"></SideMenu>
 				</el-menu>
 			</el-aside>
 			<el-main>
@@ -39,7 +36,8 @@
 <script>
 import { aMenuList } from '@static'
 import { mapMutations, mapState } from 'vuex'
-import { bindIMG } from '@utils'
+import { bindIMG, notEmpty } from '@utils'
+import SideMenu from '@components/sideMenu'
 export default {
 	data() {
 		return {
@@ -48,17 +46,20 @@ export default {
 			active: ''
 		}
 	},
+	components: {
+		SideMenu
+	},
 	computed: {
 		...mapState(['aIndex', 'currentUser']),
 		currentMenu() {
 			// debugger
-			return this.$router.options.routes.find((i) => i.name === 'admin')
-				?.children
+			return this.$router.options.routes.filter((i) => i.isAuth)
 		}
 	},
 	methods: {
 		...mapMutations(['clearInfo']),
 		bindIMG,
+		notEmpty,
 		toggleFold() {
 			this.isFold = !this.isFold
 		},
@@ -98,7 +99,7 @@ export default {
 		flex: 1;
 	}
 	.el-aside {
-		background-color: #ccc;
+		// background-color: #ccc;
 		height: 100%;
 	}
 }
@@ -132,23 +133,26 @@ export default {
 }
 
 .el-aside {
-	.el-menu {
-		height: inherit;
-		text-align: center;
-		letter-spacing: 0.5em;
-		.el-menu-item {
-			color: #dfdfdf;
-			&.is-active i {
-				color: #409eff;
-			}
-			i {
-				color: #dfdfdf;
-			}
-			span {
-				font-size: 16px;
-			}
-		}
-	}
+	overflow: hidden;
+	width: 260px;
+	background-color: rgb(50, 65, 87);
+	// .el-menu {
+	// 	height: inherit;
+	// 	// text-align: center;
+	// 	// letter-spacing: 0.5em;
+	// 	.el-menu-item {
+	// 		color: #dfdfdf;
+	// 		&.is-active i {
+	// 			color: #409eff;
+	// 		}
+	// 		i {
+	// 			color: #dfdfdf;
+	// 		}
+	// 		span {
+	// 			font-size: 16px;
+	// 		}
+	// 	}
+	// }
 }
 // *****
 .el-dropdown-menu {

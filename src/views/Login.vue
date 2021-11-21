@@ -12,7 +12,8 @@
 						</el-input>
 					</el-form-item>
 					<el-form-item prop="password">
-						<el-input type="password" placeholder="密码" v-model="loginForm.password">
+						<el-input type="password" placeholder="密码" v-model="loginForm.password"
+							@keydown.enter.native="submitForm('loginForm',0)">
 							<el-button slot="prepend" icon="el-icon-lock"></el-button>
 						</el-input>
 					</el-form-item>
@@ -206,8 +207,9 @@ export default {
 .login {
 	min-height: 100vh;
 	position: relative;
-	background-color: #fafafa;
+	background-color: #d8e3e7;
 	.login-wrap {
+		border-radius: 20px;
 		position: absolute;
 		top: 0;
 		bottom: 0;

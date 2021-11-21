@@ -2,9 +2,11 @@ const path = require('path')
 function load (url) {
   return path.resolve(__dirname, url)
 }
+
+const isProd = process.env.VUE_APP_ENV === 'production'
 module.exports = {
   chainWebpack: config => {
-    config.when(process.env.NODE_ENV === 'production', config => {
+    config.when(isProd, config => {
       config.entry('app').clear().add('./src/main.prod.js')
       config.optimization.minimizer('terser').tap((args) => {
         args[0].terserOptions.compress.drop_console = true
@@ -21,7 +23,7 @@ module.exports = {
         return args
       })
     })
-    config.when(process.env.NODE_ENV === 'development', config => {
+    config.when(!isProd, config => {
       config.entry('app').clear().add('./src/main.dev.js')
       config.plugin('html').tap(args => {
         args[0].isProd = false

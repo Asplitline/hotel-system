@@ -2797,7 +2797,7 @@ core-js-compat@^3.18.0, core-js-compat@^3.19.0, core-js-compat@^3.6.5:
 
 core-js@^2.4.0:
   version "2.6.12"
-  resolved "https://registry.npmmirror.com/core-js/download/core-js-2.6.12.tgz?cache=0&sync_timestamp=1635883234925&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fcore-js%2Fdownload%2Fcore-js-2.6.12.tgz#d9333dfa7b065e347cc5682219d6f690859cc2ec"
+  resolved "https://registry.npmmirror.com/core-js/download/core-js-2.6.12.tgz#d9333dfa7b065e347cc5682219d6f690859cc2ec"
   integrity sha1-2TM9+nsGXjR8xWgiGdb2kIWcwuw=
 
 core-js@^3.6.5:
@@ -3403,7 +3403,7 @@ electron-to-chromium@^1.3.886:
 
 element-ui@^2.4.5:
   version "2.15.6"
-  resolved "https://registry.nlark.com/element-ui/download/element-ui-2.15.6.tgz#c9609add35af5a686a4b7685dc1d757c75e01df3"
+  resolved "https://registry.npmmirror.com/element-ui/download/element-ui-2.15.6.tgz#c9609add35af5a686a4b7685dc1d757c75e01df3"
   integrity sha1-yWCa3TWvWmhqS3aF3B11fHXgHfM=
   dependencies:
     async-validator "~1.8.1"

@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import { miniAMenuList, miniHMenuList } from '@static'
 import store from '@store'
 // -
-const Admin = () => import(/* webpackChunkName:'admin' */'@views/Admin')
+const Admin = () => import(/* webpackChunkName:'admin' */'@views/admin')
 const Home = () => import(/* webpackChunkName:'home' */'@views/Home')
 const Login = () => import(/* webpackChunkName:'login' */'@views/Login')
 
@@ -29,83 +29,204 @@ const routes = [
       { path: '/index', name: 'index', component: Index }
     ]
   },
+  // {
+  //   path: '/admin',
+  //   name: 'admin',
+  //   component: Admin,
+  //   redirect: '/user',
+  //   isAuth: true,
+  //   children: [
+  //     {
+  //       path: '/room',
+  //       name: 'room',
+  //       component: () => import('@views/admin/room'),
+  //       meta: {
+  //         title: '科室信息',
+  //         icon: 'iconfont icon-LuggageBagsCases'
+  //       }
+  //     },
+  //     {
+  //       path: '/order',
+  //       name: 'order',
+  //       component: () => import('@views/admin/order'),
+  //       meta: {
+  //         title: '体检信息',
+  //         icon: 'iconfont icon-order'
+  //       }
+  //     },
+  //     {
+  //       path: '/comment',
+  //       name: 'comment',
+  //       component: () => import('@views/admin/comment'),
+  //       meta: {
+  //         title: '医嘱信息',
+  //         icon: 'iconfont icon-user'
+  //       }
+  //     },
+  //     {
+  //       path: '/notice',
+  //       name: 'notice',
+  //       component: () => import('@views/admin/notice'),
+  //       meta: {
+  //         title: '系统公告',
+  //         icon: 'iconfont icon-notice'
+  //       }
+  //     },
+  //     {
+  //       path: '/user',
+  //       name: 'user',
+  //       component: () => import('@views/admin/user'),
+  //       meta: {
+  //         title: '用户管理',
+  //         icon: 'iconfont icon-user'
+  //       }
+  //     },
+  //     {
+  //       path: '/category',
+  //       name: 'category',
+  //       component: () => import('@views/admin/category'),
+  //       meta: {
+  //         title: '体检类型',
+  //         icon: 'iconfont icon-ConferenceRoom'
+  //       }
+  //     },
+  //     {
+  //       path: '/category',
+  //       name: 'category',
+  //       component: () => import('@views/admin/category'),
+  //       meta: {
+  //         title: '体检反馈',
+  //         icon: 'iconfont icon-ConferenceRoom'
+  //       }
+  //     },
   {
     path: '/admin',
     name: 'admin',
     component: Admin,
-    redirect: '/user',
+    redirect: '/admin/dashboard',
     isAuth: true,
+    meta: {
+      title: '首页',
+      icon: 'iconfont icon-ConferenceRoom'
+    },
     children: [
       {
-        path: '/room',
-        name: 'room',
-        component: () => import('@views/admin/room'),
+        path: 'dashboard',
+        name: 'dashboard',
+        component: () => import('@views/admin/dashboard'),
         meta: {
-          title: '科室信息',
-          icon: 'iconfont icon-LuggageBagsCases'
+          title: '仪表盘',
+          icon: 'iconfont icon-ConferenceRoom',
+          index: '/admin/dashboard'
         }
       },
       {
-        path: '/order',
-        name: 'order',
-        component: () => import('@views/admin/order'),
+        path: 'carousel',
+        name: 'carousel',
+        component: () => import('@views/admin/carousel'),
         meta: {
-          title: '体检信息',
-          icon: 'iconfont icon-order'
+          title: '首页轮播图',
+          icon: 'iconfont icon-ConferenceRoom',
+          index: '/admin/carousel'
         }
-      },
+      }
+    ]
+  },
+  {
+    path: '/staff',
+    name: 'staff',
+    component: Admin,
+    redirect: '/user/aUser',
+    isAuth: true,
+    meta: {
+      title: '人员管理',
+      icon: 'iconfont icon-ConferenceRoom'
+    },
+    children: [
       {
-        path: '/comment',
-        name: 'comment',
-        component: () => import('@views/admin/comment'),
-        meta: {
-          title: '医嘱信息',
-          icon: 'iconfont icon-user'
-        }
-      },
-      {
-        path: '/notice',
-        name: 'notice',
-        component: () => import('@views/admin/notice'),
-        meta: {
-          title: '系统公告',
-          icon: 'iconfont icon-notice'
-        }
-      },
-      {
-        path: '/user',
-        name: 'user',
+        path: 'auser',
+        name: 'auser',
         component: () => import('@views/admin/user'),
         meta: {
           title: '用户管理',
-          icon: 'iconfont icon-user'
+          icon: 'iconfont icon-user',
+          index: '/staff/auser'
         }
-      },
+      }
+    ]
+  },
+  {
+    path: '/physical',
+    name: 'physical',
+    component: Admin,
+    redirect: '/physical/category',
+    isAuth: true,
+    meta: {
+      title: '体检管理',
+      icon: 'iconfont icon-ConferenceRoom'
+    },
+    children: [
       {
-        path: '/category',
+        path: 'category',
         name: 'category',
         component: () => import('@views/admin/category'),
         meta: {
           title: '体检类型',
-          icon: 'iconfont icon-ConferenceRoom'
+          icon: 'iconfont icon-ConferenceRoom',
+          index: '/physical/category'
         }
       },
       {
-        path: '/category',
-        name: 'category',
-        component: () => import('@views/admin/category'),
+        path: 'order',
+        name: 'order',
+        component: () => import('@views/admin/order'),
+        meta: {
+          title: '体检信息',
+          icon: 'iconfont icon-order',
+          index: '/physical/order'
+        }
+      },
+      {
+        path: 'reply',
+        name: 'reply',
+        component: () => import('@views/admin/reply'),
         meta: {
           title: '体检反馈',
-          icon: 'iconfont icon-ConferenceRoom'
+          icon: 'iconfont icon-order',
+          index: '/physical/reply'
+        }
+      }
+    ]
+  },
+  {
+    path: '/content',
+    name: 'content',
+    component: Admin,
+    redirect: '/content/room',
+    isAuth: true,
+    meta: {
+      title: '内容管理',
+      icon: 'iconfont icon-ConferenceRoom'
+    },
+    children: [
+      {
+        path: 'room',
+        name: 'room',
+        component: () => import('@views/admin/room'),
+        meta: {
+          title: '科室信息',
+          icon: 'iconfont icon-LuggageBagsCases',
+          index: '/content/room'
         }
       },
       {
-        path: '/category',
-        name: 'category',
-        component: () => import('@views/admin/category'),
+        path: 'comment',
+        name: 'comment',
+        component: () => import('@views/admin/comment'),
         meta: {
-          title: '首页轮播图',
-          icon: 'iconfont icon-ConferenceRoom'
+          title: '医嘱信息',
+          icon: 'iconfont icon-user',
+          index: '/content/comment'
         }
       }
     ]

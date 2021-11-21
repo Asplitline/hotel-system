@@ -49,7 +49,7 @@ const mutations = {
 }
 const getters = {
   getMiniCategory: (state) => () => {
-    return state.allCategory.filter(({ id, name }) => {
+    return state.allCategory?.filter(({ id, name }) => {
       return { id, name }
     })
   },

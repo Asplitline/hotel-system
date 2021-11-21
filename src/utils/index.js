@@ -19,7 +19,7 @@ export function getUid () {
 }
 
 export function bindURL (url) {
-    return SERVER_URL + '/' + url
+    return SERVER_URL + url
 }
 export function bindIMG (url) {
     // console.log(FILE_PREFIX, url)
@@ -73,5 +73,30 @@ export function checkPhone (rule, value, callback) {
         callback()
     } else {
         callback(new Error('手机号码不合法'))
+    }
+}
+
+export function notEmpty (val) {
+    const types = {
+        STRING: 'string',
+        OBJECT: 'object',
+        NULL: 'null',
+        UNDEFINED: 'undefined',
+        ARRAY: 'array'
+    }
+    const type = Object.prototype.toString.call(val).slice(8, -1).toLocaleLowerCase()
+    switch (type) {
+        case types.STRING:
+        case types.ARRAY:
+            return !!val.length
+        case types.NULL:
+        case types.UNDEFINED:
+            return !!val
+        case types.OBJECT:
+            return !!Object.keys(val).length
+        default:
+            console.log('type :>> ', type)
+            console.log('val :>> ', val)
+            return !!val
     }
 }

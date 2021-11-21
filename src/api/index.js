@@ -1,7 +1,7 @@
 import { _get, _delete, _put, _post } from './helper'
 
 const TRADITION_MODEL = 2
-// ques [login / register / changePwd]
+// todo changePassword
 const base = {
     changePwd: _get('/login/changePassword'),
     login: _post('/login/api/login', TRADITION_MODEL),
@@ -9,32 +9,29 @@ const base = {
     checkCode: _get('/login/getCheckCode')
 }
 
-// ques [fileURL?]
-// todo [search]
-// done [delete / add / edit / page]
+// todo addUser
 const user = {
-    getUserList: _get('/user/page'),
-    addUser: _post('/user/insert'),
-    editUser: _put('/user/updateIgnoreNull'),
-    deleteUser: _delete('/user/delete', TRADITION_MODEL),
+    getUserList: _get('/apiUser/pageList'),
+    addUser: _post('/apiUser/insert'),
+    editUser: _put('/apiUser/update'),
+    deleteUser: _delete('/apiUser/delete', TRADITION_MODEL),
     getUserByUsername: _get('/login/getUserByUsername')
 }
-// todo [search]
-// done [delete / add / edit / page]
+//
 const category = {
-    getCategoryList: _get('/roomlx/page'),
-    addCategory: _post('/roomlx/insert'),
-    editCategory: _put('/roomlx/updateIgnoreNull'),
-    deleteCategory: _delete('/roomlx/delete', TRADITION_MODEL)
+    getCategoryList: _get('/apiPhysicalType/list'),
+    addCategory: _post('/apiPhysicalType/insert'),
+    editCategory: _put('/apiPhysicalType/update'),
+    deleteCategory: _delete('/apiPhysicalType/delete', TRADITION_MODEL)
 }
 
 // todo [search]
 // done [delete / add / edit / page]
 const room = {
-    getRoomList: _get('/room/page'),
-    addRoom: _post('/room/insert'),
-    editRoom: _put('/room/updateIgnoreNull'),
-    deleteRoom: _delete('/room/delete', TRADITION_MODEL)
+    getRoomList: _get('/apiDepartment/pageList'),
+    addRoom: _post('/apiDepartment/insert'),
+    editRoom: _put('/apiDepartment/update'),
+    deleteRoom: _delete('/apiDepartment/delete', TRADITION_MODEL)
 }
 // todo [search]
 // done [delete / add / edit /page]
@@ -46,10 +43,10 @@ const notice = {
 }
 //
 const comment = {
-    getCommentList: _get('/comment/page'),
-    addComment: _post('/comment/insert'),
-    editComment: _put('/comment/updateIgnoreNull'),
-    deleteComment: _delete('/comment/delete', TRADITION_MODEL)
+    getCommentList: _get('/apiNotice/pageList'),
+    addComment: _post('/apiNotice/insert'),
+    editComment: _put('/apiNotice/update'),
+    deleteComment: _delete('/apiNotice/delete', TRADITION_MODEL)
 }
 //
 const order = {

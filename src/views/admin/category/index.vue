@@ -3,18 +3,9 @@
 		<!--  -->
 		<el-form v-model="searchForm" :inline="true" size="small">
 			<el-row>
-				<!-- <el-col :span="6" :offset="1">
-          <el-form-item label="客房类型">
-            <el-select v-model="searchForm.sex" placeholder="请选择客房类型" clearable>
-              <el-option :key="item.id" :label="item.name" :value="item.id"
-                v-for="item in getMiniCategory()">
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </el-col> -->
+
 				<el-col :span="2" :offset="22">
 					<el-form-item>
-						<!-- <el-button type="primary" icon="el-icon-search">查询</el-button> -->
 						<el-button type="success" icon="el-icon-plus" @click="showDialog(0)">新增
 						</el-button>
 					</el-form-item>
@@ -23,9 +14,9 @@
 		</el-form>
 		<!--  -->
 		<el-table :data="tableData" style="width: 100%" max-height="650px">
-			<el-table-column prop="name" label="客房类型" min-width="100">
+			<el-table-column prop="name" label="体检类型" min-width="100">
 			</el-table-column>
-			<el-table-column prop="description" label="客房描述" min-width="150">
+			<el-table-column prop="description" label="类型描述" min-width="150">
 			</el-table-column>
 			<el-table-column prop="createTime" label="创建时间" min-width="150">
 				<template v-slot="{row}">
@@ -57,7 +48,7 @@
 			@close="clearDialog('categoryForm')" :close-on-click-modal="false">
 			<el-form :model="categoryForm" :rules="categoryRules" ref="categoryForm"
 				size="small" label-width="100px">
-				<el-form-item label="房间类型" prop="name">
+				<el-form-item label="体检类型" prop="name">
 					<el-input v-model="categoryForm.name"></el-input>
 				</el-form-item>
 				<el-form-item label="类型简介" prop="description">
