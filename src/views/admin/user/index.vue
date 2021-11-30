@@ -29,8 +29,8 @@
 					<el-form-item>
 						<el-button type="primary" icon="el-icon-search" @click="search()">查询
 						</el-button>
-						<el-button type="success" icon="el-icon-plus" @click="showDialog(0)">新增
-						</el-button>
+						<!-- <el-button type="success" icon="el-icon-plus" @click="showDialog(0)">新增
+						</el-button> -->
 					</el-form-item>
 				</el-col>
 			</el-row>
@@ -38,9 +38,13 @@
 		<!--  -->
 		<el-table :data="filterTableData" style="width: 100%" max-height="650px">
 			<el-table-column prop="url" label="头像" min-width="100">
-				<template v-slot="{row}">
-					<img :src="bindIMG(row.url)" alt="" class="tb-avatar">
-				</template>
+				<!-- <template v-slot="{row}"> -->
+				<!-- <img :src="bindIMG(row.url)" alt="" class="tb-avatar"> -->
+				<!-- <img src="file:///D:/local/all-notes/demo/cover_223-800x340.jpg" alt=""
+					class="tb-avatar"> -->
+				<img src="file:///D:/local/all-notes/demo/cover_223-800x340.jpg" alt=""
+					class="tb-avatar" />
+				<!-- </template> -->
 			</el-table-column>
 			<el-table-column prop="username" label="账号" min-width="100">
 			</el-table-column>
@@ -177,6 +181,7 @@ export default {
 			const { total, list } = await _api.getUserList(this.query)
 			this.total = total
 			this.tableData = list
+			console.log(this.tableData)
 		},
 		// 显示对话框
 		showDialog(flag, data) {

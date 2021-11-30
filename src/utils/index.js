@@ -7,7 +7,8 @@ export function pad0 (data, len = 2) {
 }
 
 export function getSession (name) {
-    return sessionStorage.getItem(name) && JSON.parse(sessionStorage.getItem(name))
+    const value = sessionStorage.getItem(name)
+    return value != null && value !== 'undefined' && JSON.parse(value)
 }
 
 export function setSession (name, data) {

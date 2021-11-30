@@ -1,6 +1,5 @@
 <template>
 	<div class="login">
-		<!-- <img src="/T_2014_359.jpg" alt=""> -->
 		<div class="login-wrap">
 			<div class="ms-login" :class="{'active':isLogin}">
 				<div class="ms-title">体检预约系统 - 登录界面</div>

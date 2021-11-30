@@ -2,45 +2,18 @@
 	<el-card class="room">
 		<!--  -->
 		<el-form v-model="searchForm" :inline="true" size="small">
-			<el-row>
-				<el-col :span="6">
+			<el-row justify="space-between" type="flex">
+				<el-col :span="6" :offset="2">
 					<el-form-item label="科室号码">
 						<el-input v-model="searchForm.number" placeholder="请输入房号" clearable />
 					</el-form-item>
+					<!-- todo search room -->
+					<el-button type="primary" icon="el-icon-search" size="small" @click="search()">
+						查询
+					</el-button>
 				</el-col>
-				<el-col :span="6">
-					<el-form-item label="科室类型" prop="roomType">
-						<el-select v-model="searchForm.roomType" placeholder="请选择科室类型" clearable>
-							<el-option v-for="item in getMiniCategory()" :key="item.id"
-								:label="item.name" :value="item.id">
-							</el-option>
-						</el-select>
-					</el-form-item>
-				</el-col>
-				<el-col :span="12">
-					<el-form-item label="科室费用">
-						<el-input v-model="searchForm.minPrice" placeholder="最低房费" clearable
-							style="width:48%" />-
-						<el-input v-model="searchForm.maxPrice" placeholder="最高房费" clearable
-							style="width:48%" />
-					</el-form-item>
-				</el-col>
-			</el-row>
-			<el-row>
-				<el-col :span="6">
-					<el-form-item label="科室状态">
-						<el-select v-model="searchForm.state" placeholder="请选择科室状态" clearable>
-							<el-option v-for="item in roomState" :key="item.id" :label="item.value"
-								:value="item.id">
-							</el-option>
-						</el-select>
-					</el-form-item>
-				</el-col>
-				<el-col :span="6">
+				<el-col :span="4">
 					<el-form-item>
-						<el-button type="primary" icon="el-icon-search" @click="search()">
-							查询
-						</el-button>
 						<el-button type="success" icon="el-icon-plus" @click="showDialog(0)">
 							新增
 						</el-button>
@@ -49,36 +22,30 @@
 			</el-row>
 		</el-form>
 		<!--  -->
-		<el-table :data="filterTableData" style="width: 100%" max-height="600px">
+		<el-table :data="tableData" style="width: 100%" max-height="600px">
 			<el-table-column prop="url" label="科室图片" min-width="120">
 				<template v-slot="{row}">
 					<img :src="bindIMG(row.url)" alt="" class="cover">
 				</template>
 			</el-table-column>
-			<el-table-column prop="number" label="科室号" min-width="100">
+			<el-table-column prop="number" label="科室名称" min-width="100">
 				<template v-slot="{row}">
-					<el-tag type="warning">{{row.number}}</el-tag>
+					<el-tag type="warning">{{row.name}}</el-tag>
 				</template>
 			</el-table-column>
-			<el-table-column prop="lx" label="科室类型" min-width="60">
+			<el-table-column prop="url" label="科室位置" min-width="120">
 				<template v-slot="{row}">
-					{{getCategoryById(row.lx)&&getCategoryById(row.lx).name}}
+					<el-tag type="primary">{{row.address}}</el-tag>
 				</template>
 			</el-table-column>
-			<el-table-column prop="mj" label="占地面积" min-width="60">
+			<el-table-column prop="url" label="创建时间" min-width="120">
 				<template v-slot="{row}">
-					{{row.mj + ' m²'}}
+					{{row.createTime | formatDate }}
 				</template>
 			</el-table-column>
-			<el-table-column prop="price" label="科室价格" min-width="100">
+			<el-table-column prop="url" label="更新时间" min-width="120">
 				<template v-slot="{row}">
-					<el-tag type="danger" effect="plain">{{'￥'+row.price +'.00'}}</el-tag>
-				</template>
-			</el-table-column>
-			<el-table-column prop="state" label="科室状态" min-width="60">
-				<template v-slot="{row}">
-					<el-tag :type="roomState[row.state].type" effect="dark">
-						{{roomState[row.state].value}}</el-tag>
+					{{row.updateTime | formatDate }}
 				</template>
 			</el-table-column>
 			<el-table-column label="操作" min-width="120">
@@ -99,34 +66,24 @@
 		<el-dialog :title="roomForm.flag === 0?'添加科室':'修改科室'" :visible.sync="dialogVisible"
 			width="30%" class="a-dialog" @close="clearDialog('roomForm')"
 			:close-on-click-modal="false">
-			<el-form :model="roomForm" :rules="roomRules" ref="roomForm" size="small"
-				label-width="70px">
-				<el-form-item label="展示图" prop="url">
+			<el-form :model="roomForm" :rules="roomRules" ref="roomForm" size="small">
+				<el-form-item label="科室图片" prop="url">
 					<el-upload class="avatar-uploader" :action="bindURL('/uploadfile')"
 						:show-file-list="false" :on-success="handleAvatarSuccess">
 						<img v-if="roomForm.url" :src="bindIMG(roomForm.url)" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 					</el-upload>
 				</el-form-item>
-				<el-form-item label="名称" prop="name">
+				<el-form-item label="科室名称" prop="name">
 					<el-input v-model="roomForm.name" placeholder="科室名称"></el-input>
 				</el-form-item>
-				<el-form-item label="号码" prop="number">
-					<el-input v-model="roomForm.number" placeholder="科室号码"></el-input>
+				<el-form-item label="科室位置" prop="address">
+					<el-input v-model="roomForm.address" placeholder="科室位置"></el-input>
 				</el-form-item>
-				<el-form-item label="类型" prop="lx">
-					<el-select v-model="roomForm.lx" placeholder="科室类型">
-						<el-option :label="item.name" v-for="item in getMiniCategory()" :key="item.id"
-							:value="item.id">
-						</el-option>
-					</el-select>
+				<el-form-item label="科室描述" prop="description">
+					<el-input type="textarea" v-model="roomForm.description"></el-input>
 				</el-form-item>
-				<el-form-item label="面积" prop="mj">
-					<el-input v-model="roomForm.mj" placeholder="科室面积"></el-input>
-				</el-form-item>
-				<el-form-item label="价格" prop="price">
-					<el-input v-model="roomForm.price" placeholder="科室价格"></el-input>
-				</el-form-item>
+
 			</el-form>
 			<span slot="footer" class="dialog-footer">
 				<el-button type="info" @click="dialogVisible = false" size="small">取 消
@@ -155,14 +112,12 @@ export default {
 			roomState,
 			dialogVisible: false,
 			roomRules: {
-				url: [{ required: true, message: '请选择图片', trigger: 'blur' }],
+				url: [{ required: true, message: '选择科室图片', trigger: 'blur' }],
 				name: [{ required: true, message: '请输入科室名称', trigger: 'blur' }],
-				number: [
-					{ required: true, message: '请输入科室号码', trigger: 'blur' }
-				],
-				lx: [{ required: true, message: '请选择科室类型', trigger: 'blur' }],
-				mj: [{ required: true, message: '请输入科室面积', trigger: 'blur' }],
-				price: [{ required: true, message: '请输入科室价格', trigger: 'blur' }]
+				address: [{ required: true, message: '填入科室地址', trigger: 'blur' }],
+				description: [
+					{ required: true, message: '为科室添加描述', trigger: 'blur' }
+				]
 			},
 			roomForm: {}
 		}
@@ -200,7 +155,8 @@ export default {
 				if (flag === ADD) {
 					Object.assign(this[formName], {
 						id: getUid(),
-						state: 0
+						createTime: Date.now(),
+						updateTime: Date.now()
 					})
 					const { success } = await _api.addRoom(this[formName])
 					this.handleSuccess(success, '添加', this.fetchRoom)
@@ -217,45 +173,10 @@ export default {
 		}
 	},
 	computed: {
-		...mapGetters(['getMiniCategory', 'getCategoryById']),
-		filterTableData() {
-			const {
-				number,
-				roomType,
-				minPrice = 0,
-				maxPrice = 9999,
-				state
-			} = this.searchForm
-			if (this.hasFilter) {
-				let data = deepClone(this.tableData)
-				// 房号
-				if (data && number && number.trim().length > 0) {
-					data = data?.filter((item) => item.number === number)
-				}
-				// 类型
-				if (data && typeof roomType === 'number') {
-					data = data?.filter((item) => item.lx === roomType)
-				}
-				// 价格
-				if (data) {
-					data = data?.filter(
-						(item) => item.price >= minPrice && item.price <= maxPrice
-					)
-				}
-				// 状态
-				if (data && typeof state === 'number') {
-					data = data?.filter((item) => item.state === state)
-				}
-				this.initSearch()
-				return data
-			} else {
-				return this.tableData
-			}
-		}
+		...mapGetters(['getMiniCategory', 'getCategoryById'])
 	},
 	created() {
-		// this.fetchRoom()
-		// this.fetchAllCategory()
+		this.fetchRoom()
 	}
 }
 </script>

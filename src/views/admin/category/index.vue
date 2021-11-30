@@ -96,9 +96,8 @@ export default {
 		...mapActions(['fetchAllCategory']),
 		deleteCategory: _api.deleteCategory,
 		async fetchCategory() {
-			const { list, total } = await _api.getCategoryList(this.query)
+			const { data: list } = await _api.getCategoryList(this.query)
 			this.tableData = list
-			this.total = total
 		},
 		// 显示对话框
 		showDialog(flag, data) {
@@ -137,7 +136,7 @@ export default {
 	},
 	created() {
 		this.fetchCategory()
-		this.fetchAllCategory()
+		// this.fetchAllCategory()
 	}
 }
 </script>
