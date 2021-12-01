@@ -48,12 +48,8 @@ const mutations = {
   }
 }
 const getters = {
-  getMiniCategory: (state) => () => {
-    // return state.allCategory?.filter(({ id, name }) => {
-    //   return { id, name }
-    // })
-
-    return []
+  g_doctors: (state) => () => {
+    return state.allUser.filter(i => Number(i.level) === 2)
   },
   getCategoryById: (state) => (id) => {
     return state.allCategory.find(item => item.id === id)
@@ -71,9 +67,9 @@ const actions = {
     // console.log(list)
     commit('setAllCategory', list)
   },
-  async fetchAllUser ({ commit }, query = { size: 999 }) {
-    const { list } = await _api.getUserList(query)
-    commit('setAllUser', list)
+  async fetchAllUser ({ commit }) {
+    const { data } = await _api.getAllUser()
+    commit('setAllUser', data)
   },
   async fetchAllRoom ({ commit }, query = { size: 999 }) {
     const { list } = await _api.getRoomList(query)

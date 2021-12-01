@@ -177,13 +177,13 @@ const routes = [
         }
       },
       {
-        path: 'order',
-        name: 'order',
-        component: () => import('@views/admin/order'),
+        path: 'item',
+        name: 'item',
+        component: () => import('@views/admin/item'),
         meta: {
           title: '体检信息',
           icon: 'iconfont icon-order',
-          index: '/physical/order'
+          index: '/physical/item'
         }
       },
       {

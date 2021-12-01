@@ -23,7 +23,6 @@ export function bindURL (url) {
     return SERVER_URL + url
 }
 export function bindIMG (url) {
-    // console.log(FILE_PREFIX, url)
     return FILE_PREFIX + url
 }
 

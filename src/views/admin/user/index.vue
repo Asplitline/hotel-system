@@ -38,13 +38,12 @@
 		<!--  -->
 		<el-table :data="filterTableData" style="width: 100%" max-height="650px">
 			<el-table-column prop="url" label="头像" min-width="100">
-				<!-- <template v-slot="{row}"> -->
-				<!-- <img :src="bindIMG(row.url)" alt="" class="tb-avatar"> -->
-				<!-- <img src="file:///D:/local/all-notes/demo/cover_223-800x340.jpg" alt=""
+				<template v-slot="{row}">
+					<!-- <img :src="bindIMG(row.url)" alt="" class="tb-avatar"> -->
+					<!-- <img src="file:///D:/local/all-notes/demo/cover_223-800x340.jpg" alt=""
 					class="tb-avatar"> -->
-				<img src="file:///D:/local/all-notes/demo/cover_223-800x340.jpg" alt=""
-					class="tb-avatar" />
-				<!-- </template> -->
+					<img :src="bindIMG(row.url)" alt="" class="tb-avatar" />
+				</template>
 			</el-table-column>
 			<el-table-column prop="username" label="账号" min-width="100">
 			</el-table-column>
@@ -79,7 +78,6 @@
 				</template>
 			</el-table-column>
 		</el-table>
-		<!--  -->
 		<el-pagination @size-change="handleSizeChange(fetchUser,$event)"
 			@current-change="handleCurrentChange(fetchUser,$event)" :current-page="query.page"
 			:page-sizes="[1, 2, 5, 10]" :page-size="query.size"

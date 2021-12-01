@@ -10,7 +10,9 @@ const base = {
 }
 
 // todo addUser
+// fixme pagelist skip
 const user = {
+    getAllUser: _get('/apiUser/list'),
     getUserList: _get('/apiUser/pageList'),
     addUser: _post('/apiUser/insert'),
     editUser: _put('/apiUser/update'),
@@ -32,6 +34,13 @@ const room = {
     addRoom: _post('/apiDepartment/insert'),
     editRoom: _put('/apiDepartment/update'),
     deleteRoom: _delete('/apiDepartment/delete', TRADITION_MODEL)
+}
+
+const item = {
+    getItemList: _get('/apiPhysicalProject/pageList'),
+    addItem: _post('/apiPhysicalProject/insert'),
+    editItem: _put('/apiPhysicalProject/update'),
+    deleteItem: _delete('/apiPhysicalProject/delete', TRADITION_MODEL)
 }
 // todo [search]
 // done [delete / add / edit /page]
@@ -63,5 +72,6 @@ export default {
     ...room,
     ...notice,
     ...comment,
-    ...order
+    ...order,
+    ...item
 }
