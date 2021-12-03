@@ -39,9 +39,6 @@
 		<el-table :data="filterTableData" style="width: 100%" max-height="650px">
 			<el-table-column prop="url" label="头像" min-width="100">
 				<template v-slot="{row}">
-					<!-- <img :src="bindIMG(row.url)" alt="" class="tb-avatar"> -->
-					<!-- <img src="file:///D:/local/all-notes/demo/cover_223-800x340.jpg" alt=""
-					class="tb-avatar"> -->
 					<img :src="bindIMG(row.url)" alt="" class="tb-avatar" />
 				</template>
 			</el-table-column>
@@ -179,7 +176,6 @@ export default {
 			const { total, list } = await _api.getUserList(this.query)
 			this.total = total
 			this.tableData = list
-			console.log(this.tableData)
 		},
 		// 显示对话框
 		showDialog(flag, data) {

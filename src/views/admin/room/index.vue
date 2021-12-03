@@ -5,10 +5,11 @@
 			<el-row justify="space-between" type="flex">
 				<el-col :span="6" :offset="2">
 					<el-form-item label="科室号码">
-						<el-input v-model="searchForm.number" placeholder="请输入房号" clearable />
+						<el-input v-model="query.keyword" placeholder="请输入房号" clearable
+							@clear="fetchRoom" />
 					</el-form-item>
 					<!-- todo search room -->
-					<el-button type="primary" icon="el-icon-search" size="small" @click="search()">
+					<el-button type="primary" icon="el-icon-search" size="small" @click="fetchRoom">
 						查询
 					</el-button>
 				</el-col>

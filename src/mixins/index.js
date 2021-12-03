@@ -16,11 +16,13 @@ export const aMixin = {
         handleSizeChange (callback, value) {
             this.query.size = value
             this.query.page = 1
+            console.log(this.query)
             callback()
         },
         // 当前页
         handleCurrentChange (callback, value) {
             this.query.page = value
+            console.log(this.query)
             callback()
         },
         // 清除搜索框
