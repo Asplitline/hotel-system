@@ -68,7 +68,6 @@ import { hMixin } from '@mixins'
 import { orderState, roomState } from '@static'
 import { bindIMG } from '@utils'
 export default {
-  name: 'hotel-detail',
   props: ['id'],
   data() {
     return {

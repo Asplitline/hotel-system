@@ -87,3 +87,7 @@ export const loadBtn = [
     { id: 0, icon: 'el-icon-position' },
     { id: 1, icon: 'el-icon-loading' }
 ]
+
+export const roomId = () => {
+    return Array.from({ length: 11 })
+}

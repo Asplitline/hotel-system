@@ -107,6 +107,19 @@ import _api from '@api'
 import { bindURL, bindIMG, getUid, deepClone } from '@utils'
 export default {
 	data() {
+		const validateAddress = (rule, value, callback) => {
+			const reg = /^\d+$/g
+			if (!reg.test(value)) {
+				callback(new Error('科室位置由数字构成'))
+			} else {
+				const num = Number(value)
+				if (num >= 100 && num < 500) {
+					callback()
+				} else {
+					callback(new Error('目前仅开放100-499科室'))
+				}
+			}
+		}
 		return {
 			searchForm: {},
 			tableData: [],
@@ -115,7 +128,13 @@ export default {
 			roomRules: {
 				url: [{ required: true, message: '选择科室图片', trigger: 'blur' }],
 				name: [{ required: true, message: '请输入科室名称', trigger: 'blur' }],
-				address: [{ required: true, message: '填入科室地址', trigger: 'blur' }],
+				address: [
+					{ required: true, message: '填入科室地址', trigger: 'blur' },
+					{
+						validator: validateAddress,
+						trigger: 'blur'
+					}
+				],
 				description: [
 					{ required: true, message: '为科室添加描述', trigger: 'blur' }
 				]

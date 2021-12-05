@@ -8,12 +8,10 @@ const Home = () => import(/* webpackChunkName:'home' */'@views/Home')
 const Login = () => import(/* webpackChunkName:'login' */'@views/Login')
 
 // --
-const Info = () => import(/* webpackChunkName:'home_info' */'@views/home/info/Info')
-const Hotel = () => import(/* webpackChunkName:'home_hotel' */'@views/home/hotel/Hotel')
-const HotelDetail = () => import(/* webpackChunkName:'home_hotel' */'@views/home/hotel/HotelDetail')
-const Index = () => import(/* webpackChunkName:'home_index' */'@views/home/index/Index')
+const Info = () => import('@views/home/info/Info')
+const Index = () => import('@views/home/index/Index')
 
-const Error = () => import(/* webpackChunkName:'error' */'@views/404')
+const Error = () => import('@views/404')
 Vue.use(VueRouter)
 
 const routes = [
@@ -23,82 +21,41 @@ const routes = [
     component: Home,
     redirect: '/index',
     children: [
-      { path: '/hotel', name: 'hotel', component: Hotel },
-      { path: '/hotel/:id', name: 'hotel-detail', component: HotelDetail, props: true },
-      { path: '/info', name: 'info', component: Info },
-      { path: '/index', name: 'index', component: Index }
+      {
+        path: '/index',
+        name: 'index',
+        component: Index,
+        meta: {
+          title: '首页',
+          index: '/index'
+        }
+      },
+      {
+        path: '/medical',
+        name: 'medical',
+        component: import('@views/home/medical/Medical'),
+        meta: {
+          title: '体检',
+          index: '/medical'
+        }
+      },
+      {
+        path: '/info',
+        name: 'info',
+        component: Info,
+        meta: {
+          title: '个人',
+          index: '/info'
+        }
+      },
+      {
+        path: '/medical/:id',
+        name: 'medical-detail',
+        component: import('@views/home/medical/MedicalDetail'),
+        props: true
+      }
     ]
   },
-  // {
-  //   path: '/admin',
-  //   name: 'admin',
-  //   component: Admin,
-  //   redirect: '/user',
-  //   isAuth: true,
-  //   children: [
-  //     {
-  //       path: '/room',
-  //       name: 'room',
-  //       component: () => import('@views/admin/room'),
-  //       meta: {
-  //         title: '科室信息',
-  //         icon: 'iconfont icon-LuggageBagsCases'
-  //       }
-  //     },
-  //     {
-  //       path: '/order',
-  //       name: 'order',
-  //       component: () => import('@views/admin/order'),
-  //       meta: {
-  //         title: '体检信息',
-  //         icon: 'iconfont icon-order'
-  //       }
-  //     },
-  //     {
-  //       path: '/comment',
-  //       name: 'comment',
-  //       component: () => import('@views/admin/comment'),
-  //       meta: {
-  //         title: '医嘱信息',
-  //         icon: 'iconfont icon-user'
-  //       }
-  //     },
-  //     {
-  //       path: '/notice',
-  //       name: 'notice',
-  //       component: () => import('@views/admin/notice'),
-  //       meta: {
-  //         title: '系统公告',
-  //         icon: 'iconfont icon-notice'
-  //       }
-  //     },
-  //     {
-  //       path: '/user',
-  //       name: 'user',
-  //       component: () => import('@views/admin/user'),
-  //       meta: {
-  //         title: '用户管理',
-  //         icon: 'iconfont icon-user'
-  //       }
-  //     },
-  //     {
-  //       path: '/category',
-  //       name: 'category',
-  //       component: () => import('@views/admin/category'),
-  //       meta: {
-  //         title: '体检类型',
-  //         icon: 'iconfont icon-ConferenceRoom'
-  //       }
-  //     },
-  //     {
-  //       path: '/category',
-  //       name: 'category',
-  //       component: () => import('@views/admin/category'),
-  //       meta: {
-  //         title: '体检反馈',
-  //         icon: 'iconfont icon-ConferenceRoom'
-  //       }
-  //     },
   {
     path: '/admin',
     name: 'admin',
