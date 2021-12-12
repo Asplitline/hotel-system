@@ -28,20 +28,17 @@
 					{{row.name}}
 				</template>
 			</el-table-column>
-			<el-table-column prop="price" label="体检价格" min-width="60">
+			<el-table-column prop="price" label="体检价格" min-width="80">
 				<template v-slot="{row}">
 					<el-tag type="danger" effect="plain">{{row.price | $}}</el-tag>
 				</template>
 			</el-table-column>
-			<el-table-column prop="userId" label="体检医生" min-width="60">
-				<template v-slot="{row}">
-					{{row.doctorName}}
-				</template>
+			<el-table-column prop="doctorName" label="体检医生" min-width="80">
 			</el-table-column>
-			<el-table-column prop="userId" label="体检科室" min-width="100">
-				<template v-slot="{row}">
-					{{row.department.name}}
-				</template>
+			<el-table-column prop="types.name" label="体检类型" min-width="80">
+
+			</el-table-column>
+			<el-table-column prop="department.name" label="体检科室" min-width="100">
 			</el-table-column>
 			<el-table-column prop="address" label="体检地址" min-width="100">
 				<template v-slot="{row}">
@@ -77,6 +74,13 @@
 				<el-form-item label="体检医生" prop="doctorId">
 					<el-select v-model="itemForm.doctorId" placeholder="科室位置">
 						<el-option v-for="item in doctors" :key="item.id" :label="item.username"
+							:value="item.id">
+						</el-option>
+					</el-select>
+				</el-form-item>
+				<el-form-item label="体检类型" prop="doctorId">
+					<el-select v-model="itemForm.typeId" placeholder="科室位置">
+						<el-option v-for="item in allCategory" :key="item.id" :label="item.name"
 							:value="item.id">
 						</el-option>
 					</el-select>
@@ -128,6 +132,9 @@ export default {
 				doctorId: [
 					{ required: true, message: '请选择体检医生', trigger: 'blur' }
 				],
+				typeId: [
+					{ required: true, message: '请选择体检类型', trigger: 'blur' }
+				],
 				address: [
 					{ required: true, message: '请输入体检价格', trigger: 'blur' }
 				],
@@ -142,15 +149,15 @@ export default {
 	},
 	mixins: [aMixin],
 	methods: {
-		...mapActions(['fetchAllUser', 'fetchAllRoom']),
+		...mapActions(['fetchAllUser', 'fetchAllRoom', 'fetchAllCategory']),
 		deleteItem: _api.deleteItem,
 
 		async fetchItem() {
 			const { list, total } = await _api.getItemList(this.query)
 			this.tableData = list.map((i) => {
 				const department = this.getRoomById(i.depaetmentId)
-				i.department = department
-				return i
+				const types = this.getCategoryById(i.typeId)
+				return { ...i, department, types }
 			})
 			this.total = total
 		},
@@ -228,8 +235,13 @@ export default {
 		}
 	},
 	computed: {
-		...mapGetters(['getUserById', 'getRoomById', 'g_doctors']),
-		...mapState(['allRoom']),
+		...mapGetters([
+			'getUserById',
+			'getRoomById',
+			'g_doctors',
+			'getCategoryById'
+		]),
+		...mapState(['allRoom', 'allCategory']),
 		doctors() {
 			return this.g_doctors()
 		}
@@ -237,6 +249,7 @@ export default {
 	created() {
 		this.fetchAllUser()
 		this.fetchAllRoom()
+		this.fetchAllCategory()
 		this.fetchItem()
 	}
 }

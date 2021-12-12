@@ -6,6 +6,7 @@ import './assets/css/global.less'
 // import '@plugins/element'
 import myPlugin from '@plugins/myPlugin'
 // import infiniteScroll from 'vue-infinite-scroll'
+import 'font-awesome/css/font-awesome.css'
 
 Vue.config.productionTip = false
 Vue.use(myPlugin)

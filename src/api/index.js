@@ -30,6 +30,7 @@ const category = {
 // todo [search]
 // done [delete / add / edit / page]
 const room = {
+    getItems: _get('/apiPhysicalProject/list'),
     getRoomList: _get('/apiDepartment/pageList'),
     addRoom: _post('/apiDepartment/insert'),
     editRoom: _put('/apiDepartment/update'),
@@ -65,6 +66,18 @@ const order = {
     deleteOrder: _delete('/order/delete', TRADITION_MODEL)
 }
 
+const rotation = {
+    getRotations: _get('/apiRotation/list'),
+    getRotationList: _get('/apiRotation/pageList'),
+    addRotation: _post('apiRotation/insert'),
+    editRotation: _put('/apiRotation/update'),
+    deleteRotation: _delete('/apiRotation/delete', TRADITION_MODEL)
+}
+
+const statistic = {
+    getStatisticInfo: _get('/statistics')
+}
+
 export default {
     ...base,
     ...user,
@@ -73,5 +86,7 @@ export default {
     ...notice,
     ...comment,
     ...order,
-    ...item
+    ...item,
+    ...rotation,
+    ...statistic
 }

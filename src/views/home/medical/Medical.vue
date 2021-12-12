@@ -11,8 +11,8 @@
 							:flag="0" :d-active="tagArr[0]" />
 						<medical-nav :data=" priceList" text="价格范围" @h-tag="handleTag" :flag="1"
 							:d-active="tagArr[1]" />
-						<!-- <medical-nav :data=" floorList" text="楼层选择" @h-tag="handleTag" :flag="2"
-							:d-active="tagArr[2]" /> -->
+						<medical-nav :data=" floorList" text="楼层选择" @h-tag="handleTag" :flag="2"
+							:d-active="tagArr[2]" />
 						<!-- todo : no idea -->
 						<medical-tag :data=" tagArr" :fArr="[getMiniCategory(),priceList,floorList]"
 							@t-close="handleTagClose" />
@@ -22,8 +22,8 @@
                  parent -> v-if  exist?data
                  reason# parent updated
              -->
-						<room-list :data="fRoom" v-if="fRoom" />
-						<!-- {{fRoom()}} -->
+						<item-list :data="fItem" v-if="fItem" />
+						<!-- {{fItem()}} -->
 					</div>
 				</el-main>
 			</el-container>
@@ -35,8 +35,8 @@
 import search from '../common/Search'
 import medicalNav from './MedicalNav'
 import medicalTag from './MedicalTag'
-import roomList from './RoomList'
-// import { room } from '@mock'
+import itemList from './ItemList'
+// import { item } from '@mock'
 import { priceList, floorList } from '@static'
 import _api from '@api'
 import { mapActions, mapGetters } from 'vuex'
@@ -45,14 +45,14 @@ export default {
 		search,
 		medicalNav,
 		medicalTag,
-		roomList
+		itemList
 	},
 	data() {
 		return {
 			priceList,
 			floorList,
 			arrayTag: [{}],
-			room: null,
+			item: null,
 			initNum: 8,
 			tagArr: [9999, 9999, 9999],
 			keyWord: null,
@@ -60,13 +60,15 @@ export default {
 		}
 	},
 	methods: {
-		...mapActions(['fetchAllCategory']),
-		async fetchRoom() {
-			const { list } = await _api.getRoomList({ size: 999 })
-			list.forEach((item) => {
-				item.category = this.getCategoryById(item.lx)
+		...mapActions(['fetchAllCategory', 'fetchAllRoom']),
+		async fetchItem() {
+			const { data } = await _api.getItems()
+			// console.log(res)
+			this.item = data.map((i) => {
+				const department = this.getRoomById(i.depaetmentId)
+				const types = this.getCategoryById(i.typeId)
+				return { ...i, department, types }
 			})
-			this.room = list
 		},
 		handleTag(val) {
 			this.$set(this.tagArr, val.flag, val.value)
@@ -84,11 +86,16 @@ export default {
 		}
 	},
 	computed: {
-		...mapGetters(['getCategoryById', 'getMiniCategory']),
-		fRoom() {
+		...mapGetters([
+			'getCategoryById',
+			'getMiniCategory',
+			'getUserById',
+			'getRoomById'
+		]),
+		fItem() {
 			// // console.log(...this.tagArr)
 			// const [lx, price, floor] = [...this.tagArr]
-			// let data = this.room
+			// let data = this.item
 			// // 类型
 			// // console.log(lx, price, floor)
 			// if (lx !== 9999 && data) {
@@ -115,12 +122,13 @@ export default {
 			// 	})
 			// }
 			// return data
-			return this.room
+			return this.item
 		}
 	},
 	created() {
-		this.fetchRoom()
+		this.fetchAllRoom()
 		this.fetchAllCategory()
+		this.fetchItem()
 	}
 }
 </script>

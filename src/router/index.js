@@ -8,9 +8,6 @@ const Home = () => import(/* webpackChunkName:'home' */'@views/Home')
 const Login = () => import(/* webpackChunkName:'login' */'@views/Login')
 
 // --
-const Info = () => import('@views/home/info/Info')
-const Index = () => import('@views/home/index/Index')
-
 const Error = () => import('@views/404')
 Vue.use(VueRouter)
 
@@ -24,7 +21,7 @@ const routes = [
       {
         path: '/index',
         name: 'index',
-        component: Index,
+        component: () => import('@views/home/index/Index'),
         meta: {
           title: '首页',
           index: '/index'
@@ -33,7 +30,7 @@ const routes = [
       {
         path: '/medical',
         name: 'medical',
-        component: import('@views/home/medical/Medical'),
+        component: () => import('@views/home/medical/Medical'),
         meta: {
           title: '体检',
           index: '/medical'
@@ -42,7 +39,7 @@ const routes = [
       {
         path: '/info',
         name: 'info',
-        component: Info,
+        component: () => import('@views/home/info/Info'),
         meta: {
           title: '个人',
           index: '/info'

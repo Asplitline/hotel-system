@@ -3,7 +3,7 @@
 		<!--  -->
 		<el-form v-model="searchForm" :inline="true" size="small">
 			<el-row justify="space-between" type="flex">
-				<el-col :span="6" :offset="2">
+				<el-col :span="10">
 					<el-form-item label="科室号码">
 						<el-input v-model="query.keyword" placeholder="请输入房号" clearable
 							@clear="fetchRoom" />
@@ -24,7 +24,7 @@
 		</el-form>
 		<!--  -->
 		<el-table :data="tableData" style="width: 100%" max-height="600px">
-			<el-table-column prop="url" label="科室图片" min-width="120">
+			<el-table-column prop="url" label="科室图片" min-width="240">
 				<template v-slot="{row}">
 					<img :src="bindIMG(row.url)" alt="" class="cover">
 				</template>

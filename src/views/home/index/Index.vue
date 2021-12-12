@@ -6,7 +6,8 @@
 		<div class="banner">
 			<el-carousel trigger="click" height="510px" :autoplay="autoplay">
 				<el-carousel-item v-for="item in list" :key="item.id">
-					<img :src="bindIMG(item.url)" alt="" @click="showNotice(item)">
+					<img class="banner-img" :src="bindIMG(item.url)" alt=""
+						@click="showNotice(item)">
 					<div class="mask">
 						<p>{{item.title}}</p>
 					</div>
@@ -56,9 +57,9 @@ export default {
 			})
 			this.room = list
 		},
-		async fetchNotice() {
-			// const { list } = await _api.getNoticeList({ size: 4 })
-			// this.list = list
+		async fetchRotation() {
+			const { data } = await _api.getRotations()
+			this.list = data.slice(0, 4)
 		},
 		showNotice(data) {
 			this.autoplay = false
@@ -81,7 +82,7 @@ export default {
 	},
 	created() {
 		this.fetchAllRoom()
-		this.fetchNotice()
+		this.fetchRotation()
 		// this.fetchRoom()
 		this.fetchAllCategory()
 	}
@@ -102,6 +103,7 @@ export default {
 	.el-carousel__item {
 		cursor: pointer;
 		img {
+			object-fit: fill;
 			width: 1200px;
 			height: auto;
 		}
