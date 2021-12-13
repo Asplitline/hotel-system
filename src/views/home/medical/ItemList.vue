@@ -8,15 +8,15 @@
 
 				<ul class="i-info">
 					<li class="i-item">
-						<i class="fa fa-user"></i>
+						<i class="fa fa-user-md"></i>
 						<span>{{item.doctorName}}</span>
 					</li>
 					<li class="i-item">
-						<i class="fa fa-user"></i>
+						<i class="fa fa-tags"></i>
 						<span>{{item.types.name}}</span>
 					</li>
 					<li class="i-item">
-						<i class="fa fa-user"></i>
+						<i class="fa fa-hospital-o" aria-hidden="true"></i>
 						<span>{{item.department.name}}</span>
 					</li>
 
@@ -115,10 +115,26 @@ export default {
 		p {
 			margin: 0;
 		}
+		.i-info {
+			padding: 30px 20px 0;
+			.i-item {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				font-size: 30px;
+				line-height: 1.5;
+				i {
+					color: #003366;
+				}
+				span {
+					color: rgba(102, 102, 102, 0.9);
+				}
+			}
+		}
 		.i-price {
 			text-align: center;
 			font-size: 40px;
-			line-height: 140px;
+			margin: 20px 0 30px;
 			position: relative;
 			letter-spacing: 2px;
 			color: #003366;
@@ -142,6 +158,7 @@ export default {
 			border-color: #c8c8c8;
 			transform: translateY(4px);
 			box-shadow: 0px 0px 4px 2px rgba(102, 102, 102, 0.2);
+			cursor: pointer;
 		}
 
 		// .r-title {
