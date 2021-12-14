@@ -19,13 +19,18 @@
 						<i class="fa fa-hospital-o" aria-hidden="true"></i>
 						<span>{{item.department.name}}</span>
 					</li>
+					<li class="i-item">
+						<i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
+						<!-- <span>{{item.department.name}}</span> -->
+						<span>{{getLevelName(item.department.address)}}</span>
+					</li>
 
 				</ul>
 				<p class="i-price">
-					<i class="fa fa-jpy bg" aria-hidden="true"></i>
-					{{item.price}}
+					<!-- <i class="fa fa-jpy bg" aria-hidden="true"></i> -->
+					{{item.price | $}}
 				</p>
-				<button class="i-btn" @click="goHotelDetail(item)">详情</button>
+				<button class="i-btn" @click="goItemDetail(item)">详情</button>
 			</li>
 			<li class="item-item hidden-vs" v-for="index in blankNum" :key="index"></li>
 		</template>
@@ -38,6 +43,7 @@
 <script>
 import { mapMutations } from 'vuex'
 import { bindIMG } from '@utils'
+import { floorList } from '@static'
 export default {
 	name: 'item-list',
 	props: {
@@ -54,11 +60,15 @@ export default {
 		}
 	},
 	methods: {
-		...mapMutations(['setCurrentHotel']),
+		...mapMutations(['setCurrentItem']),
 		bindIMG,
-		goHotelDetail(data) {
-			this.setCurrentHotel(data)
-			this.$router.push({ name: 'hotel-detail', params: { id: data.id } })
+		goItemDetail(data) {
+			this.setCurrentItem(data)
+			this.$router.push({ name: 'medical-detail', params: { id: data.id } })
+		},
+		getLevelName(str) {
+			const lv = Number(str[0]) - 1
+			return floorList[lv].name
 		}
 	},
 	computed: {
@@ -93,8 +103,6 @@ export default {
 .item-list {
 	display: flex;
 	flex-wrap: wrap;
-	// flex-direction: column;
-	justify-content: space-around;
 	padding: 10px;
 	.item-item {
 		width: 30%;
@@ -107,6 +115,10 @@ export default {
 		transition: all 0.3s linear;
 		display: inline-block;
 		height: 100%;
+		margin-right: 5%;
+		&:nth-child(3n) {
+			margin-right: 0;
+		}
 		h2 {
 			text-align: center;
 			font-weight: 400;
@@ -127,6 +139,7 @@ export default {
 					color: #003366;
 				}
 				span {
+					font-size: 24px;
 					color: rgba(102, 102, 102, 0.9);
 				}
 			}
@@ -140,10 +153,11 @@ export default {
 			color: #003366;
 		}
 		.i-btn {
-			background-color: #003366;
-			color: white;
+			// background-color: #003366;
+			color: #003366;
 			outline: none;
-			border: 2px solid transparent;
+			border: 1px solid #003366;
+			background-color: transparent;
 			width: 100%;
 			height: 40px;
 			cursor: pointer;
@@ -151,7 +165,9 @@ export default {
 			transition: all 0.2s linear;
 			font-size: 16px;
 			&:hover {
-				transform: scale(1.01);
+				background-color: #003366;
+				color: #e8e8e8;
+				// transform: scale(1.01);
 			}
 		}
 		&:hover {

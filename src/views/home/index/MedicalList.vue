@@ -42,11 +42,11 @@ export default {
 		}
 	},
 	methods: {
-		...mapMutations(['setCurrentHotel']),
+		...mapMutations(['setCurrentItem']),
 		bindIMG,
 		// 跳转到房间详情
 		goHotelDetail(data) {
-			this.setCurrentHotel(data)
+			this.setCurrentItem(data)
 			this.$router.push({ name: 'hotel-detail', params: { id: data.id } })
 		}
 	},

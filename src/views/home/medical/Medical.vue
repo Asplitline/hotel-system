@@ -7,7 +7,7 @@
 			<el-container class="main">
 				<el-main>
 					<div class="main-header">
-						<medical-nav :data="getMiniCategory()" text="房间类型" @h-tag="handleTag"
+						<medical-nav :data="getMiniCategory()" text="体检类型" @h-tag="handleTag"
 							:flag="0" :d-active="tagArr[0]" />
 						<medical-nav :data=" priceList" text="价格范围" @h-tag="handleTag" :flag="1"
 							:d-active="tagArr[1]" />
@@ -23,7 +23,6 @@
                  reason# parent updated
              -->
 						<item-list :data="fItem" v-if="fItem" />
-						<!-- {{fItem()}} -->
 					</div>
 				</el-main>
 			</el-container>
@@ -54,7 +53,7 @@ export default {
 			arrayTag: [{}],
 			item: null,
 			initNum: 8,
-			tagArr: [9999, 9999, 9999],
+			tagArr: [-1, -1, -1],
 			keyWord: null,
 			hasSearch: false
 		}
@@ -74,7 +73,7 @@ export default {
 			this.$set(this.tagArr, val.flag, val.value)
 		},
 		handleTagClose({ index }) {
-			this.$set(this.tagArr, index, 9999)
+			this.$set(this.tagArr, index, -1)
 		},
 		handleKeyword() {
 			this.hasSearch = true
@@ -94,35 +93,32 @@ export default {
 		]),
 		fItem() {
 			// // console.log(...this.tagArr)
-			// const [lx, price, floor] = [...this.tagArr]
-			// let data = this.item
-			// // 类型
-			// // console.log(lx, price, floor)
-			// if (lx !== 9999 && data) {
-			// 	data = data.filter(({ lx: iLx }) => iLx === lx)
-			// }
+			const [lx, price, floor] = [...this.tagArr]
+			let data = this.item
+			// 类型
+			if (lx !== -1 && data) {
+				data = data.filter(({ typeId }) => typeId === lx)
+			}
 			// // 价格范围
-			// if (price !== 9999 && data) {
-			// 	const { min, max } = this.priceList[price]
-			// 	data = data.filter(({ price }) => {
-			// 		return price > min && price < max
-			// 	})
-			// }
+			if (price !== -1 && data) {
+				const { min, max } = this.priceList[price]
+				data = data.filter(({ price }) => {
+					return price > min && price < max
+				})
+			}
 			// // 楼层
-			// if (floor !== 9999 && data) {
-			// 	data = data.filter(({ number }) => {
-			// 		// console.log(item.number.substr(0, 1))
-			// 		return floor + 1 === Number(number.substr(0, 1))
-			// 	})
-			// }
+			if (floor !== -1 && data) {
+				data = data.filter(({ department }) => {
+					return floor + 1 === Number(department.address[0])
+				})
+			}
 			// // 搜索
-			// if (this.hasSearch && data) {
-			// 	data = data.filter((item) => {
-			// 		return item.name.indexOf(this.keyWord) !== -1
-			// 	})
-			// }
-			// return data
-			return this.item
+			if (this.hasSearch && data) {
+				data = data.filter((item) => {
+					return item.name.indexOf(this.keyWord) !== -1
+				})
+			}
+			return data
 		}
 	},
 	created() {

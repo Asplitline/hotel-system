@@ -2,7 +2,7 @@
 	<div class="hotel-nav">
 		<dl class="nav-item">
 			<dt class="nav-info">{{text}}</dt>
-			<dt class="nav-td" :class="{'active':active===9999}" @click="setActive()"><a
+			<dt class="nav-td" :class="{'active':active===-1}" @click="setActive()"><a
 					href="javascript:;">全部</a>
 			</dt>
 			<dd v-for="item in list" :key="item.id" class="nav-bd"
@@ -27,7 +27,7 @@ export default {
 			type: Number
 		},
 		dActive: {
-			type: Number
+			type: [Number, String]
 		}
 	},
 	data() {
@@ -37,7 +37,7 @@ export default {
 		}
 	},
 	methods: {
-		setActive(index = 9999) {
+		setActive(index = -1) {
 			this.active = index
 			this.$emit('h-tag', { value: index, flag: this.flag })
 		}

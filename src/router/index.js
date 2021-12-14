@@ -48,7 +48,7 @@ const routes = [
       {
         path: '/medical/:id',
         name: 'medical-detail',
-        component: import('@views/home/medical/MedicalDetail'),
+        component: () => import('@views/home/medical/MedicalDetail'),
         props: true
       }
     ]

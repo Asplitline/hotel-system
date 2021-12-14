@@ -23,7 +23,7 @@
 			</el-row>
 		</el-form>
 		<el-table :data="tableData" style="width: 100%" max-height="650px">
-			<el-table-column prop="roomId" label="体检名称" min-width="80">
+			<el-table-column prop="roomId" label="体检名称" min-width="160">
 				<template v-slot="{row}">
 					{{row.name}}
 				</template>
@@ -33,7 +33,7 @@
 					<el-tag type="danger" effect="plain">{{row.price | $}}</el-tag>
 				</template>
 			</el-table-column>
-			<el-table-column prop="doctorName" label="体检医生" min-width="80">
+			<el-table-column prop="doctor.username" label="体检医生" min-width="80">
 			</el-table-column>
 			<el-table-column prop="types.name" label="体检类型" min-width="80">
 
@@ -157,7 +157,8 @@ export default {
 			this.tableData = list.map((i) => {
 				const department = this.getRoomById(i.depaetmentId)
 				const types = this.getCategoryById(i.typeId)
-				return { ...i, department, types }
+				const doctor = this.getDoctorById(i.doctorId)
+				return { ...i, department, types, doctor }
 			})
 			this.total = total
 		},
@@ -200,6 +201,8 @@ export default {
 					this.dialogVisible = false
 				} else if (flag === 1) {
 					delete this[formName].department
+					delete this[formName].types
+					delete this[formName].doctor
 					const { success } = await _api.editItem(this[formName])
 					this.handleSuccess(success, '修改', this.fetchItem)
 					this.dialogVisible = false
@@ -239,7 +242,8 @@ export default {
 			'getUserById',
 			'getRoomById',
 			'g_doctors',
-			'getCategoryById'
+			'getCategoryById',
+			'getDoctorById'
 		]),
 		...mapState(['allRoom', 'allCategory']),
 		doctors() {

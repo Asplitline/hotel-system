@@ -10,7 +10,7 @@ const state = {
   allCategory: getSession('allCategory'),
   allUser: getSession('allUser'),
   allRoom: getSession('allRoom'),
-  currentHotel: getSession('currentHotel'),
+  currentItem: getSession('currentItem'),
   currentUser: getSession('currentUser')
 }
 const mutations = {
@@ -34,9 +34,9 @@ const mutations = {
     setSession('allRoom', data)
     state.allRoom = data
   },
-  setCurrentHotel (state, data) {
-    setSession('currentHotel', data)
-    state.currentHotel = data
+  setCurrentItem (state, data) {
+    setSession('currentItem', data)
+    state.currentItem = data
   },
   setCurrentUser (state, data) {
     setSession('currentUser', data)
@@ -58,6 +58,9 @@ const getters = {
     return state.allCategory?.filter(({ id, name }) => {
       return { id, name }
     })
+  },
+  getDoctorById: (state, getters) => (id) => {
+    return getters.g_doctors().find(item => item.id === id)
   },
   getUserById: (state) => (id) => {
     return state.allUser.find(item => item.id === id)

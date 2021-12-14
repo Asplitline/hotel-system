@@ -58,10 +58,10 @@ export const orderState = [
     { id: 5, value: '已退房', type: 'danger' }
 ]
 export const priceList = [
-    { id: 0, min: 0, max: 100, name: '100元以下' },
-    { id: 1, min: 100, max: 200, name: '100-200元' },
-    { id: 2, min: 200, max: 300, name: '200-300元' },
-    { id: 3, min: 300, max: 9999, name: '300元以上' }
+    { id: 0, min: 0, max: 1000, name: '1000元以下' },
+    { id: 1, min: 1000, max: 5000, name: '1000-5000元' },
+    { id: 2, min: 5000, max: 10000, name: '5000-10000元' },
+    { id: 3, min: 10000, max: 99999, name: '10000元以上' }
 ]
 export const floorList = [
     { id: 0, name: '1楼' },
