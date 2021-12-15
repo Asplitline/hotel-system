@@ -60,10 +60,11 @@ const comment = {
 }
 //
 const order = {
-    getOrderList: _get('/order/page'),
-    addOrder: _post('/order/insert'),
-    editOrder: _put('/order/updateIgnoreNull'),
-    deleteOrder: _delete('/order/delete', TRADITION_MODEL)
+    getOrders: _get('/apiOrder/list'),
+    getOrderList: _get('/apiOrder/pageList'),
+    addOrder: _post('/apiOrder/insert'),
+    editOrder: _put('/apiOrder/updateIgnoreNull'),
+    deleteOrder: _delete('/apiOrder/delete', TRADITION_MODEL)
 }
 
 const rotation = {

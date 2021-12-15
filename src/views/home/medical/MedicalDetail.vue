@@ -1,9 +1,14 @@
 <template>
 	<div class="item-detail">
-		<div class="h-header">体检详情<a href="javascript:;" @click="back()">返回</a></div>
+		<!-- <div class="h-header">体检详情<a href="javascript:;" @click="back()">返回</a></div> -->
+		<div class="h-header">
+
+			<i class="fa fa-chevron-circle-left" aria-hidden="true" @click="back()">返回</i>
+		</div>
+		<div class="h-title">{{item.name}}</div>
 		<div class="h-content">
+
 			<div class="l-content">
-				<div class="l-title">{{item.name}}</div>
 				<img src="http://placeimg.com/640/480/city" alt="">
 
 			</div>
@@ -32,7 +37,17 @@
 					</p> -->
 				</div>
 				<div class="r-ft">
-					<a href="javascript:;" class="primary">预定</a>
+					<el-date-picker v-model="myDate" type="date" placeholder="选择日期" class="my-date"
+						:picker-options="validateDate">
+					</el-date-picker>
+					<el-popconfirm :title="'体检预约需先支付'+item.price+' , 是否同意'" icon="el-icon-info"
+						icon-color="red" confirm-button-text='支付' cancel-button-text='不用了'
+						@confirm="orderItem">
+						<!-- <el-button slot="reference">删除</el-button> -->
+						<a href="javascript:;" slot="reference" class="primary"
+							:class="{'disabled':!myDate}">预定</a>
+					</el-popconfirm>
+
 					<!-- <a href="javascript:;" class="success">预订成功</a>
 					<a href="javascript:;">体检进行中</a>
 					<a href="javascript:;">体检结束</a> -->
@@ -90,7 +105,13 @@ export default {
 			commentList: [],
 			orderState,
 			roomState,
-			itemByOrder: []
+			itemByOrder: [],
+			myDate: '',
+			validateDate: {
+				disabledDate(value) {
+					return value.getTime() < Date.now()
+				}
+			}
 		}
 	},
 	mixins: [hMixin],
@@ -121,6 +142,29 @@ export default {
 				this.commentVal = ''
 				this.fetchCommment()
 			})
+		},
+		async orderItem() {
+			// 			{
+			//   "createTime": "2021-12-15T16:07:10.288Z",
+			//   "id": "string",
+			//   "name": "string",
+			//   "price": 0,
+			//   "projectId": "string",
+			//   "updateTime": "2021-12-15T16:07:10.288Z",
+			//   "userId": "string"
+			// }
+			const res = await _api.addOrder({
+				createTime: Date.now(),
+				name: this.item.name,
+				price: this.item.price,
+				projectId: this.item.id,
+				updateTime: Date.now(),
+				userId: this.user.id
+			})
+			console.log(res)
+			// this.$message.success('申请成功,请耐心等待预约结果')
+
+			console.log('orderItem')
 		},
 		async orderRoom(flag) {
 			if (flag === 0) {
@@ -160,8 +204,6 @@ export default {
 		}
 	},
 	created() {
-		// todo ? cache data | dont every time fetch
-		// tag update data -> update vuex data
 		this.fetchCommment()
 		this.fetchAllUser()
 		this.fetchOrderById(this.id)
@@ -177,23 +219,25 @@ export default {
 }
 
 .h-header {
-	font-size: 26px;
-	padding-left: 20px;
-	border-left: 3px solid @color-main;
-	margin-bottom: 20px;
-	a {
-		display: inline-block;
-		padding: 3px 6px;
-		font-size: 14px;
-		color: @color-blue;
-		margin-left: 6px;
-		border: 1px solid @color-blue;
-		transition: all 0.2s linear;
-		&:hover {
-			color: #fff;
-			background-color: @color-blue;
-		}
+	// border-left: 3px solid @color-main;
+	margin-bottom: 10px;
+	text-align: left;
+	font-size: 30px;
+	color: #003366;
+	height: 40px;
+	i:hover {
+		cursor: pointer;
+		opacity: 0.7;
 	}
+	i::before {
+		margin-right: 10px;
+	}
+}
+
+.h-title {
+	font-size: 28px;
+	margin-bottom: 12px;
+	color: #666;
 }
 .l-content {
 	//   width: 50%;
@@ -201,11 +245,7 @@ export default {
 	//   width: 600px;
 	flex: 1;
 	height: 300px;
-	.l-title {
-		font-size: 22px;
-		margin-bottom: 12px;
-		color: #666;
-	}
+
 	img {
 		width: 100%;
 		height: 100%;
@@ -252,32 +292,52 @@ export default {
 	}
 	.r-ft {
 		margin-top: 10px;
-		a {
-			display: inline-block;
+		display: flex;
+		align-items: center;
+		.my-date {
+			display: flex;
+			align-items: center;
+			flex: 2;
 			width: 100%;
-			height: 44px;
-			//   border: 2px solid @color-blue;
-			line-height: 44px;
-			background-color: @color-blue;
-			text-align: center;
-			color: #fff;
-			letter-spacing: 4px;
-			transition: all 0.5s ease-out;
-			&:hover {
-				background-color: rgba(@color-main);
-				color: #fff;
+			font-size: 16px;
+			margin-right: 30px;
+			::v-deep.el-input__inner {
+				border-radius: 0;
+				border-width: 2px;
 			}
-			&.disable {
-				background-color: @color-red;
-				cursor: default;
-			}
-			&.success {
-				background-color: @color-green;
-				cursor: default;
-			}
-			&.primary {
-				background-color: @color-main;
-				cursor: default;
+			& + span {
+				flex: 1;
+				a {
+					flex: 1;
+					display: inline-block;
+					width: 100%;
+					height: 44px;
+					//   border: 2px solid @color-blue;
+					line-height: 44px;
+					background-color: @color-blue;
+					text-align: center;
+					color: #fff;
+					letter-spacing: 4px;
+					transition: all 0.5s ease-out;
+					&:hover {
+						background-color: rgba(@color-main);
+						color: #fff;
+					}
+					&.disabled {
+						pointer-events: none;
+						opacity: 0.6;
+						// background-color: @color-red;
+						// cursor: default;
+					}
+					&.success {
+						background-color: @color-green;
+						// cursor: default;
+					}
+					&.primary {
+						background-color: @color-main;
+						// cursor: default;
+					}
+				}
 			}
 		}
 	}
