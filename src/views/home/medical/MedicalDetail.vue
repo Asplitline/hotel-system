@@ -38,15 +38,17 @@
 				</div>
 				<div class="r-ft">
 					<el-date-picker v-model="myDate" type="date" placeholder="选择日期" class="my-date"
-						:picker-options="validateDate">
+						:picker-options="validateDate" :readonly="currentStatus !== -1">
 					</el-date-picker>
 					<el-popconfirm :title="'体检预约需先支付'+item.price+' , 是否同意'" icon="el-icon-info"
 						icon-color="red" confirm-button-text='支付' cancel-button-text='不用了'
-						@confirm="orderItem">
+						class="click" v-if="currentStatus === -1" @confirm="orderItem">
 						<!-- <el-button slot="reference">删除</el-button> -->
 						<a href="javascript:;" slot="reference" class="primary"
 							:class="{'disabled':!myDate}">预定</a>
 					</el-popconfirm>
+					<a href="javascript:;" v-else-if="currentStatus === 0"
+						class="info click">审核中</a>
 
 					<!-- <a href="javascript:;" class="success">预订成功</a>
 					<a href="javascript:;">体检进行中</a>
@@ -56,16 +58,17 @@
 			</div>
 
 		</div>
-		<div class="t-steps">
-			<el-steps :space="200" :active="0" finish-status="success">
-				<el-step title="开始预定"></el-step>
-				<el-step title="预定中"></el-step>
+		<div class="t-steps" v-if="currentStatus !== -1">x
+			<el-steps :space="200" :active="currentStatus" finish-status="success">
+				<!-- <el-step title="开始预定"></el-step> -->
+				<el-step title="审核中"></el-step>
 				<el-step title="预定成功"></el-step>
 				<el-step title="体检中..."></el-step>
 				<el-step title="体检完成"></el-step>
 			</el-steps>
 
 		</div>
+		<el-empty description="暂无体检记录，请点击上方进行体检预约" class="md-empty" v-else></el-empty>
 		<!-- <div class="h-header">房间评论</div>
 		<div class="h-comment">
 			<div class="h-edit">
@@ -96,7 +99,7 @@ import { mapActions, mapGetters, mapMutations, mapState } from 'vuex'
 import _api from '@api'
 import { hMixin } from '@mixins'
 import { orderState, roomState } from '@static'
-import { bindIMG } from '@utils'
+import { bindIMG, notEmpty } from '@utils'
 export default {
 	props: ['id'],
 	data() {
@@ -107,6 +110,7 @@ export default {
 			roomState,
 			itemByOrder: [],
 			myDate: '',
+			currentAppointment: [],
 			validateDate: {
 				disabledDate(value) {
 					return value.getTime() < Date.now()
@@ -143,42 +147,34 @@ export default {
 				this.fetchCommment()
 			})
 		},
-		async orderItem() {
-			// 			{
-			//   "createTime": "2021-12-15T16:07:10.288Z",
-			//   "id": "string",
-			//   "name": "string",
-			//   "price": 0,
-			//   "projectId": "string",
-			//   "updateTime": "2021-12-15T16:07:10.288Z",
-			//   "userId": "string"
-			// }
-			const res = await _api.addOrder({
-				createTime: Date.now(),
-				name: this.item.name,
-				price: this.item.price,
-				projectId: this.item.id,
-				updateTime: Date.now(),
-				userId: this.user.id
+
+		async fetchCurrentAppointment() {
+			const { list } = await _api.getAppointmentList({
+				keyword: this.user.id
 			})
-			console.log(res)
-			// this.$message.success('申请成功,请耐心等待预约结果')
+			this.currentAppointment = list.find((i) => i.projectId === this.id)
+			if (this.currentStatus !== -1) {
+				this.myDate = this.currentAppointment.tjTime
+			}
+		},
+		async orderItem() {
+			const { success } = await _api.addAppointment({
+				projectId: this.item.id,
+				tjTime: this.myDate,
+				createTime: Date.now(),
+				updateTime: Date.now(),
+				doctorId: this.item.doctorId,
+				userId: this.user.id,
+				status: 0
+			})
+			if (success) {
+				this.$message.success('申请成功,请耐心等待预约结果')
+				this.fetchCurrentAppointment()
+			} else {
+				this.$message.error('申请失败，服务繁忙，请稍后再试')
+			}
 
 			console.log('orderItem')
-		},
-		async orderRoom(flag) {
-			if (flag === 0) {
-				const obj = {
-					price: this.item.price,
-					roomId: this.item.id,
-					state: 1,
-					userId: this.user.id
-				}
-				const { success } = await _api.addOrder(obj)
-				this.handleSuccess(success, '预定中...等待管理员审核', async () => {
-					this.fetchOrderById(this.id)
-				})
-			}
 		},
 		async fetchOrderById(id) {
 			const { list } = await _api.getOrderList({
@@ -201,12 +197,18 @@ export default {
 		itemState() {
 			const { state = 0 } = this.itemByOrder || {}
 			return state
+		},
+		currentStatus() {
+			return notEmpty(this.currentAppointment)
+				? this.currentAppointment.status
+				: -1
 		}
 	},
 	created() {
 		this.fetchCommment()
 		this.fetchAllUser()
 		this.fetchOrderById(this.id)
+		this.fetchCurrentAppointment()
 	}
 }
 </script>
@@ -305,39 +307,38 @@ export default {
 				border-radius: 0;
 				border-width: 2px;
 			}
-			& + span {
+			& + .click {
 				flex: 1;
-				a {
-					flex: 1;
-					display: inline-block;
-					width: 100%;
-					height: 44px;
-					//   border: 2px solid @color-blue;
-					line-height: 44px;
-					background-color: @color-blue;
-					text-align: center;
-					color: #fff;
-					letter-spacing: 4px;
-					transition: all 0.5s ease-out;
-					&:hover {
-						background-color: rgba(@color-main);
-						color: #fff;
-					}
-					&.disabled {
-						pointer-events: none;
-						opacity: 0.6;
-						// background-color: @color-red;
-						// cursor: default;
-					}
-					&.success {
-						background-color: @color-green;
-						// cursor: default;
-					}
-					&.primary {
-						background-color: @color-main;
-						// cursor: default;
-					}
-				}
+			}
+		}
+		a {
+			display: inline-block;
+			width: 100%;
+			height: 44px;
+			//   border: 2px solid @color-blue;
+			line-height: 44px;
+			background-color: @color-blue;
+			text-align: center;
+			color: #fff;
+			letter-spacing: 4px;
+			transition: all 0.5s ease-out;
+			&:hover {
+				background-color: rgba(@color-main);
+				color: #fff;
+			}
+			&.disabled {
+				pointer-events: none;
+				opacity: 0.6;
+			}
+			&.success {
+				background-color: @color-green;
+			}
+			&.primary {
+				background-color: @color-main;
+			}
+			&.info {
+				background-color: @color-yellow;
+				cursor: default;
 			}
 		}
 	}
@@ -464,5 +465,13 @@ export default {
 }
 .not-found {
 	margin-top: 10px;
+}
+
+::v-deep .md-empty {
+	background-color: #fafafa;
+	p {
+		color: @color-blue;
+		font-size: 20px;
+	}
 }
 </style>

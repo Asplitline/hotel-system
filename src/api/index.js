@@ -67,6 +67,14 @@ const order = {
     deleteOrder: _delete('/apiOrder/delete', TRADITION_MODEL)
 }
 
+const Appointment = {
+    getAppointment: _get('/apiAppointment/list'),
+    getAppointmentList: _get('/apiAppointment/pageList'),
+    addAppointment: _post('/apiAppointment/insert'),
+    editAppointment: _put('/apiAppointment/updateIgnoreNull'),
+    deleteAppointment: _delete('/apiAppointment/delete', TRADITION_MODEL)
+}
+
 const rotation = {
     getRotations: _get('/apiRotation/list'),
     getRotationList: _get('/apiRotation/pageList'),
@@ -89,5 +97,6 @@ export default {
     ...order,
     ...item,
     ...rotation,
-    ...statistic
+    ...statistic,
+    ...Appointment
 }
