@@ -22,6 +22,7 @@ const user = {
 //
 const category = {
     getCategoryList: _get('/apiPhysicalType/list'),
+    getCategoryById: _get('/apiPhysicalType/getById', TRADITION_MODEL),
     addCategory: _post('/apiPhysicalType/insert'),
     editCategory: _put('/apiPhysicalType/update'),
     deleteCategory: _delete('/apiPhysicalType/delete', TRADITION_MODEL)
@@ -30,15 +31,17 @@ const category = {
 // todo [search]
 // done [delete / add / edit / page]
 const room = {
-    getItems: _get('/apiPhysicalProject/list'),
     getRoomList: _get('/apiDepartment/pageList'),
+    getRoomById: _get('/apiDepartment/getById', TRADITION_MODEL),
     addRoom: _post('/apiDepartment/insert'),
     editRoom: _put('/apiDepartment/update'),
     deleteRoom: _delete('/apiDepartment/delete', TRADITION_MODEL)
 }
 
 const item = {
+    getItems: _get('/apiPhysicalProject/list'),
     getItemList: _get('/apiPhysicalProject/pageList'),
+    getItemById: _get('/apiPhysicalProject/getById', TRADITION_MODEL),
     addItem: _post('/apiPhysicalProject/insert'),
     editItem: _put('/apiPhysicalProject/update'),
     deleteItem: _delete('/apiPhysicalProject/delete', TRADITION_MODEL)
@@ -71,7 +74,7 @@ const Appointment = {
     getAppointment: _get('/apiAppointment/list'),
     getAppointmentList: _get('/apiAppointment/pageList'),
     addAppointment: _post('/apiAppointment/insert'),
-    editAppointment: _put('/apiAppointment/updateIgnoreNull'),
+    editAppointment: _put('/apiAppointment/update'),
     deleteAppointment: _delete('/apiAppointment/delete', TRADITION_MODEL)
 }
 

@@ -10,6 +10,7 @@ const state = {
   allCategory: getSession('allCategory'),
   allUser: getSession('allUser'),
   allRoom: getSession('allRoom'),
+  allItem: getSession('allItem'),
   currentItem: getSession('currentItem'),
   currentUser: getSession('currentUser')
 }
@@ -33,6 +34,10 @@ const mutations = {
   setAllRoom (state, data) {
     setSession('allRoom', data)
     state.allRoom = data
+  },
+  setAllItem (state, data) {
+    setSession('allItem', data)
+    state.allItem = data
   },
   setCurrentItem (state, data) {
     setSession('currentItem', data)
@@ -67,6 +72,9 @@ const getters = {
   },
   getRoomById: (state) => (id) => {
     return state.allRoom.find(item => item.id === id)
+  },
+  getItemById: (state) => (id) => {
+    return state.allItem.find(item => item.id === id)
   }
 }
 const actions = {
@@ -81,6 +89,10 @@ const actions = {
   async fetchAllRoom ({ commit }, query = { size: 999 }) {
     const { list } = await _api.getRoomList(query)
     commit('setAllRoom', list)
+  },
+  async fetchAllItem ({ commit }, query = { size: 999 }) {
+    const { data } = await _api.getItems()
+    commit('setAllItem', data)
   }
 }
 const modules = {

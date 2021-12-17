@@ -141,13 +141,13 @@ const routes = [
         }
       },
       {
-        path: 'order',
-        name: 'order',
-        component: () => import('@views/admin/order'),
+        path: '/physical/appointment',
+        name: 'appointment',
+        component: () => import('@views/admin/appointment'),
         meta: {
-          title: '体检信息',
+          title: '体检记录',
           icon: 'iconfont icon-order',
-          index: '/physical/order'
+          index: '/physical/appointment'
         }
       },
       {

@@ -10,7 +10,14 @@ const $http = axios.create({
 
 export function _get (url, model = 1) {
     return function (params) {
-        return $http.get(url, { params })
+        let URL
+        if (model === 1) {
+            URL = url
+        } else if (model === 2) {
+            URL = `${url}?id=${params}`
+        }
+
+        return $http.get(URL, { params })
             .then(res => {
                 return res.data
             }).catch(err => {

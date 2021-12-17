@@ -49,21 +49,20 @@
 					</el-popconfirm>
 					<a href="javascript:;" v-else-if="currentStatus === 0"
 						class="info click">审核中</a>
-
-					<!-- <a href="javascript:;" class="success">预订成功</a>
-					<a href="javascript:;">体检进行中</a>
-					<a href="javascript:;">体检结束</a> -->
+					<a href="javascript:;" class="success click" v-else-if="currentStatus === 1"
+						@click="handleItem(2)">入场签到</a>
+					<a href="javascript:;" class="info click" v-else-if="currentStatus === 2"
+						@click="handleItem(3)">体检签退</a>
+					<a href="javascript:;" class="primary click" v-else>体检反馈</a>
 				</div>
 
 			</div>
 
 		</div>
-		<div class="t-steps" v-if="currentStatus !== -1">x
+		<div class="t-steps" v-if="currentStatus !== -1">
 			<el-steps :space="200" :active="currentStatus" finish-status="success">
-				<!-- <el-step title="开始预定"></el-step> -->
 				<el-step title="审核中"></el-step>
-				<el-step title="预定成功"></el-step>
-				<el-step title="体检中..."></el-step>
+				<el-step title="体检中"></el-step>
 				<el-step title="体检完成"></el-step>
 			</el-steps>
 
@@ -99,7 +98,7 @@ import { mapActions, mapGetters, mapMutations, mapState } from 'vuex'
 import _api from '@api'
 import { hMixin } from '@mixins'
 import { orderState, roomState } from '@static'
-import { bindIMG, notEmpty } from '@utils'
+import { bindIMG, notEmpty, deepClone } from '@utils'
 export default {
 	props: ['id'],
 	data() {
@@ -183,8 +182,37 @@ export default {
 				keyword: id
 			})
 			this.itemByOrder = list.find((item) => item.userId === this.user.id)
+		},
+		async updateItem() {
+			this.fetchCurrentAppointment()
+		},
+		async handleItem(status) {
+			const item = deepClone(this.currentAppointment)
+			const { success } = await _api.editAppointment({
+				...item,
+				updateTime: Date.now(),
+				status
+			})
+			if (status === 2) {
+				this.handleMsg(
+					success,
+					'签到成功,请到前往' + this.item.department.address + '进行体检'
+				)
+			} else if (status === 3) {
+				this.handleMsg(success, '体检完成!')
+			}
+			this.updateItem()
+		},
+		handleMsg(success, msg) {
+			if (success) {
+				this.updateItem()
+				this.$message.success(msg)
+			} else {
+				this.$message.error('服务繁忙')
+			}
 		}
 	},
+
 	computed: {
 		...mapState({ item: 'currentItem', user: 'currentUser' }),
 		...mapGetters(['getUserById']),
@@ -202,13 +230,15 @@ export default {
 			return notEmpty(this.currentAppointment)
 				? this.currentAppointment.status
 				: -1
+		},
+		lastText() {
+			return this.currentStatus === 3 ? '体检完成' : '体检取消'
 		}
 	},
 	created() {
-		this.fetchCommment()
 		this.fetchAllUser()
-		this.fetchOrderById(this.id)
 		this.fetchCurrentAppointment()
+		this.updateItem()
 	}
 }
 </script>
@@ -338,7 +368,6 @@ export default {
 			}
 			&.info {
 				background-color: @color-yellow;
-				cursor: default;
 			}
 		}
 	}
