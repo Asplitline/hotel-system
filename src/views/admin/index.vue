@@ -22,7 +22,8 @@
 		<el-container>
 			<el-aside :width="isFold?'64px':'200px'" class="t-sider">
 				<el-menu background-color="#324157" active-text-color="#409eff" text-color="#fff"
-					:default-active="active" :collapse="isFold" :collapse-transition="false" router>
+					:default-active="$route.path" :collapse="isFold" :collapse-transition="false"
+					router>
 					<SideMenu v-for="item in currentMenu" :key="item.name" :item="item"></SideMenu>
 				</el-menu>
 			</el-aside>
@@ -75,7 +76,7 @@ export default {
 		}
 	},
 	created() {
-		this.active = this.aIndex
+		// this.active = this.$route.meta.index
 	}
 }
 </script>

@@ -1,50 +1,39 @@
 <template>
 	<el-card class="comment">
-		<!--  -->
-		<el-form v-model="searchForm" :inline="true" size="small">
-			<el-row>
-				<el-col :span="6" :offset="1">
-					<el-form-item label="用户名称">
-						<el-input v-model="searchForm.uName" placeholder="请输入用户名称" clearable />
-					</el-form-item>
-				</el-col>
-				<el-col :span="6">
-					<el-form-item label="房间名称">
-						<el-input v-model="searchForm.rName" placeholder="请输入房间名称" clearable />
-					</el-form-item>
-				</el-col>
-				<el-col :span="5">
-					<el-form-item>
-						<el-button type="primary" icon="el-icon-search" @click="search()">查询
-						</el-button>
-					</el-form-item>
-				</el-col>
-			</el-row>
-		</el-form>
-		<!--  -->
+
 		<el-table :data="filterTableData" style="width: 100%" max-height="650px">
-			<el-table-column prop="userId" label="房间名称" min-width="120">
+			<el-table-column prop="user.username" label="用户名" min-width="80">
 				<template v-slot="{row}">
-					{{row.room&&row.room.name}}
+					<el-tag type="success">{{row.user.username}}</el-tag>
 				</template>
 			</el-table-column>
-			<el-table-column prop="roomId" label="用户名称" min-width="120">
+			<el-table-column prop="doctor.username" label="医生名称" min-width="80">
 				<template v-slot="{row}">
-					{{row.user&&row.user.username}}
+					<el-tag type="primary">{{row.doctor.username}}</el-tag>
 				</template>
 			</el-table-column>
-			<el-table-column prop="description" label="评论内容" min-width="120">
+			<el-table-column prop="roomId" label="医嘱" min-width="120">
+				<template v-slot="{row}">
+					<el-tooltip :content="row.description" placement="bottom" effect="light">
+						<p>{{row.description}}</p>
+					</el-tooltip>
+				</template>
 			</el-table-column>
-			<el-table-column prop="createTime" label="评论时间" min-width="80">
+			<el-table-column prop="createTime" label="创建时间" min-width="100">
 				<template v-slot="{row}">
 					{{row.createTime | formatDate}}
 				</template>
 			</el-table-column>
-			<el-table-column label="操作" min-width="80">
+			<el-table-column prop="createTime" label="修改时间" min-width="100">
+				<template v-slot="{row}">
+					{{row.updateTime | formatDate}}
+				</template>
+			</el-table-column>
+			<el-table-column label="操作" min-width="60">
 				<template v-slot="{row}">
 					<el-link type="danger"
-						@click="deleteById(deleteComment,fetchComment,row.id,'评论')">
-						删除评论</el-link>
+						@click="deleteById(deleteComment,fetchComment,row.id,'医嘱')">
+						删除医嘱</el-link>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -61,7 +50,7 @@
 // import { comment } from '@mock'
 import { aMixin } from '@mixins'
 import _api from '@api'
-import { deepClone } from '@utils'
+// import { deepClone } from '@utils'
 import { mapActions, mapGetters } from 'vuex'
 export default {
 	data() {
@@ -75,34 +64,20 @@ export default {
 		...mapActions(['fetchAllUser', 'fetchAllRoom']),
 		deleteComment: _api.deleteComment,
 		async fetchComment() {
-			const { list, total } = await _api.getCommentList(this.query)
-			list.forEach((item) => {
-				// console.log(item)
-				item.user = this.getUserById(item.userId)
-				item.room = this.getRoomById(item.roomId)
-				// deepClone(item)
+			const { data: list } = await _api.getComments(this.query)
+			this.tableData = list.map((item) => {
+				const user = this.getUserById(item.userId)
+				const doctor = this.getUserById(item.doctorId)
+				return { ...item, user, doctor }
 			})
-			this.tableData = list
-			this.total = total
+			// this.tableData = list
+			// this.total = total
 		}
 	},
 	computed: {
 		...mapGetters(['getUserById', 'getRoomById']),
 		filterTableData() {
-			if (this.hasFilter) {
-				const { uName, rName } = this.searchForm
-				let data = deepClone(this.tableData)
-				if (data && uName && uName.trim().length > 0) {
-					data = data.filter((item) => item.user.username.indexOf(uName) !== -1)
-				}
-				if (data && rName && rName.trim().length > 0) {
-					data = data.filter((item) => item.room.name.indexOf(rName) !== -1)
-				}
-				this.initSearch()
-				return data
-			} else {
-				return this.tableData
-			}
+			return this.tableData
 		}
 	},
 	created() {

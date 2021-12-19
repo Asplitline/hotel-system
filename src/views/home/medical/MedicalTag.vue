@@ -41,8 +41,8 @@ export default {
 		}
 	},
 	created() {
-		console.log(this.fArr)
-		console.log(this.data)
+		// console.log(this.fArr)
+		// console.log(this.data)
 	}
 }
 </script>

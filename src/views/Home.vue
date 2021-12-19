@@ -17,6 +17,8 @@
 					</span>
 					<el-dropdown-menu slot="dropdown">
 						<el-dropdown-item command="goInfo">个人信息</el-dropdown-item>
+						<el-dropdown-item command="goAdmin" v-if="currentUser.level != 0">后台系统
+						</el-dropdown-item>
 						<el-dropdown-item command="logout">退出系统</el-dropdown-item>
 					</el-dropdown-menu>
 				</el-dropdown>
@@ -41,16 +43,20 @@ export default {
 	methods: {
 		...mapMutations(['clearInfo']),
 		bindIMG,
+		// notes $options
 		handleCommand(command) {
 			this.$options.methods[command](this)
 		},
 		goInfo(vm) {
-			console.log(this)
 			vm.$router.push({ name: 'info' })
 		},
 		logout(vm) {
 			vm.clearInfo()
 			vm.$router.push({ name: 'login' })
+		},
+		goAdmin(vm) {
+			// vm.$router.push()
+			vm.$router.push({ name: 'admin' })
 		}
 	},
 	computed: {

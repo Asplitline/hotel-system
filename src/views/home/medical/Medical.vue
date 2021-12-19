@@ -59,14 +59,15 @@ export default {
 		}
 	},
 	methods: {
-		...mapActions(['fetchAllCategory', 'fetchAllRoom']),
+		...mapActions(['fetchAllCategory', 'fetchAllRoom', 'fetchAllUser']),
 		async fetchItem() {
 			const { data } = await _api.getItems()
 			// console.log(res)
 			this.item = data.map((i) => {
 				const department = this.getRoomById(i.depaetmentId)
 				const types = this.getCategoryById(i.typeId)
-				return { ...i, department, types }
+				const doctor = this.getDoctorById(i.doctorId)
+				return { ...i, department, types, doctor }
 			})
 		},
 		handleTag(val) {
@@ -89,7 +90,8 @@ export default {
 			'getCategoryById',
 			'getMiniCategory',
 			'getUserById',
-			'getRoomById'
+			'getRoomById',
+			'getDoctorById'
 		]),
 		fItem() {
 			// // console.log(...this.tagArr)
@@ -121,8 +123,9 @@ export default {
 			return data
 		}
 	},
-	created() {
+	mounted() {
 		this.fetchAllRoom()
+		this.fetchAllUser()
 		this.fetchAllCategory()
 		this.fetchItem()
 	}

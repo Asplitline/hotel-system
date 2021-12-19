@@ -44,6 +44,11 @@ export const stateInfo = [
     { flag: 1, value: '正常', type: 'primary' }
 ]
 
+export const replyState = [
+    { flag: 0, value: '未回复', type: 'info' },
+    { flag: 1, value: '已回复', type: 'primary' }
+]
+
 export const roomState = [
     { id: 0, value: '空闲中', type: 'success', text: '马上预定', class: '' },
     { id: 1, value: '已住人', type: 'danger', text: '无法预定', class: 'disable' }
@@ -52,8 +57,9 @@ export const orderState = [
     { id: 0, value: '待审核', type: 'primary' },
     { id: 1, value: '待签到', type: 'warning' },
     { id: 2, value: '体检中', type: 'success' },
-    { id: 3, value: '体检结束', type: 'danger' },
-    { id: 4, value: '预约失效', type: 'danger' }
+    { id: 3, value: '建议中', type: 'primary' },
+    { id: 4, value: '反馈中', type: 'warning' },
+    { id: 5, value: '体检结束', type: 'danger' }
 ]
 export const priceList = [
     { id: 0, min: 0, max: 1000, name: '1000元以下' },

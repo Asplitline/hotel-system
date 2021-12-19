@@ -3,7 +3,7 @@
 		<h2>体检大楼 - {{cChar[this.floor]}}楼</h2>
 		<ul class="h-list" v-if="roomNum">
 			<li class="h-item" v-for="item in filterRoom" :key="item.id">
-				<a href="javascript:;" @click="goHotelDetail(item)">
+				<a href="javascript:;">
 					<img :src="bindIMG(item.url)">
 					<p class="h-title">{{item.name}}</p>
 					<div class="h-info">

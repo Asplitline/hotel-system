@@ -3,16 +3,15 @@
 		<!--  -->
 		<el-form v-model="searchForm" :inline="true" size="small">
 			<el-row justify="space-between" type="flex">
-				<el-col :span="10">
+				<!-- <el-col :span="10">
 					<el-form-item label="科室号码">
 						<el-input v-model="query.keyword" placeholder="请输入房号" clearable
 							@clear="fetchRoom" />
 					</el-form-item>
-					<!-- todo search room -->
 					<el-button type="primary" icon="el-icon-search" size="small" @click="fetchRoom">
 						查询
 					</el-button>
-				</el-col>
+				</el-col> -->
 				<el-col :span="4">
 					<el-form-item>
 						<el-button type="success" icon="el-icon-plus" @click="showDialog(0)">

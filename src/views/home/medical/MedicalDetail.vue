@@ -9,7 +9,7 @@
 		<div class="h-content">
 
 			<div class="l-content">
-				<img src="http://placeimg.com/640/480/city" alt="">
+				<img :src="bindIMG(item.department.url)" alt="">
 
 			</div>
 			<div class="r-content">
@@ -30,11 +30,6 @@
 					<p>
 						<span>体检项简介:</span><span class="h-desc">{{item.desription }}</span>
 					</p>
-					<!-- <p>
-						<span>体检状态:</span>
-						<el-tag effect="plain">
-							111</el-tag>
-					</p> -->
 				</div>
 				<div class="r-ft">
 					<el-date-picker v-model="myDate" type="date" placeholder="选择日期" class="my-date"
@@ -53,7 +48,12 @@
 						@click="handleItem(2)">入场签到</a>
 					<a href="javascript:;" class="info click" v-else-if="currentStatus === 2"
 						@click="handleItem(3)">体检签退</a>
-					<a href="javascript:;" class="primary click" v-else>体检反馈</a>
+					<a href="javascript:;" class="blue click" v-else-if="currentStatus === 3"
+						@click="showMsg">医学建议</a>
+					<a href="javascript:;" class="primary click" v-else-if="currentStatus === 4"
+						@click="showReplyDialog">体检反馈</a>
+					<a href="javascript:;" class="red click"
+						v-else-if="currentStatus === 5">体检结束</a>
 				</div>
 
 			</div>
@@ -63,33 +63,45 @@
 			<el-steps :space="200" :active="currentStatus" finish-status="success">
 				<el-step title="审核中"></el-step>
 				<el-step title="体检中"></el-step>
-				<el-step title="体检完成"></el-step>
+				<el-step title="体检签退"></el-step>
+				<el-step title="等待医学建议"></el-step>
+				<el-step title="体检结束"></el-step>
 			</el-steps>
-
 		</div>
 		<el-empty description="暂无体检记录，请点击上方进行体检预约" class="md-empty" v-else></el-empty>
-		<!-- <div class="h-header">房间评论</div>
-		<div class="h-comment">
-			<div class="h-edit">
-				<template v-if="isLogin">
-					<input type="text" v-model="commentVal" @keyup.enter="comment()">
-					<button @click="comment()" :class="{'disabled':commentIsEmpty}">评论</button>
-					<span>支持 Enter 键进行评论</span>
-				</template>
-				<template v-else>
-					<p class="no-login">请先进行<a href="javascript:;">登录</a>，登陆后才能回复</p>
-				</template>
+		<el-dialog title="用户反馈" :visible.sync="replyDialogVisible" width="30%"
+			:close-on-click-modal="false">
+			<el-form :model="replyForm" :rules="replyRules" ref="replyForm">
+				<el-form-item label="用户名">
+					<el-input type="text" v-model="replyForm.userName" autocomplete="off" disabled>
+					</el-input>
+				</el-form-item>
+				<el-form-item label="医生名称">
+					<el-input type="text" v-model="replyForm.doctorName" autocomplete="off"
+						disabled>
+					</el-input>
+				</el-form-item>
+				<el-form-item label="医学建议" prop="description">
+					<el-input type="textarea" v-model="replyForm.description" autocomplete="off"
+						disabled>
+					</el-input>
+				</el-form-item>
+				<el-form-item label="标题" prop="title">
+					<el-input type="type" v-model="replyForm.title" autocomplete="off">
+					</el-input>
+				</el-form-item>
+				<el-form-item label="用户反馈" prop="content">
+					<el-input type="textarea" v-model="replyForm.content" autocomplete="off">
+					</el-input>
+				</el-form-item>
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button size="small" @click="replyDialogVisible = false">取消</el-button>
+				<el-button type="primary" size="small" @click="submitReplyForm('replyForm')">
+					提交
+				</el-button>
 			</div>
-			<ul class="h-list" v-if="commentList.length">
-				<li class="h-item" v-for="item in commentList" :key="item.id">
-					<img :src="bindIMG(item.user.url)" alt="">
-					<span class="h-author">{{item.user.username}}</span>
-					<span class="h-date">评论于 <em>{{item.createTime |formatDate }}</em></span>
-					<div>{{item.description}}</div>
-				</li>
-			</ul>
-			<div class="not-found" v-else>暂无评论</div>
-		</div> -->
+		</el-dialog>
 	</div>
 </template>
 
@@ -109,6 +121,15 @@ export default {
 			roomState,
 			itemByOrder: [],
 			myDate: '',
+			replyDialogVisible: false,
+			replyForm: {},
+			flag: 1,
+			replyRules: {
+				content: [
+					{ required: true, message: '请输入反馈内容', trigger: 'blur' }
+				],
+				title: [{ required: true, message: '请输入反馈标题', trigger: 'blur' }]
+			},
 			currentAppointment: [],
 			validateDate: {
 				disabledDate(value) {
@@ -119,7 +140,7 @@ export default {
 	},
 	mixins: [hMixin],
 	methods: {
-		...mapActions(['fetchAllUser']),
+		...mapActions(['fetchAllUser', 'fetchAllNotice']),
 		...mapMutations(['setCurrentItem']),
 		bindIMG,
 		async fetchCommment() {
@@ -156,24 +177,80 @@ export default {
 				this.myDate = this.currentAppointment.tjTime
 			}
 		},
-		async orderItem() {
-			const { success } = await _api.addAppointment({
-				projectId: this.item.id,
-				tjTime: this.myDate,
-				createTime: Date.now(),
-				updateTime: Date.now(),
-				doctorId: this.item.doctorId,
-				userId: this.user.id,
-				status: 0
+		showMsg() {
+			this.$message.success('请耐心等待，医生在提供建议后，在个人中心进行查看')
+		},
+		showReplyDialog() {
+			const currentReply = this.allNotice.find(
+				(i) => i.userId === this.user.id && i.doctorId === this.item.doctorId
+			)
+			console.log(currentReply)
+			// fixme no unique tag
+			this.$set(this.replyForm, 'userName', this.user.username)
+			this.$set(this.replyForm, 'doctorName', this.item.doctor.username)
+			this.$set(this.replyForm, 'description', currentReply.description)
+			this.replyDialogVisible = true
+		},
+		submitReplyForm(formName) {
+			this.$refs[formName].validate(async (valid) => {
+				if (!valid) return
+				const { success } = await _api.addAddvice({
+					content: this.replyForm.content,
+					ctime: Date.now(),
+					description: '',
+					state: 0,
+					title: this.replyForm.title,
+					userid: this.user.id,
+					utime: Date.now()
+				})
+				if (success) {
+					this.handleItem(5)
+					this.$message.success('反馈成功，我们在收到反馈后会第一时间回复你')
+				} else {
+					this.$message.error('网络繁忙')
+				}
+				this.replyDialogVisible = false
 			})
-			if (success) {
-				this.$message.success('申请成功,请耐心等待预约结果')
-				this.fetchCurrentAppointment()
-			} else {
-				this.$message.error('申请失败，服务繁忙，请稍后再试')
-			}
-
-			console.log('orderItem')
+		},
+		async orderItem() {
+			const puchaseLoading = this.$loading({
+				text: '支付中...'
+			})
+			setTimeout(() => {}, 2000)
+			const { success: _success } = await _api.addOrder({
+				createTime: Date.now(),
+				name: this.item.name,
+				price: this.item.price,
+				projectId: this.item.id,
+				updateTime: Date.now(),
+				userId: this.user.id
+			})
+			setTimeout(async () => {
+				puchaseLoading.close()
+				if (_success) {
+					const orderLoading = this.$loading({
+						text: '申请中...'
+					})
+					const { success } = await _api.addAppointment({
+						projectId: this.item.id,
+						tjTime: this.myDate,
+						createTime: Date.now(),
+						updateTime: Date.now(),
+						doctorId: this.item.doctorId,
+						userId: this.user.id,
+						status: 0
+					})
+					orderLoading.close()
+					if (success) {
+						this.$message.success('申请成功,请耐心等待预约结果')
+						this.fetchCurrentAppointment()
+					} else {
+						this.$message.error('申请失败，服务繁忙，请稍后再试')
+					}
+				} else {
+					this.$message.error('支付失败,服务繁忙,请稍后重试')
+				}
+			}, 1500)
 		},
 		async fetchOrderById(id) {
 			const { list } = await _api.getOrderList({
@@ -214,7 +291,11 @@ export default {
 	},
 
 	computed: {
-		...mapState({ item: 'currentItem', user: 'currentUser' }),
+		...mapState({
+			item: 'currentItem',
+			user: 'currentUser',
+			allNotice: 'allNotice'
+		}),
 		...mapGetters(['getUserById']),
 		isLogin() {
 			return this.user !== null
@@ -235,7 +316,8 @@ export default {
 			return this.currentStatus === 3 ? '体检完成' : '体检取消'
 		}
 	},
-	created() {
+	mounted() {
+		this.fetchAllNotice()
 		this.fetchAllUser()
 		this.fetchCurrentAppointment()
 		this.updateItem()
@@ -353,8 +435,9 @@ export default {
 			letter-spacing: 4px;
 			transition: all 0.5s ease-out;
 			&:hover {
-				background-color: rgba(@color-main);
+				// background-color: rgba(@color-main);
 				color: #fff;
+				opacity: 0.8;
 			}
 			&.disabled {
 				pointer-events: none;
@@ -368,6 +451,12 @@ export default {
 			}
 			&.info {
 				background-color: @color-yellow;
+			}
+			&.blue {
+				background-color: #409eff;
+			}
+			&.red {
+				background-color: tomato;
 			}
 		}
 	}

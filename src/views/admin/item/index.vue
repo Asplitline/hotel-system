@@ -3,17 +3,17 @@
 		<!--  -->
 		<el-form v-model="searchForm" :inline="true" size="small">
 			<el-row>
-				<el-col :span="6">
+				<!-- <el-col :span="6">
 					<el-form-item>
 						<el-input v-model="searchForm.name" placeholder="请输入项目名称" clearable />
 					</el-form-item>
-				</el-col>
+				</el-col> -->
 				<el-col :span="6">
-					<el-form-item>
+					<!-- <el-form-item>
 						<el-button type="primary" icon="el-icon-search" @click="search()">
 							查询
 						</el-button>
-					</el-form-item>
+					</el-form-item> -->
 					<el-form-item>
 						<el-button type="success" @click="showDialog(0)">
 							新增体检项

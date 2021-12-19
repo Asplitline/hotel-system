@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import { miniAMenuList, miniHMenuList } from '@static'
 import store from '@store'
 // -
 const Admin = () => import(/* webpackChunkName:'admin' */'@views/admin')
@@ -103,7 +102,7 @@ const routes = [
         component: () => import('@views/admin/user'),
         meta: {
           title: '用户管理',
-          icon: 'iconfont icon-user',
+          icon: 'iconfont icon-ConferenceRoom',
           index: '/staff/auser'
         }
       }
@@ -136,7 +135,7 @@ const routes = [
         component: () => import('@views/admin/item'),
         meta: {
           title: '体检信息',
-          icon: 'iconfont icon-order',
+          icon: 'iconfont icon-ConferenceRoom',
           index: '/physical/item'
         }
       },
@@ -146,7 +145,7 @@ const routes = [
         component: () => import('@views/admin/appointment'),
         meta: {
           title: '体检记录',
-          icon: 'iconfont icon-order',
+          icon: 'iconfont icon-ConferenceRoom',
           index: '/physical/appointment'
         }
       },
@@ -156,7 +155,7 @@ const routes = [
         component: () => import('@views/admin/reply'),
         meta: {
           title: '体检反馈',
-          icon: 'iconfont icon-order',
+          icon: 'iconfont icon-ConferenceRoom',
           index: '/physical/reply'
         }
       }
@@ -179,7 +178,7 @@ const routes = [
         component: () => import('@views/admin/room'),
         meta: {
           title: '科室信息',
-          icon: 'iconfont icon-LuggageBagsCases',
+          icon: 'iconfont icon-ConferenceRoom',
           index: '/content/room'
         }
       },
@@ -189,7 +188,7 @@ const routes = [
         component: () => import('@views/admin/comment'),
         meta: {
           title: '医嘱信息',
-          icon: 'iconfont icon-user',
+          icon: 'iconfont icon-ConferenceRoom',
           index: '/content/comment'
         }
       }
@@ -205,28 +204,24 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  // console.log(to)
   const path = to.path.split('/')[1]
-  if (miniAMenuList.includes(path)) {
-    store.commit('setAIndex', path)
-  } else if (miniHMenuList.includes(path)) {
-    store.commit('setHIndex', path)
-  }
-  // permission
   const user = store.state.currentUser
   if (path !== 'login') {
     if (user) {
-      if (miniAMenuList.includes(path) && Number(user.level) === 0) {
-        next(false)
-      } else {
-        next()
-      }
+      next()
     } else {
       next({ name: 'login' })
     }
   } else {
     if (user) {
-      next(false)
+      const level = Number(user.level)
+      if (level === 0) {
+        next({ name: 'home' })
+      } else if (level === 1 || level === 2) {
+        next({ name: 'admin' })
+      } else {
+        next(false)
+      }
     } else {
       next()
     }

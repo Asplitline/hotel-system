@@ -1,22 +1,5 @@
 <template>
 	<el-card class="comment">
-		<!--  -->
-		<!-- <el-form v-model="searchForm" :inline="true" size="small">
-			<el-row>
-				<el-col :span="4">
-					<el-form-item>
-						<el-input v-model="searchForm.rName" placeholder="请输入房间名称" clearable />
-					</el-form-item>
-				</el-col>
-				<el-col :span="6">
-					<el-form-item>
-						<el-button type="primary" icon="el-icon-search" @click="search()">查询
-						</el-button>
-					</el-form-item>
-				</el-col>
-			</el-row>
-		</el-form> -->
-		<!--  -->
 		<el-table :data="filterTableData" style="width: 100%" max-height="650px">
 			<el-table-column prop="project.name" label="项目名称" min-width="140">
 			</el-table-column>
@@ -48,13 +31,14 @@
 			</el-table-column>
 			<el-table-column label="操作" min-width="120">
 				<template v-slot="{row}">
-					<el-link type="primary" :disabled="row.status !== 0 && row.status!==3"
-						@click="handleItem(row)">
+					<el-link type="primary" :disabled="row.status !== 0 " @click="handleItem(row)">
 						体检审核
 					</el-link>
-					<!-- <el-link type="success" v-else-if="row.status === 1">入场签到</el-link> -->
-					<!-- <el-link type="danger" v-else-if="row.status === 2">结束签退</el-link> -->
-					<el-link type="danger" :disabled="row.status !== 4 && row.status!==3"
+					<el-link type="success" :disabled="row.status!==3"
+						@click="showCommentDialog(row)">
+						提交医嘱
+					</el-link>
+					<el-link type="danger" :disabled="row.status!==5"
 						@click="deleteById(deleteAppointment,fetchAppointment,row.id,'体检记录')">删除记录
 					</el-link>
 				</template>
@@ -66,6 +50,31 @@
 			:current-page="query.page" :page-sizes="[1, 2, 5, 10]" :page-size="query.size"
 			layout="total, sizes, prev, pager, next, jumper" :total="total">
 		</el-pagination>
+		<el-dialog title="提供医嘱" :visible.sync="commentFormVisible" width="30%"
+			:close-on-click-modal="false">
+			<el-form :model="commentForm" :rules="commentRules" ref="commentForm">
+				<el-form-item label="用户名">
+					<el-input type="text" v-model="commentForm.userName" autocomplete="off"
+						readonly>
+					</el-input>
+				</el-form-item>
+				<el-form-item label="医生名称">
+					<el-input type="text" v-model="commentForm.doctorName" autocomplete="off"
+						readonly>
+					</el-input>
+				</el-form-item>
+				<el-form-item label="医学建议" prop="description">
+					<el-input type="textarea" v-model="commentForm.description" autocomplete="off">
+					</el-input>
+				</el-form-item>
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button size="small" @click="commentFormVisible = false">取消</el-button>
+				<el-button type="primary" size="small" @click="submitCommentForm('commentForm')">
+					提交
+				</el-button>
+			</div>
+		</el-dialog>
 	</el-card>
 </template>
 
@@ -81,7 +90,15 @@ export default {
 		return {
 			searchForm: {},
 			tableData: [],
-			orderState
+			commentForm: {},
+			commentRules: {
+				description: [
+					{ required: true, message: '请填入医嘱', trigger: 'blur' }
+				]
+			},
+			currentRow: {},
+			orderState,
+			commentFormVisible: false
 		}
 	},
 	mixins: [aMixin],
@@ -98,8 +115,15 @@ export default {
 				return { ...i, user, project, doctor }
 			})
 		},
-		handleItem(row) {
-			console.log(row)
+		showCommentDialog(row) {
+			this.currentRow = deepClone(row)
+			this.$set(this.commentForm, 'userName', row.user.username)
+			this.$set(this.commentForm, 'userId', row.userId)
+			this.$set(this.commentForm, 'doctorName', row.doctor.username)
+			this.$set(this.commentForm, 'doctorId', row.doctor.id)
+			this.commentFormVisible = true
+		},
+		async handleItem(row) {
 			if (row.status === 0) {
 				this.$confirm(
 					`是否通过${row.user.username}申请${row.project.name}`,
@@ -127,26 +151,44 @@ export default {
 						this.$message.error('服务繁忙')
 					}
 				})
+			} else if (row.status === 3) {
+				const item = deepClone(row)
+				delete item.project
+				delete item.doctor
+				delete item.user
+				const { success } = await _api.editAppointment({
+					...item,
+					updateTime: Date.now(),
+					status: 4
+				})
+				if (success) {
+					this.fetchAppointment()
+				} else {
+					this.$message.error('服务繁忙')
+				}
 			}
+		},
+		submitCommentForm(formName) {
+			this.$refs[formName].validate(async (valid) => {
+				if (!valid) return
+				const { success } = await _api.addNotice({
+					...this[formName],
+					createTime: Date.now(),
+					updateTime: Date.now()
+				})
+				if (success) {
+					this.handleItem(this.currentRow)
+					this.$message.success('医学建议已提交~')
+				} else {
+					this.$message.error('服务繁忙')
+				}
+			})
+			this.commentFormVisible = false
 		}
 	},
 	computed: {
 		...mapGetters(['getUserById', 'getItemById']),
 		filterTableData() {
-			// if (this.hasFilter) {
-			// 	const { uName, rName } = this.searchForm
-			// 	let data = deepClone(this.tableData)
-			// 	if (data && uName && uName.trim().length > 0) {
-			// 		data = data.filter((item) => item.user.username.indexOf(uName) !== -1)
-			// 	}
-			// 	if (data && rName && rName.trim().length > 0) {
-			// 		data = data.filter((item) => item.room.name.indexOf(rName) !== -1)
-			// 	}
-			// 	this.initSearch()
-			// 	return data
-			// } else {
-			// 	return this.tableData
-			// }
 			return this.tableData
 		}
 	},

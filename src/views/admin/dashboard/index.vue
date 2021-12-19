@@ -4,7 +4,7 @@
 		<!-- <el-row :gutter="20" class="panel-group"> -->
 		<el-row :gutter="20" class="panel-group">
 			<el-col :span="6" class="panel-card">
-				<div class="panel-card__item">
+				<div class="panel-card__item" @click="goto('category')">
 					<div class="panel-card__item--left">
 						<span class="number">{{info.tjlx}}</span>
 						<span class="title">体检分类</span>
@@ -15,7 +15,7 @@
 				</div>
 			</el-col>
 			<el-col :span="6" class="panel-card">
-				<div class="panel-card__item">
+				<div class="panel-card__item" @click="goto('item')">
 					<div class="panel-card__item--left">
 						<span class="number">{{info.tjxm}}</span>
 						<span class="title">体检项目</span>
@@ -26,7 +26,7 @@
 				</div>
 			</el-col>
 			<el-col :span="6" class="panel-card">
-				<div class="panel-card__item">
+				<div class="panel-card__item" @click="goto('comment')">
 					<div class="panel-card__item--left">
 						<span class="number">{{info.yzsl}}</span>
 						<span class="title">医嘱数量</span>
@@ -37,7 +37,7 @@
 				</div>
 			</el-col>
 			<el-col :span="6" class="panel-card">
-				<div class="panel-card__item">
+				<div class="panel-card__item" @click="goto('reply')">
 					<div class="panel-card__item--left">
 						<span class="number">{{info.tssl}}</span>
 						<span class="title">投诉数量</span>
@@ -51,7 +51,7 @@
 		</el-row>
 		<el-row :gutter="20" class="panel-group">
 			<el-col :span="8" class="panel-card">
-				<div class="panel-card__item">
+				<div class="panel-card__item" @click="goto('auser')">
 					<div class="panel-card__item--left">
 						<span class="number">{{info.user}}</span>
 						<span class="title">用户</span>
@@ -62,7 +62,7 @@
 				</div>
 			</el-col>
 			<el-col :span="8" class="panel-card">
-				<div class="panel-card__item">
+				<div class="panel-card__item" @click="goto('auser')">
 					<div class="panel-card__item--left">
 						<span class="number">{{info.doctor}}</span>
 						<span class="title">医生</span>
@@ -73,7 +73,7 @@
 				</div>
 			</el-col>
 			<el-col :span="8" class="panel-card">
-				<div class="panel-card__item">
+				<div class="panel-card__item" @click="goto('auser')">
 					<div class="panel-card__item--left">
 						<span class="number">{{info.admin}}</span>
 						<span class="title">管理员</span>
@@ -100,6 +100,9 @@ export default {
 		async fetchInfo() {
 			const data = await _api.getStatisticInfo()
 			this.info = data
+		},
+		goto(name) {
+			this.$router.push({ name })
 		}
 	},
 	mounted() {

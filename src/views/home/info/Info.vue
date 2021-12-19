@@ -1,17 +1,20 @@
 <template>
-  <div class="info">
-    <el-tabs type="border-card">
-      <el-tab-pane label="个人信息" :lazy="true">
-        <profile :data="currentUser" />
-      </el-tab-pane>
-      <el-tab-pane label="更改密码" :lazy="true">
-        <change-password :id="currentUser.id" />
-      </el-tab-pane>
-      <el-tab-pane label="我的预定" :lazy="true">
-        <my-order :id="currentUser.id" />
-      </el-tab-pane>
-    </el-tabs>
-  </div>
+	<div class="info">
+		<el-tabs type="border-card">
+			<el-tab-pane label="个人信息" :lazy="true">
+				<profile :data="currentUser" />
+			</el-tab-pane>
+			<el-tab-pane label="更改密码" :lazy="true">
+				<change-password :id="currentUser.id" />
+			</el-tab-pane>
+			<el-tab-pane label="支付记录" :lazy="true">
+				<my-pay :id="currentUser.id" />
+			</el-tab-pane>
+			<el-tab-pane label="体检记录" :lazy="true">
+				<my-item :id="currentUser.id" />
+			</el-tab-pane>
+		</el-tabs>
+	</div>
 </template>
 
 <script>
@@ -22,29 +25,31 @@
  */
 import changePassword from './ChangePassword'
 import profile from './Profile'
-import myOrder from './MyOrder'
+import MyItem from './MyItem'
+import myPay from './MyPay'
 import { mapState } from 'vuex'
 export default {
-  components: {
-    profile,
-    changePassword,
-    myOrder
-  },
-  methods: {},
-  computed: {
-    ...mapState(['currentUser'])
-  }
+	components: {
+		profile,
+		changePassword,
+		MyItem,
+		myPay
+	},
+	methods: {},
+	computed: {
+		...mapState(['currentUser'])
+	}
 }
 </script>
 <style lang="less" scoped>
 .info {
-  padding: 10px 100px;
+	padding: 10px 100px;
 }
 .el-tabs {
-  // min-height: 400px;
-  // height: 100%;
+	// min-height: 400px;
+	// height: 100%;
 }
 .el-tabs__nav-wrap.is-scrollable.is-left {
-  height: 100%;
+	height: 100%;
 }
 </style>

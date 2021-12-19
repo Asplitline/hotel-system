@@ -49,13 +49,15 @@ const item = {
 // todo [search]
 // done [delete / add / edit /page]
 const notice = {
-    getNoticeList: _get('/notice/page'),
-    addNotice: _post('/notice/insert'),
-    editNotice: _put('/notice/updateIgnoreNull'),
-    deleteNotice: _delete('/notice/delete', TRADITION_MODEL)
+    getNotices: _get('/apiNotice/list'),
+    getNoticeList: _get('/apiNotice/page'),
+    addNotice: _post('/apiNotice/insert'),
+    editNotice: _put('/apiNotice/update'),
+    deleteNotice: _delete('/apiNotice/delete', TRADITION_MODEL)
 }
 //
 const comment = {
+    getComments: _get('/apiNotice/list'),
     getCommentList: _get('/apiNotice/pageList'),
     addComment: _post('/apiNotice/insert'),
     editComment: _put('/apiNotice/update'),
@@ -71,7 +73,7 @@ const order = {
 }
 
 const Appointment = {
-    getAppointment: _get('/apiAppointment/list'),
+    getAppointments: _get('/apiAppointment/list'),
     getAppointmentList: _get('/apiAppointment/pageList'),
     addAppointment: _post('/apiAppointment/insert'),
     editAppointment: _put('/apiAppointment/update'),
@@ -84,6 +86,13 @@ const rotation = {
     addRotation: _post('apiRotation/insert'),
     editRotation: _put('/apiRotation/update'),
     deleteRotation: _delete('/apiRotation/delete', TRADITION_MODEL)
+}
+const addvice = {
+    getAddvices: _get('/apiAddvice/list'),
+    getAddviceList: _get('/apiAddvice/pageList'),
+    addAddvice: _post('apiAddvice/insert'),
+    editAddvice: _put('/apiAddvice/update'),
+    deleteAddvice: _delete('/apiAddvice/delete', TRADITION_MODEL)
 }
 
 const statistic = {
@@ -101,5 +110,6 @@ export default {
     ...item,
     ...rotation,
     ...statistic,
-    ...Appointment
+    ...Appointment,
+    ...addvice
 }
