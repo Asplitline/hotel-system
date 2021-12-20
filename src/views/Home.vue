@@ -31,13 +31,11 @@
 </template>
 
 <script>
-import { hMenuList } from '@static'
 import { mapMutations, mapState } from 'vuex'
 import { bindIMG, notEmpty } from '@utils'
 export default {
 	data() {
 		return {
-			hMenuList
 		}
 	},
 	methods: {

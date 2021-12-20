@@ -30,7 +30,7 @@
 				</el-form>
 			</div>
 			<div class="ms-register" :class="{'active':!isLogin}">
-				<div class="ms-title">酒店管理系统 - 注册界面</div>
+				<div class="ms-title">体检预约系统 - 注册界面</div>
 				<el-form :model="registerForm" :rules="rules" ref="registerForm" label-width="0px"
 					class="ms-content" key="registerForm">
 					<el-form-item prop="username">

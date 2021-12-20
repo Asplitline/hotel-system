@@ -22,13 +22,6 @@ export const aMenuList = [
     { name: '公告管理', index: 'notice', icon: 'iconfont icon-notice' }
 ]
 
-export const hMenuList = [
-    { name: '首页', index: 'index', icon: 'iconfont icon-user' },
-    { name: '酒店', index: 'hotel', icon: 'iconfont icon-ConferenceRoom' },
-    { name: '个人', index: 'info', icon: 'iconfont icon-ConferenceRoom' }
-]
-export const miniAMenuList = ['user', 'category', 'room', 'order', 'comment', 'notice']
-export const miniHMenuList = ['index', 'hotel', 'info']
 
 export const levelInfo = [
     { flag: 0, value: '用户', type: 'success' },
