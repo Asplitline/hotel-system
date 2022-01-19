@@ -2,7 +2,7 @@
 	<div class="login">
 		<div class="login-wrap">
 			<div class="ms-login" :class="{'active':isLogin}">
-				<div class="ms-title">体检预约系统 - 登录界面</div>
+				<div class="ms-title">防疫物资无人售货 - 登录界面</div>
 				<el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="0px"
 					class="ms-content" key="loginForm">
 					<el-form-item prop="username">
@@ -30,7 +30,7 @@
 				</el-form>
 			</div>
 			<div class="ms-register" :class="{'active':!isLogin}">
-				<div class="ms-title">体检预约系统 - 注册界面</div>
+				<div class="ms-title">防疫物资无人售货 - 注册界面</div>
 				<el-form :model="registerForm" :rules="rules" ref="registerForm" label-width="0px"
 					class="ms-content" key="registerForm">
 					<el-form-item prop="username">

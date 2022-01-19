@@ -31,7 +31,16 @@ const routes = [
         name: 'medical',
         component: () => import('@views/home/medical/Medical'),
         meta: {
-          title: '体检',
+          title: '商品分类',
+          index: '/medical'
+        }
+      },
+      {
+        path: '/medical',
+        name: 'medical',
+        component: () => import('@views/home/medical/Medical'),
+        meta: {
+          title: '我的购物车',
           index: '/medical'
         }
       },
@@ -40,7 +49,7 @@ const routes = [
         name: 'info',
         component: () => import('@views/home/info/Info'),
         meta: {
-          title: '个人',
+          title: '个人中心',
           index: '/info'
         }
       },
@@ -124,7 +133,7 @@ const routes = [
         name: 'category',
         component: () => import('@views/admin/category'),
         meta: {
-          title: '体检类型',
+          title: '商品分类',
           icon: 'iconfont icon-ConferenceRoom',
           index: '/physical/category'
         }
@@ -134,7 +143,7 @@ const routes = [
         name: 'item',
         component: () => import('@views/admin/item'),
         meta: {
-          title: '体检信息',
+          title: '库存管理',
           icon: 'iconfont icon-ConferenceRoom',
           index: '/physical/item'
         }
@@ -144,7 +153,7 @@ const routes = [
         name: 'appointment',
         component: () => import('@views/admin/appointment'),
         meta: {
-          title: '体检记录',
+          title: '订单管理',
           icon: 'iconfont icon-ConferenceRoom',
           index: '/physical/appointment'
         }
