@@ -118,13 +118,13 @@ const routes = [
     ]
   },
   {
-    path: '/physical',
-    name: 'physical',
+    path: '/goods',
+    name: 'goods',
     component: Admin,
-    redirect: '/physical/category',
+    redirect: '/goods/category',
     isAuth: true,
     meta: {
-      title: '体检管理',
+      title: '商品管理',
       icon: 'iconfont icon-ConferenceRoom'
     },
     children: [
@@ -135,7 +135,7 @@ const routes = [
         meta: {
           title: '商品分类',
           icon: 'iconfont icon-ConferenceRoom',
-          index: '/physical/category'
+          index: '/goods/category'
         }
       },
       {
@@ -143,19 +143,19 @@ const routes = [
         name: 'item',
         component: () => import('@views/admin/item'),
         meta: {
-          title: '库存管理',
+          title: '商品管理',
           icon: 'iconfont icon-ConferenceRoom',
-          index: '/physical/item'
+          index: '/goods/item'
         }
       },
       {
-        path: '/physical/appointment',
+        path: '/goods/appointment',
         name: 'appointment',
         component: () => import('@views/admin/appointment'),
         meta: {
           title: '订单管理',
           icon: 'iconfont icon-ConferenceRoom',
-          index: '/physical/appointment'
+          index: '/goods/appointment'
         }
       },
       {
@@ -165,44 +165,44 @@ const routes = [
         meta: {
           title: '体检反馈',
           icon: 'iconfont icon-ConferenceRoom',
-          index: '/physical/reply'
+          index: '/goods/reply'
         }
       }
     ]
   },
-  {
-    path: '/content',
-    name: 'content',
-    component: Admin,
-    redirect: '/content/room',
-    isAuth: true,
-    meta: {
-      title: '内容管理',
-      icon: 'iconfont icon-ConferenceRoom'
-    },
-    children: [
-      {
-        path: 'room',
-        name: 'room',
-        component: () => import('@views/admin/room'),
-        meta: {
-          title: '科室信息',
-          icon: 'iconfont icon-ConferenceRoom',
-          index: '/content/room'
-        }
-      },
-      {
-        path: 'comment',
-        name: 'comment',
-        component: () => import('@views/admin/comment'),
-        meta: {
-          title: '医嘱信息',
-          icon: 'iconfont icon-ConferenceRoom',
-          index: '/content/comment'
-        }
-      }
-    ]
-  },
+  // {
+  //   path: '/content',
+  //   name: 'content',
+  //   component: Admin,
+  //   redirect: '/content/room',
+  //   isAuth: true,
+  //   meta: {
+  //     title: '内容管理',
+  //     icon: 'iconfont icon-ConferenceRoom'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'room',
+  //       name: 'room',
+  //       component: () => import('@views/admin/room'),
+  //       meta: {
+  //         title: '科室信息',
+  //         icon: 'iconfont icon-ConferenceRoom',
+  //         index: '/content/room'
+  //       }
+  //     },
+  //     {
+  //       path: 'comment',
+  //       name: 'comment',
+  //       component: () => import('@views/admin/comment'),
+  //       meta: {
+  //         title: '医嘱信息',
+  //         icon: 'iconfont icon-ConferenceRoom',
+  //         index: '/content/comment'
+  //       }
+  //     }
+  //   ]
+  // },
   { path: '/', redirect: '/login' },
   { path: '/login', name: 'login', component: Login },
   { path: '*', name: 'error', component: Error }

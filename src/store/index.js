@@ -58,9 +58,6 @@ const mutations = {
   }
 }
 const getters = {
-  g_doctors: (state) => () => {
-    return state.allUser.filter(i => Number(i.level) === 2)
-  },
   getCategoryById: (state) => (id) => {
     return state.allCategory.find(item => item.id === id)
   },
@@ -68,9 +65,6 @@ const getters = {
     return state.allCategory?.filter(({ id, name }) => {
       return { id, name }
     })
-  },
-  getDoctorById: (state, getters) => (id) => {
-    return getters.g_doctors().find(item => item.id === id)
   },
   getUserById: (state) => (id) => {
     return state.allUser.find(item => item.id === id)
@@ -87,14 +81,15 @@ const actions = {
     const { data } = await _api.getCategoryList(query)
     commit('setAllCategory', data)
   },
-  async fetchAllUser ({ commit }) {
-    const { data } = await _api.getAllUser()
-    commit('setAllUser', data)
+  async fetchAllUser ({ commit }, query = { size: 999 }) {
+    const { list } = await _api.getUserList(query)
+    commit('setAllUser', list)
   },
-  async fetchAllRoom ({ commit }, query = { size: 999 }) {
-    const { list } = await _api.getRoomList(query)
-    commit('setAllRoom', list)
-  },
+  // async fetchAllRoom ({ commit }, query = { size: 999 }) {
+  //   const res = await _api.getRoomList(query)
+  //   console.log(res)
+  //   commit('setAllRoom', 11)
+  // },
   async fetchAllItem ({ commit }) {
     const { data } = await _api.getItems()
     commit('setAllItem', data)

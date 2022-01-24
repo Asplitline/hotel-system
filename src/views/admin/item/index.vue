@@ -5,7 +5,7 @@
 			<el-row>
 				<!-- <el-col :span="6">
 					<el-form-item>
-						<el-input v-model="searchForm.name" placeholder="请输入项目名称" clearable />
+						<el-input v-model="searchForm.name" placeholder="请输入目名称" clearable />
 					</el-form-item>
 				</el-col> -->
 				<el-col :span="6">
@@ -16,31 +16,31 @@
 					</el-form-item> -->
 					<el-form-item>
 						<el-button type="success" @click="showDialog(0)">
-							新增体检项
+							新增商品
 						</el-button>
 					</el-form-item>
 				</el-col>
 			</el-row>
 		</el-form>
 		<el-table :data="tableData" style="width: 100%" max-height="650px">
-			<el-table-column prop="roomId" label="体检名称" min-width="160">
+			<el-table-column prop="roomId" label="商品名称" min-width="160">
 				<template v-slot="{row}">
 					{{row.name}}
 				</template>
 			</el-table-column>
-			<el-table-column prop="price" label="体检价格" min-width="80">
+			<el-table-column prop="price" label="商品价格" min-width="80">
 				<template v-slot="{row}">
 					<el-tag type="danger" effect="plain">{{row.price | $}}</el-tag>
 				</template>
 			</el-table-column>
-			<el-table-column prop="doctor.username" label="体检医生" min-width="80">
+			<!-- <el-table-column prop="doctor.username" label="商品医生" min-width="80">
 			</el-table-column>
-			<el-table-column prop="types.name" label="体检类型" min-width="80">
+			<el-table-column prop="types.name" label="商品类型" min-width="80">
 
-			</el-table-column>
-			<el-table-column prop="department.name" label="体检科室" min-width="100">
-			</el-table-column>
-			<el-table-column prop="address" label="体检地址" min-width="100">
+			</el-table-column> -->
+			<!-- <el-table-column prop="department.name" label="商品科室" min-width="100">
+			</el-table-column> -->
+			<el-table-column prop="address" label="商品地址" min-width="100">
 				<template v-slot="{row}">
 					{{row.address}}
 				</template>
@@ -48,50 +48,42 @@
 			<el-table-column label="操作" min-width="120">
 				<template v-slot="{row}">
 					<el-link type="primary" @click="showDialog(1,row)">
-						修改体检项</el-link>
+						修改商品</el-link>
 					<el-link type="danger" @click="deleteById(deleteItem,fetchItem,row.id,'用户')">
-						删除体检项
+						删除商品
 					</el-link>
 				</template>
 			</el-table-column>
 		</el-table>
 
-		<el-dialog :title="flag === 0?'添加体检项':'修改体检项'" :visible.sync="dialogVisible"
-			width="30%" class="a-dialog" @close="clearDialog('itemForm')"
-			:close-on-click-modal="false">
+		<el-dialog :title="flag === 0?'添加商品':'修改商品'" :visible.sync="dialogVisible" width="30%"
+			class="a-dialog" @close="clearDialog('itemForm')" :close-on-click-modal="false">
 			<el-form :model="itemForm" :rules="itemRules" ref="itemForm" size="small"
 				label-width="100px">
-				<el-form-item label="体检项名称" prop="name">
-					<el-input v-model="itemForm.name" placeholder="体检项名称"></el-input>
+				<el-form-item label="商品名称" prop="name">
+					<el-input v-model="itemForm.name" placeholder="商品名称"></el-input>
 				</el-form-item>
-				<el-form-item label="体检科室" prop="depaetmentId">
-					<el-select v-model="itemForm.depaetmentId" placeholder="体检科室">
+				<el-form-item label="商品科室" prop="depaetmentId">
+					<el-select v-model="itemForm.depaetmentId" placeholder="商品科室">
 						<el-option v-for="item in allRoom" :key="item.id" :label="item.name"
 							:value="item.id">
 						</el-option>
 					</el-select>
 				</el-form-item>
-				<el-form-item label="体检医生" prop="doctorId">
-					<el-select v-model="itemForm.doctorId" placeholder="科室位置">
-						<el-option v-for="item in doctors" :key="item.id" :label="item.username"
-							:value="item.id">
-						</el-option>
-					</el-select>
-				</el-form-item>
-				<el-form-item label="体检类型" prop="doctorId">
+				<el-form-item label="商品类型" prop="doctorId">
 					<el-select v-model="itemForm.typeId" placeholder="科室位置">
 						<el-option v-for="item in allCategory" :key="item.id" :label="item.name"
 							:value="item.id">
 						</el-option>
 					</el-select>
 				</el-form-item>
-				<el-form-item label="体检地址" prop="address">
-					<el-input v-model="itemForm.address" placeholder="体检地址"></el-input>
+				<el-form-item label="商品地址" prop="address">
+					<el-input v-model="itemForm.address" placeholder="商品地址"></el-input>
 				</el-form-item>
-				<el-form-item label="体检价格" prop="price">
-					<el-input v-model="itemForm.price" placeholder="体检价格"></el-input>
+				<el-form-item label="商品价格" prop="price">
+					<el-input v-model="itemForm.price" placeholder="商品价格"></el-input>
 				</el-form-item>
-				<el-form-item label="体检项明细" prop="description">
+				<el-form-item label="商品明细" prop="description">
 					<el-input type="textarea" v-model="itemForm.desription"></el-input>
 				</el-form-item>
 			</el-form>
@@ -125,22 +117,22 @@ export default {
 			tableData: [],
 			itemForm: {},
 			itemRules: {
-				name: [{ required: true, message: '请输入体检名称', trigger: 'blur' }],
+				name: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
 				depaetmentId: [
-					{ required: true, message: '请选择体检科室', trigger: 'blur' }
+					{ required: true, message: '请选择商品科室', trigger: 'blur' }
 				],
 				doctorId: [
-					{ required: true, message: '请选择体检医生', trigger: 'blur' }
+					{ required: true, message: '请选择商品医生', trigger: 'blur' }
 				],
 				typeId: [
-					{ required: true, message: '请选择体检类型', trigger: 'blur' }
+					{ required: true, message: '请选择商品类型', trigger: 'blur' }
 				],
 				address: [
-					{ required: true, message: '请输入体检价格', trigger: 'blur' }
+					{ required: true, message: '请输入商品价格', trigger: 'blur' }
 				],
-				price: [{ required: true, message: '请输入体检科室', trigger: 'blur' }]
+				price: [{ required: true, message: '请输入商品科室', trigger: 'blur' }]
 				// description: [
-				// 	{ required: true, message: '请输入体检地址', trigger: 'blur' }
+				// 	{ required: true, message: '请输入商品地址', trigger: 'blur' }
 				// ]
 			},
 			dialogVisible: false,
@@ -149,18 +141,16 @@ export default {
 	},
 	mixins: [aMixin],
 	methods: {
-		...mapActions(['fetchAllUser', 'fetchAllRoom', 'fetchAllCategory']),
+		...mapActions(['fetchAllUser', 'fetchAllCategory']),
 		deleteItem: _api.deleteItem,
 
 		async fetchItem() {
-			const { list, total } = await _api.getItemList(this.query)
-			this.tableData = list.map((i) => {
-				const department = this.getRoomById(i.depaetmentId)
-				const types = this.getCategoryById(i.typeId)
-				const doctor = this.getDoctorById(i.doctorId)
-				return { ...i, department, types, doctor }
-			})
-			this.total = total
+			const res = await _api.getItemList(this.query)
+			console.log(res)
+			// this.tableData = list.map((i) => {
+			// 	return { ...i }
+			// })
+			// this.total = total
 		},
 		async handleItem(data, flag) {
 			data = deepClone(data)
@@ -238,21 +228,11 @@ export default {
 		}
 	},
 	computed: {
-		...mapGetters([
-			'getUserById',
-			'getRoomById',
-			'g_doctors',
-			'getCategoryById',
-			'getDoctorById'
-		]),
-		...mapState(['allRoom', 'allCategory']),
-		doctors() {
-			return this.g_doctors()
-		}
+		...mapGetters(['getUserById', 'getRoomById', 'getCategoryById']),
+		...mapState(['allRoom', 'allCategory'])
 	},
 	created() {
 		this.fetchAllUser()
-		this.fetchAllRoom()
 		this.fetchAllCategory()
 		this.fetchItem()
 	}

@@ -35,7 +35,7 @@
 			<li class="item-item hidden-vs" v-for="index in blankNum" :key="index"></li>
 		</template>
 		<template v-else>
-			<div class="not-found">暂无房间信息</div>
+			<div class="not-found">暂无商品信息</div>
 		</template>
 	</ul>
 </template>

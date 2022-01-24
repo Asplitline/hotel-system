@@ -23,8 +23,7 @@ export const aMenuList = [
 ]
 export const levelInfo = [
     { flag: 0, value: '用户', type: 'success' },
-    { flag: 1, value: '管理员', type: 'danger' },
-    { flag: 2, value: '医生', type: 'primary' }
+    { flag: 1, value: '管理员', type: 'danger' }
 ]
 export const sexInfo = [
     { flag: 0, value: '男' },

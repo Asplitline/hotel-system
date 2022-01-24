@@ -12,20 +12,19 @@ const base = {
 // todo addUser
 // fixme pagelist skip
 const user = {
-    getAllUser: _get('/apiUser/list'),
-    getUserList: _get('/apiUser/pageList'),
-    addUser: _post('/apiUser/insert'),
-    editUser: _put('/apiUser/update'),
-    deleteUser: _delete('/apiUser/delete', TRADITION_MODEL),
+    getUserList: _get('/user/page'),
+    addUser: _post('/user/insert'),
+    editUser: _put('/user/updateIgnoreNull'),
+    deleteUser: _delete('/user/delete', TRADITION_MODEL),
     getUserByUsername: _get('/login/getUserByUsername')
 }
 //
 const category = {
-    getCategoryList: _get('/apiPhysicalType/list'),
-    getCategoryById: _get('/apiPhysicalType/getById', TRADITION_MODEL),
-    addCategory: _post('/apiPhysicalType/insert'),
-    editCategory: _put('/apiPhysicalType/update'),
-    deleteCategory: _delete('/apiPhysicalType/delete', TRADITION_MODEL)
+    getCategoryList: _get('/apiGoodsLx/pageList'),
+    getCategoryById: _get('/apiGoodsLx/getById', TRADITION_MODEL),
+    addCategory: _post('/apiGoodsLx/insert'),
+    editCategory: _put('/apiGoodsLx/update'),
+    deleteCategory: _delete('/apiGoodsLx/delete', TRADITION_MODEL)
 }
 
 // todo [search]
@@ -39,12 +38,11 @@ const room = {
 }
 
 const item = {
-    getItems: _get('/apiPhysicalProject/list'),
-    getItemList: _get('/apiPhysicalProject/pageList'),
-    getItemById: _get('/apiPhysicalProject/getById', TRADITION_MODEL),
-    addItem: _post('/apiPhysicalProject/insert'),
-    editItem: _put('/apiPhysicalProject/update'),
-    deleteItem: _delete('/apiPhysicalProject/delete', TRADITION_MODEL)
+    getItemList: _get('/apiGoods/pageList'),
+    getItemById: _get('/apiGoods/getById', TRADITION_MODEL),
+    addItem: _post('/apiGoods/insert'),
+    editItem: _put('/apiGoods/update'),
+    deleteItem: _delete('/apiGoods/delete', TRADITION_MODEL)
 }
 // todo [search]
 // done [delete / add / edit /page]

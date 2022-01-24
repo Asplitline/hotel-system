@@ -66,8 +66,7 @@ export default {
 			this.item = data.map((i) => {
 				const department = this.getRoomById(i.depaetmentId)
 				const types = this.getCategoryById(i.typeId)
-				const doctor = this.getDoctorById(i.doctorId)
-				return { ...i, department, types, doctor }
+				return { ...i, department, types }
 			})
 		},
 		handleTag(val) {
@@ -90,8 +89,7 @@ export default {
 			'getCategoryById',
 			'getMiniCategory',
 			'getUserById',
-			'getRoomById',
-			'getDoctorById'
+			'getRoomById'
 		]),
 		fItem() {
 			// // console.log(...this.tagArr)

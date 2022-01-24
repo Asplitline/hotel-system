@@ -14,7 +14,7 @@
 		</el-form>
 		<!--  -->
 		<el-table :data="tableData" style="width: 100%" max-height="650px">
-			<el-table-column prop="name" label="体检类型" min-width="100">
+			<el-table-column prop="name" label="商品类型" min-width="100">
 			</el-table-column>
 			<el-table-column prop="description" label="类型描述" min-width="150">
 			</el-table-column>
@@ -32,7 +32,7 @@
 				<template v-slot="{row}">
 					<el-link type="primary" @click="showDialog(1,row)">修改类型</el-link>
 					<el-link type="danger"
-						@click="deleteById(deleteCategory,fetchCategory,row.id,'房型')">删除类型</el-link>
+						@click="deleteById(deleteCategory,fetchCategory,row.id,'分类')">删除类型</el-link>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -43,13 +43,24 @@
 			layout="total, sizes, prev, pager, next, jumper" :total="total">
 		</el-pagination>
 		<!--  -->
-		<el-dialog :title="categoryForm.flag === 0?'添加房型':'修改房型'"
+		<el-dialog :title="categoryForm.flag === 0?'添加分类':'修改分类'"
 			:visible.sync="dialogVisible" width="30%" class="a-dialog"
 			@close="clearDialog('categoryForm')" :close-on-click-modal="false">
 			<el-form :model="categoryForm" :rules="categoryRules" ref="categoryForm"
 				size="small" label-width="100px">
-				<el-form-item label="体检类型" prop="name">
-					<el-input v-model="categoryForm.name"></el-input>
+				<el-upload class="avatar-uploader" :action="bindURL('/uploadfile')"
+					:show-file-list="false" :on-success="handleAvatarSuccess">
+					<img v-if="categoryForm.url" :src="bindIMG(categoryForm.url)" class="avatar">
+					<i v-else class="el-icon-plus avatar-uploader-icon"></i>
+				</el-upload>
+				<el-form-item label="父级分类" prop="description">
+					<el-select v-modal="categoryForm.description">
+						<el-option v-for="i in 4" :key="i">{{i}}</el-option>
+					</el-select>
+					<!-- <el-input v-model="categoryForm.description"></el-input> -->
+				</el-form-item>
+				<el-form-item label="类型名称" prop="description">
+					<el-input v-model="categoryForm.description"></el-input>
 				</el-form-item>
 				<el-form-item label="类型简介" prop="description">
 					<el-input v-model="categoryForm.description"></el-input>
@@ -72,7 +83,7 @@
 import { aMixin } from '@mixins'
 import { ADD, EDIT } from '@static'
 import _api from '@api'
-import { getUid, deepClone } from '@utils'
+import { getUid, deepClone, bindURL, bindIMG } from '@utils'
 import { mapActions, mapGetters } from 'vuex'
 export default {
 	data() {
@@ -82,10 +93,10 @@ export default {
 			dialogVisible: false,
 			categoryForm: {},
 			categoryRules: {
-				name: { required: true, message: '请输入房间类型', trigger: blur },
+				name: { required: true, message: '请输入商品类型', trigger: blur },
 				description: {
 					required: true,
-					message: '请补充房间类型',
+					message: '请补充商品类型',
 					trigger: blur
 				}
 			}
@@ -95,6 +106,8 @@ export default {
 	methods: {
 		...mapActions(['fetchAllCategory']),
 		deleteCategory: _api.deleteCategory,
+		bindURL,
+		bindIMG,
 		async fetchCategory() {
 			const { data: list } = await _api.getCategoryList(this.query)
 			this.tableData = list
@@ -108,6 +121,11 @@ export default {
 				this.categoryForm = deepClone(data)
 			}
 			this.categoryForm.flag = flag
+		},
+		// 头像上传
+		handleAvatarSuccess(res, file) {
+			console.log(res, file)
+			this.$set(this.carouselForm, 'url', res)
 		},
 		// 提交对话框
 		submitDialog(formName, flag) {

@@ -44,7 +44,7 @@ export default {
 	methods: {
 		...mapMutations(['setCurrentItem']),
 		bindIMG,
-		// 跳转到房间详情
+		// 跳转到商品详情
 		goHotelDetail(data) {
 			this.setCurrentItem(data)
 			this.$router.push({ name: 'hotel-detail', params: { id: data.id } })
