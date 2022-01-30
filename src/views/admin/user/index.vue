@@ -86,7 +86,7 @@
 			:close-on-click-modal="false">
 			<el-form :model="userForm" :rules="userRules" ref="userForm" size="small"
 				label-width="100px">
-				<el-form-item label="头像" prop="url">
+				<el-form-item prop="url" label-width="0">
 					<el-upload class="avatar-uploader" :action="bindURL('/uploadfile')"
 						:show-file-list="false" :on-success="handleAvatarSuccess">
 						<img v-if="userForm.url" :src="bindIMG(userForm.url)" class="avatar">
@@ -211,6 +211,7 @@ export default {
 		// 头像上传
 		handleAvatarSuccess(res, file) {
 			console.log(res, file)
+			console.log(res)
 			this.$set(this.userForm, 'url', res)
 		},
 		// 重置密码

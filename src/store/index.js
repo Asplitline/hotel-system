@@ -62,8 +62,8 @@ const getters = {
     return state.allCategory.find(item => item.id === id)
   },
   getMiniCategory: (state) => () => {
-    return state.allCategory?.filter(({ id, name }) => {
-      return { id, name }
+    return state.allCategory?.filter(({ id, name, pid }) => {
+      return { id, name, pid }
     })
   },
   getUserById: (state) => (id) => {
@@ -78,8 +78,8 @@ const getters = {
 }
 const actions = {
   async fetchAllCategory ({ commit }, query = { size: 999 }) {
-    const { data } = await _api.getCategoryList(query)
-    commit('setAllCategory', data)
+    const { list } = await _api.getCategoryList(query)
+    commit('setAllCategory', list)
   },
   async fetchAllUser ({ commit }, query = { size: 999 }) {
     const { list } = await _api.getUserList(query)

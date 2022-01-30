@@ -175,9 +175,13 @@ export default {
 		},
 		async getValidateCode() {
 			this.loadFlag = true
-			this.checkCode = await _api.checkCode({
-				email: this.registerForm.email
-			})
+			try {
+				this.checkCode = await _api.checkCode({
+					email: this.registerForm.email
+				})
+			} catch (error) {
+				console.log(error)
+			}
 		},
 		handleData({ password, username, email }) {
 			// todo init avatar

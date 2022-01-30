@@ -48,7 +48,7 @@
 			@close="clearDialog('carouselForm')" :close-on-click-modal="false">
 			<el-form :model="carouselForm" :rules="carouselRules" ref="carouselForm"
 				size="small" label-width="100px">
-				<el-form-item label="图片" prop="url">
+				<el-form-item prop="url">
 					<el-upload class="avatar-uploader" :action="bindURL('/uploadfile')"
 						:show-file-list="false" :on-success="handleAvatarSuccess">
 						<img v-if="carouselForm.url" :src="bindIMG(carouselForm.url)" class="avatar">

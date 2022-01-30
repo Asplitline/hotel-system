@@ -4,7 +4,7 @@ import { SERVER_URL } from '@static'
 
 const $http = axios.create({
     baseURL: SERVER_URL,
-    timeout: 5000,
+    timeout: 100000,
     withCredentials: false
 })
 

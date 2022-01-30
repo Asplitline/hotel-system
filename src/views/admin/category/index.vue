@@ -13,7 +13,9 @@
 			</el-row>
 		</el-form>
 		<!--  -->
-		<el-table :data="tableData" style="width: 100%" max-height="650px">
+		<el-table :data="tableData" style="width: 100%" max-height="650px" row-key="id"
+			default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+			>
 			<el-table-column prop="name" label="商品类型" min-width="100">
 			</el-table-column>
 			<el-table-column prop="description" label="类型描述" min-width="150">
@@ -36,6 +38,7 @@
 				</template>
 			</el-table-column>
 		</el-table>
+
 		<!--  -->
 		<el-pagination @size-change="handleSizeChange(fetchCategory,$event)"
 			@current-change="handleCurrentChange(fetchCategory,$event)"
@@ -50,17 +53,18 @@
 				size="small" label-width="100px">
 				<el-upload class="avatar-uploader" :action="bindURL('/uploadfile')"
 					:show-file-list="false" :on-success="handleAvatarSuccess">
-					<img v-if="categoryForm.url" :src="bindIMG(categoryForm.url)" class="avatar">
+					<img v-if="categoryForm.icon" :src="bindIMG(categoryForm.icon)" class="avatar">
 					<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 				</el-upload>
-				<el-form-item label="父级分类" prop="description">
-					<el-select v-modal="categoryForm.description">
-						<el-option v-for="i in 4" :key="i">{{i}}</el-option>
+				<el-form-item label="父级分类" prop="pid">
+					<el-select v-model="categoryForm.pid">
+						<el-option v-for="i in parentCategory" :key="i.id" :value="i.id"
+							:label="i.name">
+						</el-option>
 					</el-select>
-					<!-- <el-input v-model="categoryForm.description"></el-input> -->
 				</el-form-item>
-				<el-form-item label="类型名称" prop="description">
-					<el-input v-model="categoryForm.description"></el-input>
+				<el-form-item label="类型名称" prop="name">
+					<el-input v-model="categoryForm.name"></el-input>
 				</el-form-item>
 				<el-form-item label="类型简介" prop="description">
 					<el-input v-model="categoryForm.description"></el-input>
@@ -98,6 +102,11 @@ export default {
 					required: true,
 					message: '请补充商品类型',
 					trigger: blur
+				},
+				icon: {
+					required: true,
+					message: '请选择商品分类图片',
+					trigger: blur
 				}
 			}
 		}
@@ -109,7 +118,7 @@ export default {
 		bindURL,
 		bindIMG,
 		async fetchCategory() {
-			const { data: list } = await _api.getCategoryList(this.query)
+			const { list } = await _api.getCategoryList(this.query)
 			this.tableData = list
 		},
 		// 显示对话框
@@ -124,8 +133,7 @@ export default {
 		},
 		// 头像上传
 		handleAvatarSuccess(res, file) {
-			console.log(res, file)
-			this.$set(this.carouselForm, 'url', res)
+			this.$set(this.categoryForm, 'icon', res)
 		},
 		// 提交对话框
 		submitDialog(formName, flag) {
@@ -150,12 +158,17 @@ export default {
 		}
 	},
 	computed: {
-		...mapGetters(['getMiniCategory'])
+		...mapGetters(['getMiniCategory']),
+		parentCategory() {
+			return this.getMiniCategory()?.filter((i) => i.pid == null)
+		}
 	},
-	created() {
+	mounted() {
 		this.fetchCategory()
-		// this.fetchAllCategory()
-	}
+		this.fetchAllCategory()
+		console.log(this.parentCategory)
+	},
+	created() {}
 }
 </script>
 
