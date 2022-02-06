@@ -14,7 +14,7 @@
 		</el-form>
 		<!--  -->
 		<el-table :data="tableData" style="width: 100%" max-height="650px" row-key="id"
-			default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+			:tree-props="{children: 'children'}">
 			>
 			<el-table-column prop="name" label="商品类型" min-width="100">
 			</el-table-column>
@@ -32,21 +32,16 @@
 			</el-table-column>
 			<el-table-column label="操作" min-width="100">
 				<template v-slot="{row}">
-					<el-link type="primary" @click="showDialog(1,row)">修改类型</el-link>
+					<el-link type="primary" @click="showDialog(1,row)">修改商品类型</el-link>
 					<el-link type="danger"
-						@click="deleteById(deleteCategory,fetchCategory,row.id,'分类')">删除类型</el-link>
+						@click="deleteById(deleteCategory,fetchCategory,row.id,'商品类型')">删除商品类型
+					</el-link>
 				</template>
 			</el-table-column>
 		</el-table>
 
 		<!--  -->
-		<el-pagination @size-change="handleSizeChange(fetchCategory,$event)"
-			@current-change="handleCurrentChange(fetchCategory,$event)"
-			:current-page="query.page" :page-sizes="[1, 2, 5, 10]" :page-size="query.size"
-			layout="total, sizes, prev, pager, next, jumper" :total="total">
-		</el-pagination>
-		<!--  -->
-		<el-dialog :title="categoryForm.flag === 0?'添加分类':'修改分类'"
+		<el-dialog :title="categoryForm.flag === 0?'添加商品类型':'修改商品类型'"
 			:visible.sync="dialogVisible" width="30%" class="a-dialog"
 			@close="clearDialog('categoryForm')" :close-on-click-modal="false">
 			<el-form :model="categoryForm" :rules="categoryRules" ref="categoryForm"
@@ -56,14 +51,14 @@
 					<img v-if="categoryForm.icon" :src="bindIMG(categoryForm.icon)" class="avatar">
 					<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 				</el-upload>
-				<el-form-item label="父级分类" prop="pid">
+				<el-form-item label="父级商品类型" prop="pid">
 					<el-select v-model="categoryForm.pid">
 						<el-option v-for="i in parentCategory" :key="i.id" :value="i.id"
 							:label="i.name">
 						</el-option>
 					</el-select>
 				</el-form-item>
-				<el-form-item label="类型名称" prop="name">
+				<el-form-item label="商品类型" prop="name">
 					<el-input v-model="categoryForm.name"></el-input>
 				</el-form-item>
 				<el-form-item label="类型简介" prop="description">
@@ -83,6 +78,7 @@
 </template>
 
 <script>
+// ques del category
 // import { category } from '@mock'
 import { aMixin } from '@mixins'
 import { ADD, EDIT } from '@static'
@@ -105,7 +101,7 @@ export default {
 				},
 				icon: {
 					required: true,
-					message: '请选择商品分类图片',
+					message: '请选择商品商品类型图片',
 					trigger: blur
 				}
 			}
@@ -117,9 +113,18 @@ export default {
 		deleteCategory: _api.deleteCategory,
 		bindURL,
 		bindIMG,
+
 		async fetchCategory() {
-			const { list } = await _api.getCategoryList(this.query)
-			this.tableData = list
+			const { data: list } = await _api.getCategories()
+			console.log(list)
+			const parent = list.filter((i) => i.pid == null)
+			this.tableData = parent.map((i) => {
+				const children = list.filter((j) => j.pid === i.id)
+				return {
+					...i,
+					children
+				}
+			})
 		},
 		// 显示对话框
 		showDialog(flag, data) {

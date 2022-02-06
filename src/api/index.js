@@ -20,6 +20,7 @@ const user = {
 }
 //
 const category = {
+    getCategories: _get('/apiGoodsLx/list'),
     getCategoryList: _get('/apiGoodsLx/pageList'),
     getCategoryById: _get('/apiGoodsLx/getById', TRADITION_MODEL),
     addCategory: _post('/apiGoodsLx/insert'),
