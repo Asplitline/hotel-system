@@ -3,86 +3,65 @@
 		<!-- <div class="home-text">name: {{ name }}</div> -->
 		<!-- <el-row :gutter="20" class="panel-group"> -->
 		<el-row :gutter="20" class="panel-group">
-			<el-col :span="6" class="panel-card">
+			<el-col :span="4" class="panel-card">
 				<div class="panel-card__item" @click="goto('category')">
 					<div class="panel-card__item--left">
-						<span class="number">{{info.tjlx}}</span>
-						<span class="title">体检分类</span>
+						<span class="number">{{info.goodsLxNum}}</span>
+						<span class="title">分类</span>
 					</div>
 					<div class="panel-card__item--right">
 						<i class="fa fa-tag" aria-hidden="true"></i>
 					</div>
 				</div>
 			</el-col>
-			<el-col :span="6" class="panel-card">
+			<el-col :span="4" class="panel-card">
 				<div class="panel-card__item" @click="goto('item')">
 					<div class="panel-card__item--left">
-						<span class="number">{{info.tjxm}}</span>
-						<span class="title">体检项目</span>
+						<span class="number">{{info.goodsNum}}</span>
+						<span class="title">商品</span>
 					</div>
 					<div class="panel-card__item--right">
-						<i class="fa fa-heartbeat" aria-hidden="true"></i>
+						<i class="fa fa-shopping-bag" aria-hidden="true"></i>
 					</div>
 				</div>
 			</el-col>
-			<el-col :span="6" class="panel-card">
+			<el-col :span="8" class="panel-card">
 				<div class="panel-card__item" @click="goto('comment')">
 					<div class="panel-card__item--left">
-						<span class="number">{{info.yzsl}}</span>
-						<span class="title">医嘱数量</span>
-					</div>
-					<div class="panel-card__item--right">
-						<i class="fa fa-thermometer-three-quarters" aria-hidden="true"></i>
-					</div>
-				</div>
-			</el-col>
-			<el-col :span="6" class="panel-card">
-				<div class="panel-card__item" @click="goto('reply')">
-					<div class="panel-card__item--left">
-						<span class="number">{{info.tssl}}</span>
-						<span class="title">投诉数量</span>
-					</div>
-					<div class="panel-card__item--right">
-						<i class="fa fa-commenting " aria-hidden="true"></i>
-					</div>
-				</div>
-			</el-col>
-
-		</el-row>
-		<el-row :gutter="20" class="panel-group">
-			<el-col :span="8" class="panel-card">
-				<div class="panel-card__item" @click="goto('auser')">
-					<div class="panel-card__item--left">
-						<span class="number">{{info.user}}</span>
+						<span class="number">{{info.userNum}}</span>
 						<span class="title">用户</span>
 					</div>
 					<div class="panel-card__item--right">
+
 						<i class="fa fa-user" aria-hidden="true"></i>
 					</div>
 				</div>
 			</el-col>
-			<el-col :span="8" class="panel-card">
-				<div class="panel-card__item" @click="goto('auser')">
+			<el-col :span="4" class="panel-card">
+				<div class="panel-card__item" @click="goto('reply')">
 					<div class="panel-card__item--left">
-						<span class="number">{{info.doctor}}</span>
-						<span class="title">医生</span>
+						<span class="number">{{info.donateNum}}</span>
+						<span class="title">捐献</span>
 					</div>
 					<div class="panel-card__item--right">
-						<i class="fa fa-user-md" aria-hidden="true"></i>
+						<i class="fa fa-heartbeat " aria-hidden="true"></i>
 					</div>
 				</div>
 			</el-col>
-			<el-col :span="8" class="panel-card">
+			<el-col :span="4" class="panel-card">
 				<div class="panel-card__item" @click="goto('auser')">
 					<div class="panel-card__item--left">
-						<span class="number">{{info.admin}}</span>
-						<span class="title">管理员</span>
+						<span class="number">{{info.orderNum}}</span>
+						<span class="title">订单</span>
 					</div>
 					<div class="panel-card__item--right">
-						<i class="fa fa-user-secret" aria-hidden="true"></i>
+						<i class="fa fa-shopping-cart " aria-hidden="true"></i>
 					</div>
 				</div>
 			</el-col>
+		</el-row>
+		<el-row :gutter="20" class="panel-group">
+
 		</el-row>
 	</div>
 </template>
@@ -99,6 +78,7 @@ export default {
 	methods: {
 		async fetchInfo() {
 			const data = await _api.getStatisticInfo()
+			console.log(data)
 			this.info = data
 		},
 		goto(name) {
@@ -128,7 +108,7 @@ export default {
 			border-radius: 0.625rem;
 			width: 100%;
 			/* height: 108px; */
-			padding: 1.4rem 0;
+			padding: 30px 0;
 			margin-bottom: 20px;
 			cursor: pointer;
 			font-size: 12px;

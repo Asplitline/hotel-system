@@ -39,17 +39,10 @@ export const replyState = [
     { flag: 1, value: '已回复', type: 'primary' }
 ]
 
-export const roomState = [
-    { id: 0, value: '空闲中', type: 'success', text: '马上预定', class: '' },
-    { id: 1, value: '已住人', type: 'danger', text: '无法预定', class: 'disable' }
-]
-export const orderState = [
-    { id: 0, value: '待审核', type: 'primary' },
-    { id: 1, value: '待签到', type: 'warning' },
-    { id: 2, value: '体检中', type: 'success' },
-    { id: 3, value: '建议中', type: 'primary' },
-    { id: 4, value: '反馈中', type: 'warning' },
-    { id: 5, value: '体检结束', type: 'danger' }
+export const goodsState = [
+    { value: 0, label: '待上架', type: 'info' },
+    { value: 1, label: '已上架', type: 'success' },
+    { value: 2, label: '已授权', type: 'danger' }
 ]
 export const priceList = [
     { id: 0, min: 0, max: 1000, name: '1000元以下' },
@@ -57,26 +50,7 @@ export const priceList = [
     { id: 2, min: 5000, max: 10000, name: '5000-10000元' },
     { id: 3, min: 10000, max: 99999, name: '10000元以上' }
 ]
-export const floorList = [
-    { id: 0, name: '1楼' },
-    { id: 1, name: '2楼' },
-    { id: 2, name: '3楼' },
-    { id: 3, name: '4楼' },
-    { id: 4, name: '5楼' }
-    // { id: 5, name: '6楼' },
-    // { id: 6, name: '7楼' },
-    // { id: 7, name: '8楼' },
-    // { id: 8, name: '9楼' },
-    // { id: 9, name: '10楼' }
-]
-export const orderInfo = [
-    { id: 0, value: '已退房', type: 'info' },
-    { id: 1, value: '预订中', type: 'primary' },
-    { id: 2, value: '已驳回', type: 'danger' },
-    { id: 3, value: '入住中', type: 'success' }
-]
 
-export const cChar = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十']
 export const loadBtn = [
     { id: 0, icon: 'el-icon-position' },
     { id: 1, icon: 'el-icon-loading' }

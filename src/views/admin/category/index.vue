@@ -78,7 +78,7 @@
 </template>
 
 <script>
-// ques del category
+// todo del category
 // import { category } from '@mock'
 import { aMixin } from '@mixins'
 import { ADD, EDIT } from '@static'

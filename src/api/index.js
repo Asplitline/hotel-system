@@ -1,7 +1,6 @@
 import { _get, _delete, _put, _post } from './helper'
 
 const TRADITION_MODEL = 2
-// todo changePassword
 const base = {
     changePwd: _get('/login/changePassword'),
     login: _post('/login/api/login', TRADITION_MODEL),
@@ -9,8 +8,6 @@ const base = {
     checkCode: _get('/login/getCheckCode')
 }
 
-// todo addUser
-// fixme pagelist skip
 const user = {
     getUserList: _get('/user/page'),
     addUser: _post('/user/insert'),
@@ -28,8 +25,6 @@ const category = {
     deleteCategory: _delete('/apiGoodsLx/delete', TRADITION_MODEL)
 }
 
-// todo [search]
-// done [delete / add / edit / page]
 const room = {
     getRoomList: _get('/apiDepartment/pageList'),
     getRoomById: _get('/apiDepartment/getById', TRADITION_MODEL),
@@ -45,8 +40,6 @@ const item = {
     editItem: _put('/apiGoods/update'),
     deleteItem: _delete('/apiGoods/delete', TRADITION_MODEL)
 }
-// todo [search]
-// done [delete / add / edit /page]
 const notice = {
     // getNotices: _get('/apiNotice/list'),
     getNoticeList: _get('/apiNotice/page'),
@@ -79,12 +72,12 @@ const Appointment = {
     deleteAppointment: _delete('/apiAppointment/delete', TRADITION_MODEL)
 }
 
-const rotation = {
-    // getRotations: _get('/apiRotation/list'),
-    getRotationList: _get('/apiRotation/pageList'),
-    addRotation: _post('apiRotation/insert'),
-    editRotation: _put('/apiRotation/update'),
-    deleteRotation: _delete('/apiRotation/delete', TRADITION_MODEL)
+const shopFile = {
+    getShopFile: _get('/apiShopFile/list'),
+    getShopFileList: _get('/apiShopFile/pageList'),
+    addShopFile: _post('apiShopFile/insert'),
+    editShopFile: _put('/apiShopFile/update'),
+    deleteShopFile: _delete('/apiShopFile/delete', TRADITION_MODEL)
 }
 const addvice = {
     // getAddvices: _get('/apiAddvice/list'),
@@ -95,7 +88,7 @@ const addvice = {
 }
 
 const statistic = {
-    getStatisticInfo: _get('/statistics')
+    getStatisticInfo: _post('/statistics')
 }
 
 export default {
@@ -107,7 +100,7 @@ export default {
     ...comment,
     ...order,
     ...item,
-    ...rotation,
+    ...shopFile,
     ...statistic,
     ...Appointment,
     ...addvice

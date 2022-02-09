@@ -184,7 +184,6 @@ export default {
 			}
 		},
 		handleData({ password, username, email }) {
-			// todo init avatar
 			return {
 				level: 0,
 				createTime: Date.now(),

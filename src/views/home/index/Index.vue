@@ -57,8 +57,8 @@ export default {
 			})
 			this.room = list
 		},
-		async fetchRotation() {
-			const { data } = await _api.getRotations()
+		async fetchShopFile() {
+			const { data } = await _api.getShopFiles()
 			this.list = data.slice(0, 4)
 		},
 		showNotice(data) {
@@ -82,7 +82,7 @@ export default {
 	},
 	created() {
 		this.fetchAllRoom()
-		this.fetchRotation()
+		this.fetchShopFile()
 		// this.fetchRoom()
 		this.fetchAllCategory()
 	}

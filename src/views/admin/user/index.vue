@@ -128,6 +128,7 @@
 </template>
 
 <script>
+// todo search user
 import { levelInfo, sexInfo, stateInfo, ADD, EDIT, DEFAULT_PWD } from '@static'
 import { aMixin } from '@mixins'
 import _api from '@api'
@@ -175,6 +176,7 @@ export default {
 		async fetchUser() {
 			const { total, list } = await _api.getUserList(this.query)
 			this.total = total
+			console.log(list)
 			this.tableData = list
 		},
 		// 显示对话框
@@ -194,7 +196,6 @@ export default {
 				this[formName].updateTime = Date.now()
 				delete this[formName].flag
 				if (flag === ADD) {
-					// todo error - add user
 					Object.assign(this[formName], {
 						id: getUid(),
 						createTime: Date.now()

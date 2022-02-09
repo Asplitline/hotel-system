@@ -13,7 +13,6 @@
 							:d-active="tagArr[1]" />
 						<medical-nav :data=" floorList" text="楼层选择" @h-tag="handleTag" :flag="2"
 							:d-active="tagArr[2]" />
-						<!-- todo : no idea -->
 						<medical-tag :data=" tagArr" :fArr="[getMiniCategory(),priceList,floorList]"
 							@t-close="handleTagClose" />
 					</div>

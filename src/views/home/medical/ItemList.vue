@@ -87,8 +87,6 @@ export default {
 			this.itemList = val
 		}
 	},
-	/* ques [√]data [x]itemList
-	 */
 	created() {
 		this.itemList = this.data
 	}

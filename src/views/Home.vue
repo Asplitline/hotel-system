@@ -35,13 +35,12 @@ import { mapMutations, mapState } from 'vuex'
 import { bindIMG, notEmpty } from '@utils'
 export default {
 	data() {
-		return {
-		}
+		return {}
 	},
 	methods: {
 		...mapMutations(['clearInfo']),
 		bindIMG,
-		// notes $options
+		// tag $options
 		handleCommand(command) {
 			this.$options.methods[command](this)
 		},
