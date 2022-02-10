@@ -84,7 +84,7 @@ import { aMixin } from '@mixins'
 import { ADD, EDIT } from '@static'
 import _api from '@api'
 import { getUid, deepClone, bindURL, bindIMG } from '@utils'
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 export default {
 	data() {
 		return {
@@ -104,7 +104,8 @@ export default {
 					message: '请选择商品商品类型图片',
 					trigger: blur
 				}
-			}
+			},
+			parentCategory: []
 		}
 	},
 	mixins: [aMixin],
@@ -116,8 +117,8 @@ export default {
 
 		async fetchCategory() {
 			const { data: list } = await _api.getCategories()
-			console.log(list)
 			const parent = list.filter((i) => i.pid == null)
+			this.parentCategory = parent
 			this.tableData = parent.map((i) => {
 				const children = list.filter((j) => j.pid === i.id)
 				return {
@@ -162,16 +163,9 @@ export default {
 			})
 		}
 	},
-	computed: {
-		...mapGetters(['getMiniCategory']),
-		parentCategory() {
-			return this.getMiniCategory()?.filter((i) => i.pid == null)
-		}
-	},
+	computed: {},
 	mounted() {
 		this.fetchCategory()
-		this.fetchAllCategory()
-		console.log(this.parentCategory)
 	},
 	created() {}
 }

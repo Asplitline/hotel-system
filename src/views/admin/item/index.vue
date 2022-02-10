@@ -67,7 +67,7 @@
 			</el-table-column>
 			<el-table-column prop="price" label="商品价格" min-width="80">
 				<template v-slot="{row}">
-					<el-tag type="danger" effect="plain">{{row.price }}</el-tag>
+					<el-tag type="danger" effect="plain">{{row.price | $}}</el-tag>
 				</template>
 			</el-table-column>
 			<el-table-column prop="address" label="上架状态" min-width="100">
@@ -104,10 +104,19 @@
 					<el-input v-model="itemForm.name" placeholder="商品名称"></el-input>
 				</el-form-item>
 				<el-form-item label="分类" prop="type">
-					<el-select v-model="itemForm.type" placeholder="所属分类">
+					<!-- <el-select v-model="itemForm.type" placeholder="所属分类">
 						<el-option v-for="item in allCategory" :key="item.id" :label="item.name"
 							:value="item.id">
 						</el-option>
+					</el-select> -->
+
+					<el-select v-model="itemForm.type" placeholder="所属分类">
+						<el-option-group v-for="category in categories" :key="category.id"
+							:label="category.name">
+							<el-option v-for="item in category.children" :key="item.id"
+								:label="item.name" :value="item.id">
+							</el-option>
+						</el-option-group>
 					</el-select>
 				</el-form-item>
 
@@ -185,7 +194,8 @@ export default {
 		bindURL,
 		bindIMG,
 		async fetchItem() {
-			const { list } = await _api.getItemList(this.query)
+			const { list, total } = await _api.getItemList(this.query)
+			this.total = total
 			this.tableData = list.map((i) => {
 				const typeInfo = this.getCategoryById(i.type)
 				const statusInfo = this.goodsState.find(
@@ -249,7 +259,19 @@ export default {
 	},
 	computed: {
 		...mapGetters(['getUserById', 'getRoomById', 'getCategoryById']),
-		...mapState(['allRoom', 'allCategory'])
+		...mapState(['allRoom', 'allCategory']),
+		categories() {
+			const parent = this.allCategory.filter((i) => i.pid === null)
+			return parent
+				.map((i) => {
+					const children = this.allCategory.filter((j) => j.pid === i.id)
+					return {
+						...i,
+						children
+					}
+				})
+				.filter((i) => i.children.length > 0)
+		}
 	},
 	mounted() {
 		this.fetchAllUser()
@@ -274,6 +296,14 @@ export default {
 		margin-right: 0;
 		margin-bottom: 0;
 		width: 50%;
+	}
+}
+
+.avatar-uploader {
+	padding-bottom: 0;
+	.avatar {
+		width: auto;
+		height: 150px;
 	}
 }
 </style>

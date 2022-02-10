@@ -134,7 +134,7 @@ export default {
 				font-size: 30px;
 				line-height: 1.5;
 				i {
-					color: #003366;
+					color: #c91523;
 				}
 				span {
 					font-size: 24px;
@@ -148,13 +148,13 @@ export default {
 			margin: 20px 0 30px;
 			position: relative;
 			letter-spacing: 2px;
-			color: #003366;
+			color: #c91523;
 		}
 		.i-btn {
-			// background-color: #003366;
-			color: #003366;
+			// background-color: #c91523;
+			color: #c91523;
 			outline: none;
-			border: 1px solid #003366;
+			border: 1px solid #c91523;
 			background-color: transparent;
 			width: 100%;
 			height: 40px;
@@ -163,7 +163,7 @@ export default {
 			transition: all 0.2s linear;
 			font-size: 16px;
 			&:hover {
-				background-color: #003366;
+				background-color: #c91523;
 				color: #e8e8e8;
 				// transform: scale(1.01);
 			}

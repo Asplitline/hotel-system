@@ -34,6 +34,7 @@ const room = {
 }
 
 const item = {
+    getItem: _get('/apiGoods/list'),
     getItemList: _get('/apiGoods/pageList'),
     getItemById: _get('/apiGoods/getById', TRADITION_MODEL),
     addItem: _post('/apiGoods/insert'),

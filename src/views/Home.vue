@@ -1,11 +1,11 @@
 <template>
 	<el-container class="home">
-		<el-header style="height:70px">
+		<el-header style="height:60px">
 			<div class="w">
-				<el-menu :default-active="'/'+hIndex" mode="horizontal" background-color="#003366"
-					text-color="#eee" active-text-color="#fff" router>
+				<el-menu :default-active="'/'+hIndex" mode="horizontal" background-color="#c91523"
+					class="h-nav" text-color="#fff" active-text-color="#fff" router>
 					<el-menu-item :index="item.meta.index" v-for="item in menuList"
-						:key="item.meta.index">
+						class="h-nav-item" :key="item.meta.index">
 						{{item.meta.title}}
 					</el-menu-item>
 				</el-menu>
@@ -75,8 +75,15 @@ export default {
 	height: 100vh;
 	background-color: #e5e5e5;
 }
+.h-nav {
+	height: 60px;
+	.h-nav-item {
+		margin-right: 10px;
+		border-width: 4px;
+	}
+}
 .el-header {
-	background-color: #003366;
+	background-color: #c91523;
 	.w {
 		display: flex;
 		justify-content: space-between;

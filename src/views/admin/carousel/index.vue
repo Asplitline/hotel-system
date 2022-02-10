@@ -162,4 +162,11 @@ export default {
 	height: 80px;
 	width: auto;
 }
+.avatar-uploader {
+	padding-bottom: 0;
+	.avatar {
+		width: auto;
+		height: 200px;
+	}
+}
 </style>

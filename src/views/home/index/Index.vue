@@ -6,59 +6,61 @@
 		<div class="banner">
 			<el-carousel trigger="click" height="510px" :autoplay="autoplay">
 				<el-carousel-item v-for="item in list" :key="item.id">
-					<img class="banner-img" :src="bindIMG(item.url)" alt=""
+					<img class="banner-img" :src="bindIMG(item.filePath)" alt=""
 						@click="showNotice(item)">
 					<div class="mask">
-						<p>{{item.title}}</p>
+						<p>{{item.originalFileName}}</p>
 					</div>
 				</el-carousel-item>
 			</el-carousel>
 		</div>
 		<div class="main">
-			<medicalList :data="sortRoom" :floor="index" v-for="index in 4" :key="index" />
+			<goodsList :data="goods" :info="i" v-for="i in baseInfo" :key="i.index" />
 		</div>
 		<el-dialog :visible.sync="dialogVisible" width="30%" class="notice-dialog"
 			@close="handleNotice()">
-			<h2>{{currentNotice.title}}</h2>
-			<p>{{currentNotice.comment}}</p>
+			<h2>{{currentNotice.originalFileName}}</h2>
+			<p>{{currentNotice.fullFilePath}}</p>
 		</el-dialog>
 	</div>
 </template>
 
 <script>
-// import { notice, room } from '@mock'
-import medicalList from './MedicalList'
+// import { notice, goods } from '@mock'
+import goodsList from './GoodsList'
 // import search from '../common/Search'
 import _api from '@api'
-import { mapActions, mapGetters, mapState } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 // import { mapActions } from 'vuex'
 import { bindIMG } from '@utils'
 export default {
 	components: {
-		medicalList
+		goodsList
 		// search
 	},
 	data() {
 		return {
 			list: [],
-			room: [],
+			goods: [],
 			dialogVisible: false,
 			autoplay: true,
-			currentNotice: {}
+			currentNotice: {},
+			baseInfo: [
+				{ title: '品牌上新', icon: 'icon-new', index: 1 },
+				{ title: '热卖商品', icon: 'icon-fire', index: 2 }
+			]
 		}
 	},
 	methods: {
 		...mapActions(['fetchAllCategory', 'fetchAllRoom']),
 		bindIMG,
-		async fetchRoom() {
-			const { list } = await _api.getRoomList({ size: 999 })
-			list.forEach((item) => {
-				item.category = this.getCategoryById(item.lx)
-			})
-			this.room = list
+		async fetchGoods() {
+			const { data } = await _api.getItem()
+			this.goods = data.slice(0, 12)
 		},
 		async fetchShopFile() {
-			const { data } = await _api.getShopFiles()
+			// const { data } = await _api.getShopFiles()
+			const { data } = await _api.getShopFile()
 			this.list = data.slice(0, 4)
 		},
 		showNotice(data) {
@@ -73,18 +75,15 @@ export default {
 	},
 	computed: {
 		...mapGetters(['getCategoryById']),
-		...mapState(['allRoom']),
 		sortRoom() {
-			return this.allRoom.slice(0).sort((a, b) => {
-				return Number(a.address) - Number(b.address)
-			})
+			return []
 		}
 	},
 	created() {
-		this.fetchAllRoom()
+		// this.fetchAllRoom()
 		this.fetchShopFile()
-		// this.fetchRoom()
-		this.fetchAllCategory()
+		this.fetchGoods()
+		// this.fetchAllCategory()
 	}
 }
 </script>
@@ -121,6 +120,7 @@ export default {
 	}
 }
 .main {
+	// padding: 60px 0;
 	flex: 1;
 }
 

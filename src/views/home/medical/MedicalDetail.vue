@@ -337,7 +337,7 @@ export default {
 	margin-bottom: 10px;
 	text-align: left;
 	font-size: 30px;
-	color: #003366;
+	color: #c91523;
 	height: 40px;
 	i:hover {
 		cursor: pointer;
