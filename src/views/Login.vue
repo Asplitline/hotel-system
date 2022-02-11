@@ -142,9 +142,9 @@ export default {
 						this.setCurrentUser(data)
 						// console.log(data.level, typeof data.level)
 						if (Number(data.level) === 1) {
-							this.$router.push({ name: 'admin' })
+							this.$router.push({ name: 'Admin' })
 						} else if (Number(data.level) === 0) {
-							this.$router.push({ name: 'index' })
+							this.$router.push({ name: 'Index' })
 						}
 					} else {
 						this.$message.error('账号或密码错误')

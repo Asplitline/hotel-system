@@ -45,15 +45,15 @@ export default {
 			this.$options.methods[command](this)
 		},
 		goInfo(vm) {
-			vm.$router.push({ name: 'info' })
+			vm.$router.push({ name: 'Info' })
 		},
 		logout(vm) {
 			vm.clearInfo()
-			vm.$router.push({ name: 'login' })
+			vm.$router.push({ name: 'Login' })
 		},
 		goAdmin(vm) {
 			// vm.$router.push()
-			vm.$router.push({ name: 'admin' })
+			vm.$router.push({ name: 'Admin' })
 		}
 	},
 	computed: {

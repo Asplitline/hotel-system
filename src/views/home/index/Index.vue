@@ -1,8 +1,5 @@
 <template>
 	<div class="index">
-		<!-- <div class="header">
-      <search />
-    </div> -->
 		<div class="banner">
 			<el-carousel trigger="click" height="510px" :autoplay="autoplay">
 				<el-carousel-item v-for="item in list" :key="item.id">

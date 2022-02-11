@@ -7,7 +7,7 @@
 			<el-tab-pane label="更改密码" :lazy="true">
 				<change-password :id="currentUser.id" />
 			</el-tab-pane>
-			<el-tab-pane label="支付记录" :lazy="true">
+			<el-tab-pane label="购买记录" :lazy="true">
 				<my-pay :id="currentUser.id" />
 			</el-tab-pane>
 			<el-tab-pane label="体检记录" :lazy="true">

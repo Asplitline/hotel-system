@@ -64,7 +64,7 @@ export default {
 		bindIMG,
 		goItemDetail(data) {
 			this.setCurrentItem(data)
-			this.$router.push({ name: 'medical-detail', params: { id: data.id } })
+			this.$router.push({ name: 'ShopDetail', params: { id: data.id } })
 		},
 		getLevelName(str) {
 			const lv = Number(str[0]) - 1

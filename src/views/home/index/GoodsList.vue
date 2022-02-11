@@ -40,7 +40,7 @@ export default {
 		// 跳转到商品详情
 		goHotelDetail(data) {
 			this.setCurrentItem(data)
-			this.$router.push({ name: 'goods-detail', params: { id: data.id } })
+			this.$router.push({ name: 'ShopDetail', params: { id: data.id } })
 		}
 	},
 	computed: {

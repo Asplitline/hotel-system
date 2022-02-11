@@ -13,13 +13,13 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/home',
-    name: 'home',
+    name: 'Home',
     component: Home,
     redirect: '/index',
     children: [
       {
         path: '/index',
-        name: 'index',
+        name: 'Index',
         component: () => import('@views/home/index/Index'),
         meta: {
           title: '首页',
@@ -27,43 +27,48 @@ const routes = [
         }
       },
       {
-        path: '/medical',
-        name: 'medical',
-        component: () => import('@views/home/medical/Medical'),
+        path: '/shop',
+        name: 'Shop',
+        component: () => import('@views/home/shop'),
         meta: {
-          title: '商品分类',
-          index: '/medical'
+          title: '商城',
+          index: '/shop'
         }
       },
       {
-        path: '/medical',
-        name: 'medical',
-        component: () => import('@views/home/medical/Medical'),
+        path: '/shop/:id',
+        name: 'ShopDetail',
+        component: () => import('@views/home/shop/ShopDetail'),
+        props: true
+      },
+      {
+        path: '/cart',
+        name: 'Cart',
+        component: () => import('@views/home/cart'),
         meta: {
           title: '我的购物车',
-          index: '/medical'
+          index: '/cart'
+        }
+      },
+      {
+        path: '/donate',
+        name: 'Donate',
+        component: () => import('@views/home/donate'),
+        meta: {
+          title: '捐赠中心',
+          index: '/donate'
         }
       },
       {
         path: '/info',
-        name: 'info',
-        component: () => import('@views/home/info/Info'),
-        meta: {
-          title: '个人中心',
-          index: '/info'
-        }
-      },
-      {
-        path: '/medical/:id',
-        name: 'medical-detail',
-        component: () => import('@views/home/medical/MedicalDetail'),
-        props: true
+        name: 'Info',
+        component: () => import('@views/home/info')
       }
     ]
   },
   {
     path: '/admin',
-    name: 'admin',
+    name: 'Admin',
     component: Admin,
     redirect: '/admin/dashboard',
     isAuth: true,
@@ -74,7 +79,7 @@ const routes = [
     children: [
       {
         path: 'dashboard',
-        name: 'dashboard',
+        name: 'Dashboard',
         component: () => import('@views/admin/dashboard'),
         meta: {
           title: '仪表盘',
@@ -84,7 +89,7 @@ const routes = [
       },
       {
         path: 'carousel',
-        name: 'carousel',
+        name: 'Carousel',
         component: () => import('@views/admin/carousel'),
         meta: {
           title: '首页轮播图',
@@ -96,7 +101,7 @@ const routes = [
   },
   {
     path: '/staff',
-    name: 'staff',
+    name: 'Staff',
     component: Admin,
     redirect: '/user/aUser',
     isAuth: true,
@@ -107,7 +112,7 @@ const routes = [
     children: [
       {
         path: 'auser',
-        name: 'auser',
+        name: 'Auser',
         component: () => import('@views/admin/user'),
         meta: {
           title: '用户管理',
@@ -119,7 +124,7 @@ const routes = [
   },
   {
     path: '/goods',
-    name: 'goods',
+    name: 'Goods',
     component: Admin,
     redirect: '/goods/category',
     isAuth: true,
@@ -130,7 +135,7 @@ const routes = [
     children: [
       {
         path: 'category',
-        name: 'category',
+        name: 'Category',
         component: () => import('@views/admin/category'),
         meta: {
           title: '商品分类',
@@ -140,7 +145,7 @@ const routes = [
       },
       {
         path: 'item',
-        name: 'item',
+        name: 'Item',
         component: () => import('@views/admin/item'),
         meta: {
           title: '商品管理',
@@ -150,7 +155,7 @@ const routes = [
       },
       {
         path: '/goods/appointment',
-        name: 'appointment',
+        name: 'Appointment',
         component: () => import('@views/admin/appointment'),
         meta: {
           title: '订单管理',
@@ -160,7 +165,7 @@ const routes = [
       },
       {
         path: 'reply',
-        name: 'reply',
+        name: 'Reply',
         component: () => import('@views/admin/reply'),
         meta: {
           title: '体检反馈',
@@ -170,42 +175,9 @@ const routes = [
       }
     ]
   },
-  // {
-  //   path: '/content',
-  //   name: 'content',
-  //   component: Admin,
-  //   redirect: '/content/room',
-  //   isAuth: true,
-  //   meta: {
-  //     title: '内容管理',
-  //     icon: 'iconfont icon-ConferenceRoom'
-  //   },
-  //   children: [
-  //     {
-  //       path: 'room',
-  //       name: 'room',
-  //       component: () => import('@views/admin/room'),
-  //       meta: {
-  //         title: '科室信息',
-  //         icon: 'iconfont icon-ConferenceRoom',
-  //         index: '/content/room'
-  //       }
-  //     },
-  //     {
-  //       path: 'comment',
-  //       name: 'comment',
-  //       component: () => import('@views/admin/comment'),
-  //       meta: {
-  //         title: '医嘱信息',
-  //         icon: 'iconfont icon-ConferenceRoom',
-  //         index: '/content/comment'
-  //       }
-  //     }
-  //   ]
-  // },
   { path: '/', redirect: '/login' },
-  { path: '/login', name: 'login', component: Login },
-  { path: '*', name: 'error', component: Error }
+  { path: '/login', name: 'Login', component: Login },
+  { path: '*', name: 'Error', component: Error }
 ]
 
 const router = new VueRouter({
@@ -215,19 +187,20 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const path = to.path.split('/')[1]
   const user = store.state.currentUser
+  console.log(user)
   if (path !== 'login') {
     if (user) {
       next()
     } else {
-      next({ name: 'login' })
+      next({ name: 'Login' })
     }
   } else {
     if (user) {
       const level = Number(user.level)
       if (level === 0) {
-        next({ name: 'home' })
+        next({ name: 'Home' })
       } else if (level === 1 || level === 2) {
-        next({ name: 'admin' })
+        next({ name: 'Admin' })
       } else {
         next(false)
       }

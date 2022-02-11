@@ -1,5 +1,5 @@
 <template>
-	<div class="medical">
+	<div class="shop">
 		<el-container class="container">
 			<el-header class="header">
 				<search v-model="keyWord" @s-click="handleKeyword()" @s-clear="handleClear()" />
@@ -7,14 +7,8 @@
 			<el-container class="main">
 				<el-main>
 					<div class="main-header">
-						<medical-nav :data="getMiniCategory()" text="体检类型" @h-tag="handleTag"
-							:flag="0" :d-active="tagArr[0]" />
-						<medical-nav :data=" priceList" text="价格范围" @h-tag="handleTag" :flag="1"
-							:d-active="tagArr[1]" />
-						<medical-nav :data=" floorList" text="楼层选择" @h-tag="handleTag" :flag="2"
-							:d-active="tagArr[2]" />
-						<medical-tag :data=" tagArr" :fArr="[getMiniCategory(),priceList,floorList]"
-							@t-close="handleTagClose" />
+						<shop-nav :data="item" v-for="item in categories" :key="item.id"
+							@h-tag="handleTag" :active="active" />
 					</div>
 					<div class="main-content">
 						<!-- note  parent -> children (async data) #2
@@ -31,8 +25,8 @@
 
 <script>
 import search from '../common/Search'
-import medicalNav from './MedicalNav'
-import medicalTag from './MedicalTag'
+import shopNav from './ShopNav'
+// import shopTag from './ShopTag'
 import itemList from './ItemList'
 // import { item } from '@mock'
 import { priceList, floorList } from '@static'
@@ -41,26 +35,25 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
 	components: {
 		search,
-		medicalNav,
-		medicalTag,
+		shopNav,
+		// shopTag,
 		itemList
 	},
 	data() {
 		return {
 			priceList,
 			floorList,
-			arrayTag: [{}],
 			item: null,
 			initNum: 8,
-			tagArr: [-1, -1, -1],
 			keyWord: null,
-			hasSearch: false
+			hasSearch: false,
+			active: ''
 		}
 	},
 	methods: {
-		...mapActions(['fetchAllCategory', 'fetchAllRoom', 'fetchAllUser']),
+		...mapActions(['fetchAllCategory', 'fetchAllUser']),
 		async fetchItem() {
-			const { data } = await _api.getItems()
+			const { data } = await _api.getItem()
 			// console.log(res)
 			this.item = data.map((i) => {
 				const department = this.getRoomById(i.depaetmentId)
@@ -69,7 +62,8 @@ export default {
 			})
 		},
 		handleTag(val) {
-			this.$set(this.tagArr, val.flag, val.value)
+			console.log(val)
+			this.active = val
 		},
 		handleTagClose({ index }) {
 			this.$set(this.tagArr, index, -1)
@@ -91,37 +85,22 @@ export default {
 			'getRoomById'
 		]),
 		fItem() {
-			// // console.log(...this.tagArr)
-			const [lx, price, floor] = [...this.tagArr]
-			let data = this.item
-			// 类型
-			if (lx !== -1 && data) {
-				data = data.filter(({ typeId }) => typeId === lx)
-			}
-			// // 价格范围
-			if (price !== -1 && data) {
-				const { min, max } = this.priceList[price]
-				data = data.filter(({ price }) => {
-					return price > min && price < max
+			return this.item
+		},
+		categories() {
+			const parent = this.getMiniCategory().filter((i) => i.pid == null)
+			return parent
+				.map((i) => {
+					const children = this.getMiniCategory().filter((j) => j.pid === i.id)
+					return {
+						...i,
+						children
+					}
 				})
-			}
-			// // 楼层
-			if (floor !== -1 && data) {
-				data = data.filter(({ department }) => {
-					return floor + 1 === Number(department.address[0])
-				})
-			}
-			// // 搜索
-			if (this.hasSearch && data) {
-				data = data.filter((item) => {
-					return item.name.indexOf(this.keyWord) !== -1
-				})
-			}
-			return data
+				.filter((i) => i.children.length)
 		}
 	},
 	mounted() {
-		this.fetchAllRoom()
 		this.fetchAllUser()
 		this.fetchAllCategory()
 		this.fetchItem()
@@ -140,9 +119,9 @@ export default {
 .main {
 	padding: 0;
 	.main-header {
-		padding: 30px;
+		padding: 10px;
 		border: 1px solid #c6c6c6;
-		.medical-tag {
+		.shop-tag {
 			border-top: 1px solid #eee;
 			padding: 20px 20px 0;
 		}

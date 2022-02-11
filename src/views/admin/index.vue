@@ -3,7 +3,7 @@
 		<el-header style="height:70px">
 			<div class="l-header">
 				<i :class="isFold?'el-icon-s-unfold':'el-icon-s-fold'" @click="toggleFold()"></i>
-				体检预约管理系统
+				防疫物资无人售货管理系统
 			</div>
 			<div class="r-header">
 				<el-dropdown trigger="click" @command="handleCommand">
@@ -68,11 +68,11 @@ export default {
 			this[command] && this[command]()
 		},
 		goIndex() {
-			this.$router.push({ name: 'index' })
+			this.$router.push({ name: 'Index' })
 		},
 		logOut() {
 			this.clearInfo()
-			this.$router.push({ name: 'login' })
+			this.$router.push({ name: 'Login' })
 		}
 	},
 	created() {
