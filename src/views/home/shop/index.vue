@@ -11,10 +11,6 @@
 							@h-tag="handleTag" :active="active" />
 					</div>
 					<div class="main-content">
-						<!-- note  parent -> children (async data) #2
-                 parent -> v-if  exist?data
-                 reason# parent updated
-             -->
 						<item-list :data="fItem" v-if="fItem" />
 					</div>
 				</el-main>
@@ -54,12 +50,7 @@ export default {
 		...mapActions(['fetchAllCategory', 'fetchAllUser']),
 		async fetchItem() {
 			const { data } = await _api.getItem()
-			// console.log(res)
-			this.item = data.map((i) => {
-				const department = this.getRoomById(i.depaetmentId)
-				const types = this.getCategoryById(i.typeId)
-				return { ...i, department, types }
-			})
+			this.item = data
 		},
 		handleTag(val) {
 			console.log(val)
@@ -70,11 +61,11 @@ export default {
 		},
 		handleKeyword() {
 			this.hasSearch = true
-			console.log(this.keyWord)
+			this.active = ''
 		},
 		handleClear() {
 			this.hasSearch = false
-			// this.keyWord = null
+			this.keyWord = null
 		}
 	},
 	computed: {
@@ -85,7 +76,15 @@ export default {
 			'getRoomById'
 		]),
 		fItem() {
-			return this.item
+			if (this.hasSearch) {
+				return this.item.filter(
+					(i) => i.name.indexOf(this.keyWord?.trim()) !== -1
+				)
+			} else {
+				return this.active === ''
+					? this.item
+					: this.item.filter((i) => i.type === this.active)
+			}
 		},
 		categories() {
 			const parent = this.getMiniCategory().filter((i) => i.pid == null)

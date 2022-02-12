@@ -4,33 +4,19 @@
 		<!-- {{itemList}} -->
 		<template v-if="itemList.length!==0">
 			<li class="item-item" v-for="item in itemList" :key="item.id">
-				<h2 class="i-title">{{item.name}}</h2>
+				<div class="item-cover">
+					<img :src="bindIMG(item.url)" alt="" class="img" @click="goItemDetail(item)">
+				</div>
+				<h2 class="i-title" @click="goItemDetail(item)">{{item.name}}</h2>
+				<div class="item-footer">
+					<p class="i-price">
+						{{item.price | $}}
+					</p>
+					<button class="add-cart">
+						<i class="iconfont icon-iconfontcart"></i>
+					</button>
+				</div>
 
-				<ul class="i-info">
-					<li class="i-item">
-						<i class="fa fa-user-md"></i>
-						<span>{{item.doctorName}}</span>
-					</li>
-					<li class="i-item">
-						<i class="fa fa-tags"></i>
-						<span>{{item.types.name}}</span>
-					</li>
-					<li class="i-item">
-						<i class="fa fa-hospital-o" aria-hidden="true"></i>
-						<span>{{item.department.name}}</span>
-					</li>
-					<li class="i-item">
-						<i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
-						<!-- <span>{{item.department.name}}</span> -->
-						<span>{{getLevelName(item.department.address)}}</span>
-					</li>
-
-				</ul>
-				<p class="i-price">
-					<!-- <i class="fa fa-jpy bg" aria-hidden="true"></i> -->
-					{{item.price | $}}
-				</p>
-				<button class="i-btn" @click="goItemDetail(item)">详情</button>
 			</li>
 			<li class="item-item hidden-vs" v-for="index in blankNum" :key="index"></li>
 		</template>
@@ -103,7 +89,7 @@ export default {
 	flex-wrap: wrap;
 	padding: 10px;
 	.item-item {
-		width: 30%;
+		width: 22%;
 		box-sizing: border-box;
 		// height: 240px;
 		border: 1px solid #e8e8e8;
@@ -112,112 +98,83 @@ export default {
 		border-radius: 8px;
 		transition: all 0.3s linear;
 		display: inline-block;
-		height: 100%;
-		margin-right: 5%;
-		&:nth-child(3n) {
+		height: 350px;
+		margin-right: 4%;
+		&:nth-child(4n) {
 			margin-right: 0;
 		}
-		h2 {
-			text-align: center;
-			font-weight: 400;
-		}
-		h2,
-		p {
-			margin: 0;
-		}
-		.i-info {
-			padding: 30px 20px 0;
-			.i-item {
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				font-size: 30px;
-				line-height: 1.5;
-				i {
-					color: #c91523;
-				}
-				span {
-					font-size: 24px;
-					color: rgba(102, 102, 102, 0.9);
-				}
-			}
-		}
-		.i-price {
-			text-align: center;
-			font-size: 40px;
-			margin: 20px 0 30px;
-			position: relative;
-			letter-spacing: 2px;
-			color: #c91523;
-		}
-		.i-btn {
-			// background-color: #c91523;
-			color: #c91523;
-			outline: none;
-			border: 1px solid #c91523;
-			background-color: transparent;
+		.item-cover {
 			width: 100%;
-			height: 40px;
-			cursor: pointer;
-			border-radius: 10px;
-			transition: all 0.2s linear;
-			font-size: 16px;
+			height: 0;
+			padding-bottom: 100%;
+			position: relative;
+			overflow: hidden;
+			transition: transform 0.3s linear;
 			&:hover {
-				background-color: #c91523;
-				color: #e8e8e8;
-				// transform: scale(1.01);
+				cursor: pointer;
+				transform: translateY(-10px);
+			}
+			.img {
+				position: absolute;
+				width: 100%;
+				height: 100%;
 			}
 		}
-		&:hover {
-			border-color: #c8c8c8;
-			transform: translateY(4px);
-			box-shadow: 0px 0px 4px 2px rgba(102, 102, 102, 0.2);
+		.i-title {
+			font-weight: normal;
+			font-size: 18px;
+			width: 195px;
+			height: 48px;
 			cursor: pointer;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: -webkit-box; /*弹性伸缩盒子模型*/
+			-webkit-box-orient: vertical; /*伸缩盒子子排列方式*/
+			-webkit-line-clamp: 2; /*设置显示文本行数*/
+			&:hover {
+				text-decoration: underline;
+				color: @color-red;
+			}
 		}
+		.item-footer {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			.i-price {
+				font-size: 20px;
+				position: relative;
+				letter-spacing: 2px;
+				color: #c91523;
+				margin: 0;
+				flex: 1;
+			}
+			.add-cart {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 32px;
+				height: 32px;
+				outline: none;
+				border: none;
+				background-color: @color-red;
+				border-radius: 2px;
+				transition: transform 0.1s linear;
 
-		// .r-title {
-		// 	margin: 0;
-		// 	font-size: 16px;
-		// 	text-align: center;
-		// 	color: #555;
-		// 	margin-bottom: 6px;
-		// 	letter-spacing: 0.1em;
-		// 	&:hover {
-		// 		color: @color-main;
-		// 	}
-		// }
-		// .r-info {
-		// 	text-align: center;
-		// }
-		// span[class^='r-'] {
-		// 	display: inline-block;
-		// 	// border: 1px solid #e8e8e8;
-		// 	font-size: 14px;
-		// 	height: 24px;
-		// 	line-height: 24px;
-		// 	padding: 0 10px;
-		// 	box-sizing: border-box;
-		// 	margin-right: 4px;
-		// 	border-radius: 2px;
-		// 	text-align: center;
-		// 	&:last-child {
-		// 		margin-right: 0;
-		// 	}
-		// }
-		// .r-type {
-		// 	background-color: @color-main;
-		// 	color: #fff;
-		// }
-		// .r-price {
-		// 	background-color: @color-red;
-		// 	color: #fff;
-		// 	&::first-letter {
-		// 		font-size: 13px;
-		// 	}
-		// }
-		// .r-floor {
-		// 	background-color: @color-green;
-		// 	color: #fff;
+				&:hover {
+					cursor: pointer;
+					transform: scale(1.1);
+				}
+				.iconfont {
+					font-size: 20px;
+					color: #fff;
+				}
+			}
+		}
+		// &:hover {
+		// 	border-color: #c8c8c8;
+		// 	transform: translateY(4px);
+		// 	box-shadow: 0px 0px 4px 2px rgba(102, 102, 102, 0.2);
+		// 	cursor: pointer;
 		// }
 	}
 }

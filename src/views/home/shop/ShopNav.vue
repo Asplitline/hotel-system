@@ -5,6 +5,7 @@
 			<dd v-for="item in data.children" :key="item.id" class="nav-bd"
 				:class="{'active':active===item.id}" @click="setActive(item.id)">
 				<a href="javascript:;">{{item.name}}</a>
+				<i class="el-icon-circle-close close-btn" @click.stop="setActive('')"></i>
 			</dd>
 		</dl>
 	</div>
@@ -54,6 +55,7 @@ export default {
 		display: inline-block;
 		padding: 6px 16px;
 		border: 1px solid transparent;
+		letter-spacing: 2px;
 		a {
 			display: inline-block;
 			width: 100%;
@@ -64,8 +66,20 @@ export default {
 				color: @color-main;
 			}
 		}
+		.close-btn {
+			position: absolute;
+			right: -6px;
+			top: 0;
+			cursor: pointer;
+			color: @color-red;
+			font-size: 20px;
+			&:hover {
+				opacity: 0.8;
+			}
+		}
 		&.active {
-			border-color: @color-main;
+			// border-color: @color-main;
+			position: relative;
 			a {
 				color: @color-main;
 			}

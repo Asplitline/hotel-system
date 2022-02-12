@@ -9,20 +9,20 @@
 		<div class="h-content">
 
 			<div class="l-content">
-				<img :src="bindIMG(item.department.url)" alt="">
+				<img :src="bindIMG(item.url)" alt="">
 
 			</div>
 			<div class="r-content">
 				<!-- <div class="r-hd">{{item.name}}</div> -->
 				<div class="r-bd">
 					<p>
-						<span>科室号码:</span><span>{{item.department.address}}</span>
+						<span>科室号码:</span><span>111</span>
 					</p>
 					<p>
-						<span>体检类型:</span><span>{{item.types.name}}</span>
+						<span>体检类型:</span><span>1111</span>
 					</p>
 					<p>
-						<span>所在楼层:</span><span>{{item.department.address[0]}}楼</span>
+						<span>所在楼层:</span><span>1111</span>
 					</p>
 					<p>
 						<span>体检价格:</span><span class="h-price">{{item.price | $}}</span>
@@ -31,42 +31,12 @@
 						<span>体检项简介:</span><span class="h-desc">{{item.desription }}</span>
 					</p>
 				</div>
-				<div class="r-ft">
-					<el-date-picker v-model="myDate" type="date" placeholder="选择日期" class="my-date"
-						:picker-options="validateDate" :readonly="currentStatus !== -1">
-					</el-date-picker>
-					<el-popconfirm :title="'体检预约需先支付'+item.price+' , 是否同意'" icon="el-icon-info"
-						icon-color="red" confirm-button-text='支付' cancel-button-text='不用了'
-						class="click" v-if="currentStatus === -1" @confirm="orderItem">
-						<!-- <el-button slot="reference">删除</el-button> -->
-						<a href="javascript:;" slot="reference" class="primary"
-							:class="{'disabled':!myDate}">预定</a>
-					</el-popconfirm>
-					<a href="javascript:;" v-else-if="currentStatus === 0"
-						class="info click">审核中</a>
-					<a href="javascript:;" class="success click" v-else-if="currentStatus === 1"
-						@click="handleItem(2)">入场签到</a>
-					<a href="javascript:;" class="info click" v-else-if="currentStatus === 2"
-						@click="handleItem(3)">体检签退</a>
-					<a href="javascript:;" class="blue click" v-else-if="currentStatus === 3"
-						@click="showMsg">医学建议</a>
-					<a href="javascript:;" class="primary click" v-else-if="currentStatus === 4"
-						@click="showReplyDialog">体检反馈</a>
-					<a href="javascript:;" class="red click"
-						v-else-if="currentStatus === 5">体检结束</a>
-				</div>
 
 			</div>
 
 		</div>
-		<div class="t-steps" v-if="currentStatus !== -1">
-			<el-steps :space="200" :active="currentStatus" finish-status="success">
-				<el-step title="审核中"></el-step>
-				<el-step title="体检中"></el-step>
-				<el-step title="体检签退"></el-step>
-				<el-step title="等待医学建议"></el-step>
-				<el-step title="体检结束"></el-step>
-			</el-steps>
+		<div class="t-steps" v-if="false">
+
 		</div>
 		<el-empty description="暂无体检记录，请点击上方进行体检预约" class="md-empty" v-else></el-empty>
 		<el-dialog title="用户反馈" :visible.sync="replyDialogVisible" width="30%"
