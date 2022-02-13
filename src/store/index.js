@@ -13,7 +13,8 @@ const state = {
   allItem: getSession('allItem'),
   allNotice: getSession('allNotice'),
   currentItem: getSession('currentItem'),
-  currentUser: getSession('currentUser')
+  currentUser: getSession('currentUser'),
+  myCart: getSession('myCart')
 }
 const mutations = {
   setAIndex (state, index) {
@@ -52,6 +53,13 @@ const mutations = {
     setSession('currentUser', data)
     state.currentUser = data
   },
+  setMyCart (state, data) {
+    const myCart = data.filter(i => {
+      return i.userId === state.currentUser.id.toString()
+    })
+    setSession('myCart', myCart)
+    state.myCart = myCart
+  },
   clearInfo (state) {
     sessionStorage.clear()
     state.currentUser = null
@@ -85,18 +93,18 @@ const actions = {
     const { list } = await _api.getUserList(query)
     commit('setAllUser', list)
   },
-  // async fetchAllRoom ({ commit }, query = { size: 999 }) {
-  //   const res = await _api.getRoomList(query)
-  //   console.log(res)
-  //   commit('setAllRoom', 11)
-  // },
+
   async fetchAllItem ({ commit }) {
-    const { data } = await _api.getItems()
+    const { data } = await _api.getItem()
     commit('setAllItem', data)
   },
   async fetchAllNotice ({ commit }) {
     const { data } = await _api.getNotices()
     commit('setAllNotice', data)
+  },
+  async fetchMyCart ({ commit }) {
+    const { data } = await _api.getShoppingCar()
+    commit('setMyCart', data)
   }
 }
 const modules = {

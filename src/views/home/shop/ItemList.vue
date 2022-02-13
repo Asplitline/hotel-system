@@ -1,7 +1,6 @@
 <template>
 	<!-- todo infiniteScroll -->
 	<ul class="item-list">
-		<!-- {{itemList}} -->
 		<template v-if="itemList.length!==0">
 			<li class="item-item" v-for="item in itemList" :key="item.id">
 				<div class="item-cover">
@@ -13,7 +12,9 @@
 						{{item.price | $}}
 					</p>
 					<button class="add-cart">
-						<i class="iconfont icon-iconfontcart"></i>
+						<el-popconfirm title="确定要添加商品到购物车吗？" @confirm="handleAddCart(item)">
+							<i class="iconfont icon-iconfontcart" slot="reference"></i>
+						</el-popconfirm>
 					</button>
 				</div>
 
@@ -27,9 +28,10 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapActions, mapMutations, mapState } from 'vuex'
 import { bindIMG } from '@utils'
 import { floorList } from '@static'
+import _api from '@api'
 export default {
 	name: 'item-list',
 	props: {
@@ -46,8 +48,24 @@ export default {
 		}
 	},
 	methods: {
-		...mapMutations(['setCurrentItem']),
+		...mapMutations(['setCurrentItem', 'addCart']),
+		...mapActions(['fetchMyCart']),
 		bindIMG,
+		async handleAddCart(item) {
+			const { success } = await _api.addShoppingCar({
+				createTime: Date.now(),
+				goodsId: item.id,
+				type: 0,
+				updateTime: Date.now(),
+				userId: this.currentUser.id
+			})
+			this.$notify({
+				title: '购物车',
+				type: success ? 'success' : 'danger',
+				message: success ? '添加成功! ' : '添加失败! '
+			})
+			success && this.fetchMyCart()
+		},
 		goItemDetail(data) {
 			this.setCurrentItem(data)
 			this.$router.push({ name: 'ShopDetail', params: { id: data.id } })
@@ -58,6 +76,7 @@ export default {
 		}
 	},
 	computed: {
+		...mapState(['currentUser']),
 		totalNum() {
 			return this.itemList.length
 		},
@@ -65,9 +84,6 @@ export default {
 			return this.totalNum % 4 === 0 ? 0 : 4 - (this.totalNum % 4)
 		}
 	},
-	/* note  parent -> children (async data) #1
-	 * children -> watch data
-	 */
 	watch: {
 		data(val) {
 			this.itemList = val
@@ -76,9 +92,6 @@ export default {
 	created() {
 		this.itemList = this.data
 	}
-	// updated() {
-	//   console.log(123)
-	// }
 }
 </script>
 

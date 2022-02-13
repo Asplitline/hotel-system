@@ -1,6 +1,7 @@
 import { _get, _delete, _put, _post } from './helper'
 
 const TRADITION_MODEL = 2
+const BATCH = 3
 const base = {
     changePwd: _get('/login/changePassword'),
     login: _post('/login/api/login', TRADITION_MODEL),
@@ -25,12 +26,13 @@ const category = {
     deleteCategory: _delete('/apiGoodsLx/delete', TRADITION_MODEL)
 }
 
-const room = {
-    getRoomList: _get('/apiDepartment/pageList'),
-    getRoomById: _get('/apiDepartment/getById', TRADITION_MODEL),
-    addRoom: _post('/apiDepartment/insert'),
-    editRoom: _put('/apiDepartment/update'),
-    deleteRoom: _delete('/apiDepartment/delete', TRADITION_MODEL)
+const donate = {
+    getDonate: _get('/apiDonate/list'),
+    getDonateList: _get('/apiDonate/pageList'),
+    getDonateById: _get('/apiDonate/getById', TRADITION_MODEL),
+    addDonate: _post('/apiDonate/insert'),
+    editDonate: _put('/apiDonate/update'),
+    deleteDonate: _delete('/apiDonate/delete', TRADITION_MODEL)
 }
 
 const item = {
@@ -57,20 +59,23 @@ const comment = {
     deleteComment: _delete('/apiNotice/delete', TRADITION_MODEL)
 }
 //
-const order = {
-    // getOrders: _get('/apiOrder/list'),
-    getOrderList: _get('/apiOrder/pageList'),
-    addOrder: _post('/apiOrder/insert'),
-    editOrder: _put('/apiOrder/updateIgnoreNull'),
-    deleteOrder: _delete('/apiOrder/delete', TRADITION_MODEL)
+const goodsOrder = {
+    getGoodsOrder: _get('/apiGoodsOrder/list'),
+    getGoodsOrderList: _get('/apiGoodsOrder/pageList'),
+    addGoodsOrderList: _post('/apiGoodsOrder/batchInsert'),
+    addGoodsOrder: _post('/apiGoodsOrder/insert'),
+    editGoodsOrder: _put('/apiGoodsOrder/updateIgnoreNull'),
+    deleteGoodsOrder: _delete('/apiGoodsOrder/delete', TRADITION_MODEL)
 }
 
-const Appointment = {
-    // getAppointments: _get('/apiAppointment/list'),
-    getAppointmentList: _get('/apiAppointment/pageList'),
-    addAppointment: _post('/apiAppointment/insert'),
-    editAppointment: _put('/apiAppointment/update'),
-    deleteAppointment: _delete('/apiAppointment/delete', TRADITION_MODEL)
+const shoppingCar = {
+    getShoppingCar: _get('/apiShoppingCar/list'),
+    getShoppingCarList: _get('/apiShoppingCar/pageList'),
+    getShoppingCarById: _get('/apiShoppingCar/getById'),
+    addShoppingCar: _post('/apiShoppingCar/insert'),
+    editShoppingCar: _put('/apiShoppingCar/update'),
+    deleteShoppingCarList: _delete('/apiShoppingCar/batchDelete', BATCH),
+    deleteShoppingCar: _delete('/apiShoppingCar/delete', TRADITION_MODEL)
 }
 
 const shopFile = {
@@ -80,7 +85,7 @@ const shopFile = {
     editShopFile: _put('/apiShopFile/update'),
     deleteShopFile: _delete('/apiShopFile/delete', TRADITION_MODEL)
 }
-const addvice = {
+const advice = {
     // getAddvices: _get('/apiAddvice/list'),
     getAddviceList: _get('/apiAddvice/pageList'),
     addAddvice: _post('apiAddvice/insert'),
@@ -96,13 +101,13 @@ export default {
     ...base,
     ...user,
     ...category,
-    ...room,
+    ...donate,
     ...notice,
     ...comment,
-    ...order,
+    ...goodsOrder,
     ...item,
     ...shopFile,
     ...statistic,
-    ...Appointment,
-    ...addvice
+    ...shoppingCar,
+    ...advice
 }

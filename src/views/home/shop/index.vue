@@ -22,9 +22,7 @@
 <script>
 import search from '../common/Search'
 import shopNav from './ShopNav'
-// import shopTag from './ShopTag'
 import itemList from './ItemList'
-// import { item } from '@mock'
 import { priceList, floorList } from '@static'
 import _api from '@api'
 import { mapActions, mapGetters } from 'vuex'

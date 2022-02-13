@@ -27,7 +27,7 @@ import _api from '@api'
 export default {
 	props: {
 		id: {
-			type: String
+			type: Number
 		}
 	},
 	data() {

@@ -42,15 +42,6 @@ const routes = [
         props: true
       },
       {
-        path: '/cart',
-        name: 'Cart',
-        component: () => import('@views/home/cart'),
-        meta: {
-          title: '我的购物车',
-          index: '/cart'
-        }
-      },
-      {
         path: '/donate',
         name: 'Donate',
         component: () => import('@views/home/donate'),
@@ -59,6 +50,17 @@ const routes = [
           index: '/donate'
         }
       },
+      {
+        path: '/cart',
+        name: 'Cart',
+        component: () => import('@views/home/cart'),
+        meta: {
+          title: '我的购物车',
+          index: '/cart',
+          showNum: true
+        }
+      },
+
       {
         path: '/info',
         name: 'Info',
@@ -162,15 +164,38 @@ const routes = [
           icon: 'iconfont icon-ConferenceRoom',
           index: '/goods/appointment'
         }
-      },
+      }
+    ]
+  },
+  {
+    path: '/service',
+    name: 'Service',
+    component: Admin,
+    redirect: '/service/advice',
+    isAuth: true,
+    meta: {
+      title: '服务管理',
+      icon: 'iconfont icon-ConferenceRoom'
+    },
+    children: [
+      // {
+      //   path: 'advice',
+      //   name: 'Advice',
+      //   component: () => import('@views/admin/advice'),
+      //   meta: {
+      //     title: '用户反馈',
+      //     icon: 'iconfont icon-ConferenceRoom',
+      //     index: '/service/advice'
+      //   }
+      // },
       {
-        path: 'reply',
-        name: 'Reply',
-        component: () => import('@views/admin/reply'),
+        path: 'donate',
+        name: 'Donate',
+        component: () => import('@views/admin/donate'),
         meta: {
-          title: '体检反馈',
+          title: '捐赠管理',
           icon: 'iconfont icon-ConferenceRoom',
-          index: '/goods/reply'
+          index: '/service/donate'
         }
       }
     ]

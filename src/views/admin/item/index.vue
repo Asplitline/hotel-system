@@ -5,7 +5,8 @@
 			<el-row type="flex" justify="space-between">
 				<el-col :span="6">
 					<el-form-item>
-						<el-input v-model="searchForm.name" placeholder="输入商品名称" clearable />
+						<el-input v-model="searchForm.name" placeholder="输入商品名称" clearable
+							@clear="search" />
 					</el-form-item>
 					<el-form-item>
 						<el-button type="primary" icon="el-icon-search" @click="search">
@@ -156,8 +157,6 @@
 <script>
 // import { order } from '@mock'
 
-// todo del goods
-// todo search goods
 import { aMixin } from '@mixins'
 import { goodsState } from '@/static'
 import _api from '@api'
@@ -193,8 +192,11 @@ export default {
 		deleteItem: _api.deleteItem,
 		bindURL,
 		bindIMG,
-		async fetchItem() {
-			const { list, total } = await _api.getItemList(this.query)
+		search() {
+			this.fetchItem(this.searchForm.name)
+		},
+		async fetchItem(keyword) {
+			const { list, total } = await _api.getItemList({ ...this.query, keyword })
 			this.total = total
 			this.tableData = list.map((i) => {
 				const typeInfo = this.getCategoryById(i.type)

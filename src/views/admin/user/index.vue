@@ -128,7 +128,6 @@
 </template>
 
 <script>
-// todo search user
 import { levelInfo, sexInfo, stateInfo, ADD, EDIT, DEFAULT_PWD } from '@static'
 import { aMixin } from '@mixins'
 import _api from '@api'

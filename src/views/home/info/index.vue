@@ -7,11 +7,8 @@
 			<el-tab-pane label="更改密码" :lazy="true">
 				<change-password :id="currentUser.id" />
 			</el-tab-pane>
-			<el-tab-pane label="购买记录" :lazy="true">
+			<el-tab-pane label="我的订单" :lazy="true">
 				<my-pay :id="currentUser.id" />
-			</el-tab-pane>
-			<el-tab-pane label="体检记录" :lazy="true">
-				<my-item :id="currentUser.id" />
 			</el-tab-pane>
 		</el-tabs>
 	</div>
@@ -25,14 +22,12 @@
  */
 import changePassword from './ChangePassword'
 import profile from './Profile'
-import MyItem from './MyItem'
 import myPay from './MyPay'
 import { mapState } from 'vuex'
 export default {
 	components: {
 		profile,
 		changePassword,
-		MyItem,
 		myPay
 	},
 	methods: {},

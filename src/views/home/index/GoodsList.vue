@@ -9,7 +9,12 @@
 				</a>
 				<div class="h-info">
 					<p class="h-price">价格:{{item.price|$}}</p>
-					<button class="h-cart"><i class="iconfont icon-iconfontcart"></i>加入购物车</button>
+					<el-popconfirm title="确定要添加商品到购物车吗？" @confirm="handleAddCart(item)">
+						<button class="h-cart" slot="reference">
+							<i class="iconfont icon-iconfontcart"></i>加入购物车
+						</button>
+					</el-popconfirm>
+
 				</div>
 			</li>
 			<li class="h-item hidden-vs" v-for="index in blankNum" :key="index"></li>
@@ -19,7 +24,9 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapActions, mapMutations, mapState } from 'vuex'
+import _api from '@api'
+
 import { bindIMG } from '@utils'
 export default {
 	name: 'goods-list',
@@ -36,7 +43,23 @@ export default {
 	},
 	methods: {
 		...mapMutations(['setCurrentItem']),
+		...mapActions(['fetchMyCart']),
 		bindIMG,
+		async handleAddCart(item) {
+			const { success } = await _api.addShoppingCar({
+				createTime: Date.now(),
+				goodsId: item.id,
+				type: 0,
+				updateTime: Date.now(),
+				userId: this.currentUser.id
+			})
+			this.$notify({
+				title: '购物车',
+				type: success ? 'success' : 'danger',
+				message: success ? '添加成功! ' : '添加失败! '
+			})
+			success && this.fetchMyCart()
+		},
 		// 跳转到商品详情
 		goHotelDetail(data) {
 			this.setCurrentItem(data)
@@ -44,9 +67,14 @@ export default {
 		}
 	},
 	computed: {
+		...mapState(['currentUser']),
 		filterGoods() {
 			const idx = this.info.index
 			return this.data.slice((idx - 1) * 6, idx * 6)
+		},
+		blankNum() {
+			const rest = this.filterGoods.length % 3
+			return rest === 3 ? 0 : rest
 		}
 	},
 	created() {}

@@ -5,292 +5,101 @@
 
 			<i class="fa fa-chevron-circle-left" aria-hidden="true" @click="back()">返回</i>
 		</div>
-		<div class="h-title">{{item.name}}</div>
 		<div class="h-content">
 
 			<div class="l-content">
-				<img :src="bindIMG(item.url)" alt="">
-
+				<div class="img-warp">
+					<img :src="bindIMG(item.url)" alt="">
+				</div>
 			</div>
 			<div class="r-content">
-				<!-- <div class="r-hd">{{item.name}}</div> -->
+				<div class="r-hd">{{item.name}}</div>
 				<div class="r-bd">
 					<p>
-						<span>科室号码:</span><span>111</span>
+						<span>商品类型</span><span>{{typeName}}</span>
 					</p>
 					<p>
-						<span>体检类型:</span><span>1111</span>
+						<span>商品产地</span><span>{{item.address}}</span>
 					</p>
 					<p>
-						<span>所在楼层:</span><span>1111</span>
+						<span>商品库存</span><span class="h-num">{{item.num}}</span>
 					</p>
 					<p>
-						<span>体检价格:</span><span class="h-price">{{item.price | $}}</span>
+						<span>商品价格</span><span class="h-price">{{item.price | $}}</span>
 					</p>
 					<p>
-						<span>体检项简介:</span><span class="h-desc">{{item.desription }}</span>
+						<span>商品简介</span><span class="h-desc">{{item.description }}</span>
 					</p>
 				</div>
-
+				<div class="r-bottom">
+					<el-popconfirm title="确定要添加商品到购物车吗？" @confirm="handleAddCart(item)">
+						<button class="add-cart" slot="reference">添加购物车</button>
+					</el-popconfirm>
+					<button class="my-cart" @click="goto">我的购物车 <span class="corner-ico"
+							v-if="cartNum>0">{{cartNum}}</span></button>
+				</div>
 			</div>
 
 		</div>
-		<div class="t-steps" v-if="false">
-
-		</div>
-		<el-empty description="暂无体检记录，请点击上方进行体检预约" class="md-empty" v-else></el-empty>
-		<el-dialog title="用户反馈" :visible.sync="replyDialogVisible" width="30%"
-			:close-on-click-modal="false">
-			<el-form :model="replyForm" :rules="replyRules" ref="replyForm">
-				<el-form-item label="用户名">
-					<el-input type="text" v-model="replyForm.userName" autocomplete="off" disabled>
-					</el-input>
-				</el-form-item>
-				<el-form-item label="医生名称">
-					<el-input type="text" v-model="replyForm.doctorName" autocomplete="off"
-						disabled>
-					</el-input>
-				</el-form-item>
-				<el-form-item label="医学建议" prop="description">
-					<el-input type="textarea" v-model="replyForm.description" autocomplete="off"
-						disabled>
-					</el-input>
-				</el-form-item>
-				<el-form-item label="标题" prop="title">
-					<el-input type="type" v-model="replyForm.title" autocomplete="off">
-					</el-input>
-				</el-form-item>
-				<el-form-item label="用户反馈" prop="content">
-					<el-input type="textarea" v-model="replyForm.content" autocomplete="off">
-					</el-input>
-				</el-form-item>
-			</el-form>
-			<div slot="footer" class="dialog-footer">
-				<el-button size="small" @click="replyDialogVisible = false">取消</el-button>
-				<el-button type="primary" size="small" @click="submitReplyForm('replyForm')">
-					提交
-				</el-button>
-			</div>
-		</el-dialog>
 	</div>
 </template>
 
 <script>
 import { mapActions, mapGetters, mapMutations, mapState } from 'vuex'
-import _api from '@api'
 import { hMixin } from '@mixins'
-import { orderState, roomState } from '@static'
-import { bindIMG, notEmpty, deepClone } from '@utils'
+import { bindIMG } from '@utils'
+import _api from '@api'
+
 export default {
 	props: ['id'],
 	data() {
 		return {
-			commentVal: '',
-			commentList: [],
-			orderState,
-			roomState,
-			itemByOrder: [],
 			myDate: '',
 			replyDialogVisible: false,
-			replyForm: {},
-			flag: 1,
-			replyRules: {
-				content: [
-					{ required: true, message: '请输入反馈内容', trigger: 'blur' }
-				],
-				title: [{ required: true, message: '请输入反馈标题', trigger: 'blur' }]
-			},
-			currentAppointment: [],
-			validateDate: {
-				disabledDate(value) {
-					return value.getTime() < Date.now()
-				}
-			}
+			replyForm: {}
 		}
 	},
 	mixins: [hMixin],
 	methods: {
-		...mapActions(['fetchAllUser', 'fetchAllNotice']),
 		...mapMutations(['setCurrentItem']),
+		...mapActions(['fetchMyCart', 'fetchAllCategory']),
 		bindIMG,
-		async fetchCommment() {
-			const { list } = await _api.getCommentList({
-				size: 999,
-				keyword: this.id
-			})
-			list.forEach((item) => {
-				item.user = this.getUserById(item.userId)
-			})
-			this.commentList = list
-		},
-		async comment() {
-			if (this.commentIsEmpty) return
-			const commentObj = {
-				description: this.commentVal,
-				roomId: this.id,
-				userId: this.user.id,
-				createTime: Date.now()
-			}
-			const { success } = await _api.addComment(commentObj)
-			this.handleSuccess(success, '评论', () => {
-				this.commentVal = ''
-				this.fetchCommment()
-			})
-		},
-
-		async fetchCurrentAppointment() {
-			const { list } = await _api.getAppointmentList({
-				keyword: this.user.id
-			})
-			this.currentAppointment = list.find((i) => i.projectId === this.id)
-			if (this.currentStatus !== -1) {
-				this.myDate = this.currentAppointment.tjTime
-			}
-		},
-		showMsg() {
-			this.$message.success('请耐心等待，医生在提供建议后，在个人中心进行查看')
-		},
-		showReplyDialog() {
-			const currentReply = this.allNotice.find(
-				(i) => i.userId === this.user.id && i.doctorId === this.item.doctorId
-			)
-			console.log(currentReply)
-			// fixme no unique tag
-			this.$set(this.replyForm, 'userName', this.user.username)
-			this.$set(this.replyForm, 'doctorName', this.item.doctor.username)
-			this.$set(this.replyForm, 'description', currentReply.description)
-			this.replyDialogVisible = true
-		},
-		submitReplyForm(formName) {
-			this.$refs[formName].validate(async (valid) => {
-				if (!valid) return
-				const { success } = await _api.addAddvice({
-					content: this.replyForm.content,
-					ctime: Date.now(),
-					description: '',
-					state: 0,
-					title: this.replyForm.title,
-					userid: this.user.id,
-					utime: Date.now()
-				})
-				if (success) {
-					this.handleItem(5)
-					this.$message.success('反馈成功，我们在收到反馈后会第一时间回复你')
-				} else {
-					this.$message.error('网络繁忙')
-				}
-				this.replyDialogVisible = false
-			})
-		},
-		async orderItem() {
-			const puchaseLoading = this.$loading({
-				text: '支付中...'
-			})
-			setTimeout(() => {}, 2000)
-			const { success: _success } = await _api.addOrder({
+		async handleAddCart(item) {
+			const { success } = await _api.addShoppingCar({
 				createTime: Date.now(),
-				name: this.item.name,
-				price: this.item.price,
-				projectId: this.item.id,
+				goodsId: item.id,
+				type: 0,
 				updateTime: Date.now(),
-				userId: this.user.id
+				userId: this.currentUser.id
 			})
-			setTimeout(async () => {
-				puchaseLoading.close()
-				if (_success) {
-					const orderLoading = this.$loading({
-						text: '申请中...'
-					})
-					const { success } = await _api.addAppointment({
-						projectId: this.item.id,
-						tjTime: this.myDate,
-						createTime: Date.now(),
-						updateTime: Date.now(),
-						doctorId: this.item.doctorId,
-						userId: this.user.id,
-						status: 0
-					})
-					orderLoading.close()
-					if (success) {
-						this.$message.success('申请成功,请耐心等待预约结果')
-						this.fetchCurrentAppointment()
-					} else {
-						this.$message.error('申请失败，服务繁忙，请稍后再试')
-					}
-				} else {
-					this.$message.error('支付失败,服务繁忙,请稍后重试')
-				}
-			}, 1500)
-		},
-		async fetchOrderById(id) {
-			const { list } = await _api.getOrderList({
-				size: 999,
-				page: 1,
-				keyword: id
+			this.$notify({
+				title: '购物车',
+				type: success ? 'success' : 'danger',
+				message: success ? '添加成功! ' : '添加失败! '
 			})
-			this.itemByOrder = list.find((item) => item.userId === this.user.id)
+			success && this.fetchMyCart()
 		},
-		async updateItem() {
-			this.fetchCurrentAppointment()
-		},
-		async handleItem(status) {
-			const item = deepClone(this.currentAppointment)
-			const { success } = await _api.editAppointment({
-				...item,
-				updateTime: Date.now(),
-				status
-			})
-			if (status === 2) {
-				this.handleMsg(
-					success,
-					'签到成功,请到前往' + this.item.department.address + '进行体检'
-				)
-			} else if (status === 3) {
-				this.handleMsg(success, '体检完成!')
-			}
-			this.updateItem()
-		},
-		handleMsg(success, msg) {
-			if (success) {
-				this.updateItem()
-				this.$message.success(msg)
-			} else {
-				this.$message.error('服务繁忙')
-			}
+		goto() {
+			this.$router.push({ name: 'Cart' })
 		}
 	},
 
 	computed: {
 		...mapState({
 			item: 'currentItem',
-			user: 'currentUser',
-			allNotice: 'allNotice'
+			myCart: 'myCart',
+			currentUser: 'currentUser'
 		}),
-		...mapGetters(['getUserById']),
-		isLogin() {
-			return this.user !== null
+		...mapGetters(['getCategoryById']),
+		cartNum() {
+			return this.myCart.length
 		},
-		commentIsEmpty() {
-			return this.commentVal.trim().length === 0
-		},
-		itemState() {
-			const { state = 0 } = this.itemByOrder || {}
-			return state
-		},
-		currentStatus() {
-			return notEmpty(this.currentAppointment)
-				? this.currentAppointment.status
-				: -1
-		},
-		lastText() {
-			return this.currentStatus === 3 ? '体检完成' : '体检取消'
+		typeName() {
+			return this.getCategoryById(this.item.type)?.name ?? '未知'
 		}
 	},
 	mounted() {
-		this.fetchAllNotice()
-		this.fetchAllUser()
-		this.fetchCurrentAppointment()
-		this.updateItem()
+		this.fetchAllCategory()
 	}
 }
 </script>
@@ -324,31 +133,41 @@ export default {
 	color: #666;
 }
 .l-content {
-	//   width: 50%;
-	//   width: auto;
-	//   width: 600px;
-	flex: 1;
-	height: 300px;
-
-	img {
+	flex: 2;
+	height: 100%;
+	position: relative;
+	border: 1px solid #f0f0f0;
+	box-sizing: border-box;
+	padding: 20px;
+	.img-warp {
+		position: relative;
 		width: 100%;
-		height: 100%;
-		vertical-align: bottom;
+		height: 0;
+		padding-bottom: 100%;
+		img {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			vertical-align: bottom;
+		}
 	}
 }
 
 .r-content {
-	flex: 1;
-	//   background-color: #ccc;
+	flex: 3;
 	padding: 0 30px;
 	display: flex;
 	flex-direction: column;
-
+	.r-hd {
+		color: #111;
+		padding-top: 10px;
+		line-height: 28px;
+		font-size: 24px;
+		margin-bottom: 5px;
+	}
 	.r-bd {
 		flex: 1;
-		background-color: #f8f8f8;
-		border: 1px solid #eee;
-		padding: 20px;
+		padding: 20px 0;
 		p {
 			margin: 0;
 			margin-bottom: 20px;
@@ -359,7 +178,7 @@ export default {
 				width: 120px;
 				text-align: left;
 				letter-spacing: 2px;
-				color: #222;
+				color: #999;
 			}
 			&:last-child {
 				//   width: 100%;
@@ -372,61 +191,45 @@ export default {
 				transform: scale(1.2);
 				letter-spacing: 2px;
 			}
+			&.h-num {
+				// color: @color-red;
+			}
 		}
 	}
-	.r-ft {
-		margin-top: 10px;
+	.r-bottom {
 		display: flex;
-		align-items: center;
-		.my-date {
-			display: flex;
-			align-items: center;
-			flex: 2;
-			width: 100%;
+		justify-content: space-evenly;
+		[class*='-cart'] {
+			outline: none;
+			width: 120px;
+			height: 40px;
+			line-height: 40px;
 			font-size: 16px;
-			margin-right: 30px;
-			::v-deep.el-input__inner {
-				border-radius: 0;
-				border-width: 2px;
-			}
-			& + .click {
-				flex: 1;
+			border: none;
+			background-color: @color-red;
+			color: #fff;
+			cursor: pointer;
+			&:hover {
+				opacity: 0.7;
 			}
 		}
-		a {
-			display: inline-block;
-			width: 100%;
-			height: 44px;
-			//   border: 2px solid @color-blue;
-			line-height: 44px;
-			background-color: @color-blue;
-			text-align: center;
-			color: #fff;
-			letter-spacing: 4px;
-			transition: all 0.5s ease-out;
-			&:hover {
-				// background-color: rgba(@color-main);
+		.my-cart {
+			position: relative;
+			border: 1px solid #dfdfdf;
+			background: #f9f9f9;
+			color: #666;
+			.corner-ico {
+				position: absolute;
+				right: 0;
+				top: -10px;
+				padding: 0 4px;
+				min-width: 14px;
+				height: 20px;
+				line-height: 20px;
+				background-color: @color-red;
 				color: #fff;
-				opacity: 0.8;
-			}
-			&.disabled {
-				pointer-events: none;
-				opacity: 0.6;
-			}
-			&.success {
-				background-color: @color-green;
-			}
-			&.primary {
-				background-color: @color-main;
-			}
-			&.info {
-				background-color: @color-yellow;
-			}
-			&.blue {
-				background-color: #409eff;
-			}
-			&.red {
-				background-color: tomato;
+				border-radius: 10px 10px 10px 4px;
+				font-size: 14px;
 			}
 		}
 	}
@@ -539,18 +342,7 @@ export default {
 	color: #666;
 	padding-top: 10px;
 }
-.t-steps {
-	padding: 40px 20px 20px;
-	// text-align: center;
-	margin: 0 auto;
-	// display: flex;
-	// justify-content: center;
-	// align-items: center;
-	background-color: #f0f0f0;
-	::v-deep .el-steps {
-		justify-content: center;
-	}
-}
+
 .not-found {
 	margin-top: 10px;
 }

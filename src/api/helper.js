@@ -53,6 +53,14 @@ export function _delete (url, model = 1) {
             URL = `${url}/${params}`
         } else if (model === 2) {
             URL = `${url}?id=${params}`
+        } else if (model === 3) {
+            URL = url
+            return $http.delete(URL, { data: params })
+                .then(res => {
+                    return res.data
+                }).catch(err => {
+                    console.log(err)
+                })
         }
         return $http.delete(URL)
             .then(res => {

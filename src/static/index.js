@@ -44,6 +44,12 @@ export const goodsState = [
     { value: 1, label: '已上架', type: 'success' },
     { value: 2, label: '已授权', type: 'danger' }
 ]
+
+export const donateState = [
+    { value: 0, label: '审核中', type: 'info' },
+    { value: 1, label: '捐赠成功', type: 'success' },
+    { value: 2, label: '捐赠失败', type: 'danger' }
+]
 export const priceList = [
     { id: 0, min: 0, max: 1000, name: '1000元以下' },
     { id: 1, min: 1000, max: 5000, name: '1000-5000元' },
@@ -56,6 +62,10 @@ export const loadBtn = [
     { id: 1, icon: 'el-icon-loading' }
 ]
 
+export const source = [
+    { id: 0, text: '个人' },
+    { id: 1, text: '集体' }
+]
 export const roomId = () => {
     return Array.from({ length: 11 })
 }

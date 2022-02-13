@@ -1,6 +1,5 @@
 <template>
 	<el-card class="room">
-		<!--  -->
 		<el-form v-model="searchForm" :inline="true" size="small">
 			<el-row>
 
@@ -78,8 +77,6 @@
 </template>
 
 <script>
-// todo del category
-// import { category } from '@mock'
 import { aMixin } from '@mixins'
 import { ADD, EDIT } from '@static'
 import _api from '@api'

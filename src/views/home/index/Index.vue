@@ -23,12 +23,9 @@
 </template>
 
 <script>
-// import { notice, goods } from '@mock'
 import goodsList from './GoodsList'
-// import search from '../common/Search'
 import _api from '@api'
 import { mapActions, mapGetters } from 'vuex'
-// import { mapActions } from 'vuex'
 import { bindIMG } from '@utils'
 export default {
 	components: {
@@ -56,7 +53,6 @@ export default {
 			this.goods = data.slice(0, 12)
 		},
 		async fetchShopFile() {
-			// const { data } = await _api.getShopFiles()
 			const { data } = await _api.getShopFile()
 			this.list = data.slice(0, 4)
 		},
@@ -67,7 +63,6 @@ export default {
 		},
 		handleNotice() {
 			this.autoplay = true
-			// this.currentNotice = null
 		}
 	},
 	computed: {
@@ -77,10 +72,8 @@ export default {
 		}
 	},
 	created() {
-		// this.fetchAllRoom()
 		this.fetchShopFile()
 		this.fetchGoods()
-		// this.fetchAllCategory()
 	}
 }
 </script>

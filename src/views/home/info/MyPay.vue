@@ -1,16 +1,17 @@
 <template>
 	<div class="my-order">
 		<el-table :data="tableData" style="width: 100%">
-			<el-table-column prop="id" label="订单号" min-width="200">
+			<el-table-column prop="goodsName" label="商品" min-width="100">
 			</el-table-column>
-			<el-table-column prop="price" label="项目名称" min-width="100">
-			</el-table-column>
-			<el-table-column prop="price" label="预定价格" min-width="100">
+			<el-table-column prop="price" label="价格" min-width="100">
 				<template v-slot="{row}">
 					<el-tag type="danger" effect="plain">{{row.price | $}}</el-tag>
 				</template>
 			</el-table-column>
-			<el-table-column label="支付时间" min-width="100">
+			<el-table-column prop="status" label="状态" min-width="100">
+
+			</el-table-column>
+			<el-table-column label="购买时间" min-width="100">
 				<template v-slot="{row}">
 					{{row.creatTime || Date.now() | formatDate}}
 				</template>
@@ -23,6 +24,10 @@
 				</template>
 			</el-table-column>
 		</el-table>
+		<el-pagination class="t-pagination" @size-change="handleSizeChange(fetchOrder,$event)"
+			@current-change="handleCurrentChange(fetchOrder,$event)" :current-page="query.page"
+			:page-size="query.size" layout="total, prev, pager, next" :total="total">
+		</el-pagination>
 	</div>
 </template>
 
@@ -32,7 +37,7 @@ import _api from '@api'
 export default {
 	props: {
 		id: {
-			type: String
+			type: Number
 		}
 	},
 	mixins: [hMixin],
@@ -42,10 +47,10 @@ export default {
 		}
 	},
 	methods: {
-		deleteOrder: _api.deleteOrder,
+		deleteOrder: _api.deleteGoodsOrder,
 		async fetchOrder() {
-			const { data } = await _api.getOrders()
-			this.tableData = data.filter((i) => this.id === i.userId)
+			const { list } = await _api.getGoodsOrderList()
+			this.tableData = list.filter((i) => i.userId === this.id.toString())
 		}
 	},
 	computed: {},
@@ -61,5 +66,9 @@ export default {
 }
 .el-link {
 	margin-right: 10px;
+}
+.t-pagination {
+	margin-top: 20px;
+	text-align: center;
 }
 </style>
