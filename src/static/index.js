@@ -50,6 +50,14 @@ export const donateState = [
     { value: 1, label: '捐赠成功', type: 'success' },
     { value: 2, label: '捐赠失败', type: 'danger' }
 ]
+
+export const orderState = [
+    { value: 0, label: '出库中', type: '' },
+    { value: 1, label: '派送中', type: 'warning' },
+    { value: 2, label: '已送达', type: 'danger' },
+    { value: 3, label: '已收货', type: 'success' }
+
+]
 export const priceList = [
     { id: 0, min: 0, max: 1000, name: '1000元以下' },
     { id: 1, min: 1000, max: 5000, name: '1000-5000元' },

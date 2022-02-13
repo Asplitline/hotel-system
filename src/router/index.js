@@ -156,13 +156,13 @@ const routes = [
         }
       },
       {
-        path: '/goods/appointment',
-        name: 'Appointment',
-        component: () => import('@views/admin/appointment'),
+        path: '/goods/order',
+        name: 'Order',
+        component: () => import('@views/admin/order'),
         meta: {
           title: '订单管理',
           icon: 'iconfont icon-ConferenceRoom',
-          index: '/goods/appointment'
+          index: '/goods/order'
         }
       }
     ]

@@ -4,8 +4,8 @@
 		<ul class="h-list" v-if="filterGoods.length">
 			<li class="h-item" v-for="item in filterGoods" :key="item.id">
 				<a href="javascript:;" class="h-content">
-					<img :src="bindIMG(item.url)">
-					<span class="h-title">{{item.name}}</span>
+					<img :src="bindIMG(item.url)" @click="goItemDetail(item)">
+					<span class="h-title" @click="goItemDetail(item)">{{item.name}}</span>
 				</a>
 				<div class="h-info">
 					<p class="h-price">价格:{{item.price|$}}</p>
@@ -45,6 +45,10 @@ export default {
 		...mapMutations(['setCurrentItem']),
 		...mapActions(['fetchMyCart']),
 		bindIMG,
+		goItemDetail(data) {
+			this.setCurrentItem(data)
+			this.$router.push({ name: 'ShopDetail', params: { id: data.id } })
+		},
 		async handleAddCart(item) {
 			const { success } = await _api.addShoppingCar({
 				createTime: Date.now(),

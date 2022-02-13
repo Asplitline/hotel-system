@@ -1,5 +1,5 @@
 <template>
-	<div class="my-order">
+	<el-card class="comment">
 		<el-table :data="tableData" style="width: 100%">
 			<el-table-column prop="goodsName" label="商品" min-width="100">
 			</el-table-column>
@@ -21,9 +21,13 @@
 			</el-table-column>
 			<el-table-column label="操作" min-width="100">
 				<template v-slot="{row}">
-					<el-popconfirm title="是否确认收货" @confirm="handleOrder(row,3)">
-						<el-link type="success" :disabled="row.status!==2" slot="reference">
-							确认收获</el-link>
+					<el-popconfirm title="将派送商品" @confirm="handleOrder(row,1)">
+						<el-link type="primary" :disabled="row.status!==0" slot="reference">
+							商品派送</el-link>
+					</el-popconfirm>
+					<el-popconfirm title="确认商品送达？" @confirm="handleOrder(row,2)">
+						<el-link type="success" :disabled="row.status!==1" slot="reference">
+							商品送达</el-link>
 					</el-popconfirm>
 					<el-link type="danger" @click="deleteById(deleteOrder,fetchOrder,row.id,'支付记录')"
 						:disabled="row.status!==3">
@@ -31,57 +35,51 @@
 				</template>
 			</el-table-column>
 		</el-table>
-		<el-pagination class="t-pagination" @size-change="handleSizeChange(fetchOrder,$event)"
-			@current-change="handleCurrentChange(fetchOrder,$event)" :current-page="query.page"
-			:page-size="query.size" layout="total, prev, pager, next" :total="total">
+		<!--  -->
+		<el-pagination @size-change="handleSizeChange(fetchComment,$event)"
+			@current-change="handleCurrentChange(fetchComment,$event)"
+			:current-page="query.page" :page-sizes="[1, 2, 5, 10]" :page-size="query.size"
+			layout="total, sizes, prev, pager, next, jumper" :total="total">
 		</el-pagination>
-	</div>
+	</el-card>
 </template>
 
 <script>
-import { hMixin } from '@mixins'
-import { orderState } from '@static'
+import { aMixin } from '@mixins'
 import _api from '@api'
+import { orderState } from '@static'
+import { mapGetters } from 'vuex'
 export default {
-	props: {
-		id: {
-			type: Number
-		}
-	},
-	mixins: [hMixin],
 	data() {
 		return {
 			tableData: [],
 			orderState
 		}
 	},
+	mixins: [aMixin],
 	methods: {
 		deleteOrder: _api.deleteGoodsOrder,
 		async fetchOrder() {
 			const { list } = await _api.getGoodsOrderList()
-			this.tableData = list.filter((i) => i.userId === this.id.toString())
+			this.tableData = list
 		},
+
 		async handleOrder(i, status) {
 			const { success } = await _api.editGoodsOrder({ id: i.id, status })
-			success && this.fetchOrder()
+			this.handleSuccess(success, ['', '派送', '送达'][status], this.fetchOrder)
 		}
 	},
-	computed: {},
-	created() {
+	computed: {
+		...mapGetters(['getUserById', 'getItemById']),
+		filterTableData() {
+			return this.tableData
+		}
+	},
+	mounted() {
 		this.fetchOrder()
 	}
 }
 </script>
-
-<style lang="less" scoped>
-.el-pagination {
-	margin-top: 10px;
-}
-.el-link {
-	margin-right: 10px;
-}
-.t-pagination {
-	margin-top: 20px;
-	text-align: center;
-}
+<style lang="less">
+@import '~@css/acommon.less';
 </style>

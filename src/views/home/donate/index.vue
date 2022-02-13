@@ -34,7 +34,6 @@
 				</el-table-column>
 				<el-table-column prop="comment" label="内容">
 					<template v-slot="{row}">
-						<!-- <pre>{{ handleComment(row.comment)}}</pre> -->
 						<p v-for="(i,idx) in handleComment(row.comment)" :key="idx">{{i}} * 1</p>
 					</template>
 				</el-table-column>
@@ -111,6 +110,7 @@ export default {
 					message: success ? '捐赠成功! ' : '捐赠失败! '
 				})
 				success && this.$refs.donateForm.resetFields()
+				success && this.fetchDonate()
 			})
 		},
 		async fetchDonate() {

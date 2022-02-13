@@ -69,7 +69,6 @@
 </template>
 
 <script>
-// todo del carousel
 import { aMixin } from '@mixins'
 import { ADD, EDIT } from '@static'
 import _api from '@api'

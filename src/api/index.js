@@ -64,7 +64,7 @@ const goodsOrder = {
     getGoodsOrderList: _get('/apiGoodsOrder/pageList'),
     addGoodsOrderList: _post('/apiGoodsOrder/batchInsert'),
     addGoodsOrder: _post('/apiGoodsOrder/insert'),
-    editGoodsOrder: _put('/apiGoodsOrder/updateIgnoreNull'),
+    editGoodsOrder: _put('/apiGoodsOrder/update'),
     deleteGoodsOrder: _delete('/apiGoodsOrder/delete', TRADITION_MODEL)
 }
 
