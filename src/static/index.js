@@ -21,7 +21,6 @@ export const aMenuList = [
     { name: '评论管理', index: 'comment', icon: 'iconfont icon-comment' },
     { name: '公告管理', index: 'notice', icon: 'iconfont icon-notice' }
 ]
-
 export const levelInfo = [
     { flag: 0, value: '用户', type: 'success' },
     { flag: 1, value: '管理员', type: 'danger' },

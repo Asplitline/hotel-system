@@ -1,29 +1,21 @@
-# medical
+# 体检预约系统
 
-## Project setup
 
-```
-npm install
-```
+## 前台
 
-### Compiles and hot-reloads for development
+首页
 
-```
-npm run serve
-```
+体检
 
-### Compiles and minifies for production
+个人
 
-```
-npm run build
-```
+## 后台系统
 
-### Lints and fixes files
 
-```
-npm run lint
-```
+首页
+ - 仪表盘
+ - 首页轮播图
 
-### Customize configuration
+人员管理
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
