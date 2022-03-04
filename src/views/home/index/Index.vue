@@ -75,7 +75,7 @@ export default {
 		...mapGetters(['getCategoryById']),
 		...mapState(['allRoom']),
 		sortRoom() {
-			return this.allRoom.slice(0).sort((a, b) => {
+			return this.allRoom?.slice(0).sort((a, b) => {
 				return Number(a.address) - Number(b.address)
 			})
 		}

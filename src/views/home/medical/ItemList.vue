@@ -127,6 +127,11 @@ export default {
 		p {
 			margin: 0;
 		}
+		.i-title {
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			overflow: hidden;
+		}
 		.i-info {
 			padding: 30px 20px 0;
 			.i-item {

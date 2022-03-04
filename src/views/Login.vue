@@ -141,7 +141,7 @@ export default {
 						this.$message.success('登录成功，跳转中....')
 						this.setCurrentUser(data)
 						// console.log(data.level, typeof data.level)
-						if (Number(data.level) === 1) {
+						if (Number(data.level) === 1 || Number(data.level) === 2) {
 							this.$router.push({ name: 'admin' })
 						} else if (Number(data.level) === 0) {
 							this.$router.push({ name: 'index' })
