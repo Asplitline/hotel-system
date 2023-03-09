@@ -1,12 +1,12 @@
 const path = require('path')
-function load (url) {
+function load(url) {
   return path.resolve(__dirname, url)
 }
 
 const isProd = process.env.VUE_APP_ENV === 'production'
 module.exports = {
-  chainWebpack: config => {
-    config.when(isProd, config => {
+  chainWebpack: (config) => {
+    config.when(isProd, (config) => {
       config.entry('app').clear().add('./src/main.prod.js')
       config.optimization.minimizer('terser').tap((args) => {
         args[0].terserOptions.compress.drop_console = true
@@ -18,14 +18,14 @@ module.exports = {
         axios: 'axios',
         'element-ui': 'ElementUI'
       })
-      config.plugin('html').tap(args => {
+      config.plugin('html').tap((args) => {
         args[0].isProd = true
         return args
       })
     })
-    config.when(!isProd, config => {
+    config.when(!isProd, (config) => {
       config.entry('app').clear().add('./src/main.dev.js')
-      config.plugin('html').tap(args => {
+      config.plugin('html').tap((args) => {
         args[0].isProd = false
         return args
       })
@@ -52,10 +52,10 @@ module.exports = {
     },
     proxy: {
       '/api': {
-        target: 'http://localhost:8088/',
+        target: 'http://localhost:8089/',
         changeOrigin: true,
         pathRewrite: {
-          '^/api': '' //路径重写
+          '^/api': '' // 路径重写
         }
       }
     }
