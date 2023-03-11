@@ -3,7 +3,7 @@
     <!--  -->
     <el-form v-model="searchForm" :inline="true" size="small">
       <el-row type="flex" justify="space-between">
-        <el-col :span="6">
+        <el-col :span="10">
           <el-form-item>
             <el-input v-model="searchForm.name" placeholder="输入商品名称" clearable @clear="search" />
           </el-form-item>
@@ -107,14 +107,8 @@
           <el-input v-model="itemForm.name" placeholder="商品名称"></el-input>
         </el-form-item>
         <el-form-item label="分类" prop="type">
-          <!-- <el-select v-model="itemForm.type" placeholder="所属分类">
-						<el-option v-for="item in allCategory" :key="item.id" :label="item.name"
-							:value="item.id">
-						</el-option>
-					</el-select> -->
-
           <el-select v-model="itemForm.type" placeholder="所属分类">
-            <el-option-group v-for="category in categories" :key="category.id" :label="category.name">
+            <el-option-group v-for="category in goodsCategory" :key="category.id" :label="category.name">
               <el-option v-for="item in category.children" :key="item.id" :label="item.name" :value="item.id"> </el-option>
             </el-option-group>
           </el-select>
@@ -155,8 +149,6 @@
 </template>
 
 <script>
-// import { order } from '@mock'
-
 import { aMixin } from '@mixins'
 import { goodsState } from '@/static'
 import _api from '@api'
@@ -250,20 +242,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getUserById', 'getRoomById', 'getCategoryById']),
-    ...mapState(['allRoom', 'allCategory']),
-    categories() {
-      const parent = this.allCategory.filter((i) => i.pid === null)
-      return parent
-        .map((i) => {
-          const children = this.allCategory.filter((j) => j.pid === i.id)
-          return {
-            ...i,
-            children
-          }
-        })
-        .filter((i) => i.children.length > 0)
-    }
+    ...mapGetters(['getCategoryById', 'goodsCategory']),
+    ...mapState(['allCategory'])
   },
   mounted() {
     this.fetchAllUser()

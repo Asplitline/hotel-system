@@ -4,14 +4,14 @@
       <el-row>
         <el-col :span="2" :offset="22">
           <el-form-item>
-            <el-button type="success" icon="el-icon-plus" @click="showDialog(0)">新增 </el-button>
+            <el-button type="success" icon="el-icon-plus" @click="showDialog(0)">新增类型 </el-button>
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
     <!--  -->
     <el-table :data="tableData" style="width: 100%" max-height="650px" row-key="id" :tree-props="{ children: 'children' }">
-      <el-table-column prop="name" label="商品类型" min-width="100"> </el-table-column>
+      <el-table-column prop="name" label="类型" min-width="100"> </el-table-column>
       <el-table-column prop="description" label="类型描述" min-width="150"> </el-table-column>
       <el-table-column prop="createTime" label="创建时间" min-width="150">
         <template v-slot="{ row }">
@@ -25,20 +25,16 @@
       </el-table-column>
       <el-table-column label="操作" min-width="100">
         <template v-slot="{ row }">
-          <el-link type="primary" @click="showDialog(1, row)" :disabled="row.pid == null">修改商品类型</el-link>
-          <el-link
-            type="danger"
-            @click="deleteById(deleteCategory, fetchCategory, row.id, '商品类型')"
-            :disabled="row.pid == null && row.children && row.children.length !== 0"
-            >删除商品类型
+          <el-link type="primary" @click="showDialog(1, row)" v-if="row.pid != null">修改类型</el-link>
+          <el-link type="danger" @click="deleteById(deleteCategory, fetchCategory, row.id, '类型')" v-if="row.pid != null"
+            >删除类型
           </el-link>
         </template>
       </el-table-column>
     </el-table>
 
-    <!--  -->
     <el-dialog
-      :title="categoryForm.flag === 0 ? '添加商品类型' : '修改商品类型'"
+      :title="categoryForm.flag === 0 ? '添加类型' : '修改类型'"
       :visible.sync="dialogVisible"
       width="30%"
       class="a-dialog"
@@ -56,12 +52,12 @@
           <img v-if="categoryForm.icon" :src="bindIMG(categoryForm.icon)" class="avatar" />
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
-        <el-form-item label="父级商品类型" prop="pid">
+        <el-form-item label="父级类型" prop="pid">
           <el-select v-model="categoryForm.pid">
             <el-option v-for="i in parentCategory" :key="i.id" :value="i.id" :label="i.name"> </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="商品类型" prop="name">
+        <el-form-item label="类型" prop="name">
           <el-input v-model="categoryForm.name"></el-input>
         </el-form-item>
         <el-form-item label="类型简介" prop="description">
@@ -92,15 +88,16 @@ export default {
       dialogVisible: false,
       categoryForm: {},
       categoryRules: {
-        name: { required: true, message: '请输入商品类型', trigger: blur },
+        name: { required: true, message: '请输入类型', trigger: blur },
         description: {
           required: true,
-          message: '请补充商品类型',
+          message: '请补充类型',
           trigger: blur
         },
+        pid: { required: true, message: '请选择父类型', trigger: blur },
         icon: {
           required: true,
-          message: '请选择商品商品类型图片',
+          message: '请选择商品类型图片',
           trigger: blur
         }
       },

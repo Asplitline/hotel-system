@@ -2,9 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '@store'
 // -
-const Admin = () => import(/* webpackChunkName:'admin' */'@views/admin')
-const Home = () => import(/* webpackChunkName:'home' */'@views/Home')
-const Login = () => import(/* webpackChunkName:'login' */'@views/Login')
+const Admin = () => import(/* webpackChunkName:'admin' */ '@views/admin')
+const Home = () => import(/* webpackChunkName:'home' */ '@views/Home')
+const Login = () => import(/* webpackChunkName:'login' */ '@views/Login')
 
 // --
 const Error = () => import('@views/404')
@@ -72,23 +72,23 @@ const routes = [
     path: '/admin',
     name: 'Admin',
     component: Admin,
-    redirect: '/admin/dashboard',
+    redirect: '/admin/carousel',
     isAuth: true,
     meta: {
       title: '首页',
       icon: 'iconfont icon-ConferenceRoom'
     },
     children: [
-      {
-        path: 'dashboard',
-        name: 'Dashboard',
-        component: () => import('@views/admin/dashboard'),
-        meta: {
-          title: '仪表盘',
-          icon: 'iconfont icon-ConferenceRoom',
-          index: '/admin/dashboard'
-        }
-      },
+      // {
+      //   path: 'dashboard',
+      //   name: 'Dashboard',
+      //   component: () => import('@views/admin/dashboard'),
+      //   meta: {
+      //     title: '仪表盘',
+      //     icon: 'iconfont icon-ConferenceRoom',
+      //     index: '/admin/dashboard'
+      //   }
+      // },
       {
         path: 'carousel',
         name: 'Carousel',
@@ -97,6 +97,16 @@ const routes = [
           title: '首页轮播图',
           icon: 'iconfont icon-ConferenceRoom',
           index: '/admin/carousel'
+        }
+      },
+      {
+        path: 'category',
+        name: 'Category',
+        component: () => import('@views/admin/category'),
+        meta: {
+          title: '分类管理',
+          icon: 'iconfont icon-ConferenceRoom',
+          index: '/admin/category'
         }
       }
     ]
@@ -136,16 +146,6 @@ const routes = [
     },
     children: [
       {
-        path: 'category',
-        name: 'Category',
-        component: () => import('@views/admin/category'),
-        meta: {
-          title: '商品分类',
-          icon: 'iconfont icon-ConferenceRoom',
-          index: '/goods/category'
-        }
-      },
-      {
         path: 'item',
         name: 'Item',
         component: () => import('@views/admin/item'),
@@ -168,34 +168,64 @@ const routes = [
     ]
   },
   {
-    path: '/service',
-    name: 'Service',
+    path: '/movie',
+    name: 'Movie',
     component: Admin,
-    redirect: '/service/advice',
+    redirect: '/movie/index',
     isAuth: true,
     meta: {
-      title: '服务管理',
+      title: '电影管理',
       icon: 'iconfont icon-ConferenceRoom'
     },
     children: [
-      // {
-      //   path: 'advice',
-      //   name: 'Advice',
-      //   component: () => import('@views/admin/advice'),
-      //   meta: {
-      //     title: '用户反馈',
-      //     icon: 'iconfont icon-ConferenceRoom',
-      //     index: '/service/advice'
-      //   }
-      // },
       {
-        path: 'donate',
-        name: 'Donate',
-        component: () => import('@views/admin/donate'),
+        path: '/movie/index',
+        name: 'admin-movie-index',
+        component: () => import('@views/admin/movie/index'),
         meta: {
-          title: '捐赠管理',
+          title: '影片信息',
           icon: 'iconfont icon-ConferenceRoom',
-          index: '/service/donate'
+          index: '/movie/index'
+        }
+      },
+      {
+        path: '/movie/order',
+        name: 'admin-movie-order',
+        component: () => import('@views/admin/movie/order'),
+        meta: {
+          title: '订单管理',
+          icon: 'iconfont icon-ConferenceRoom',
+          index: '/movie/order'
+        }
+      },
+      {
+        path: '/movie/ticket',
+        name: 'admin-movie-ticket',
+        component: () => import('@views/admin/movie/ticket'),
+        meta: {
+          title: '退票管理',
+          icon: 'iconfont icon-ConferenceRoom',
+          index: '/movie/ticket'
+        }
+      },
+      {
+        path: '/movie/comment',
+        name: 'admin-movie-comment',
+        component: () => import('@views/admin/movie/comment'),
+        meta: {
+          title: '影评管理',
+          icon: 'iconfont icon-ConferenceRoom',
+          index: '/movie/comment'
+        }
+      },
+      {
+        path: '/movie/reply',
+        name: 'admin-movie-reply',
+        component: () => import('@views/admin/movie/reply'),
+        meta: {
+          title: '影评回复',
+          icon: 'iconfont icon-ConferenceRoom',
+          index: '/movie/reply'
         }
       }
     ]

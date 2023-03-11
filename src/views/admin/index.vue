@@ -12,7 +12,7 @@
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="goIndex">跳转前台</el-dropdown-item>
+            <el-dropdown-item command="goIndex">前往官网</el-dropdown-item>
             <el-dropdown-item command="logOut">退出系统</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
