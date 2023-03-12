@@ -36,20 +36,35 @@ const routes = [
         }
       },
       {
+        path: '/movie',
+        name: 'Movie',
+        component: () => import('@views/home/movie'),
+        meta: {
+          title: '院线',
+          index: '/movie'
+        }
+      },
+      {
         path: '/shop/:id',
         name: 'ShopDetail',
         component: () => import('@views/home/shop/ShopDetail'),
         props: true
       },
       {
-        path: '/donate',
-        name: 'Donate',
-        component: () => import('@views/home/donate'),
-        meta: {
-          title: '捐赠中心',
-          index: '/donate'
-        }
+        path: '/movie/:id',
+        name: 'MovieDetail',
+        component: () => import('@views/home/movie/MovieDetail'),
+        props: true
       },
+      // {
+      //   path: '/donate',
+      //   name: 'Donate',
+      //   component: () => import('@views/home/donate'),
+      //   meta: {
+      //     title: '捐赠中心',
+      //     index: '/donate'
+      //   }
+      // },
       {
         path: '/cart',
         name: 'Cart',
@@ -168,10 +183,10 @@ const routes = [
     ]
   },
   {
-    path: '/movie',
-    name: 'Movie',
+    path: '/admin-movie',
+    name: 'admin-movie',
     component: Admin,
-    redirect: '/movie/index',
+    redirect: '/admin-movie/index',
     isAuth: true,
     meta: {
       title: '电影管理',
@@ -179,53 +194,53 @@ const routes = [
     },
     children: [
       {
-        path: '/movie/index',
+        path: '/admin-movie/index',
         name: 'admin-movie-index',
         component: () => import('@views/admin/movie/index'),
         meta: {
           title: '影片信息',
           icon: 'iconfont icon-ConferenceRoom',
-          index: '/movie/index'
+          index: '/admin-movie/index'
         }
       },
       {
-        path: '/movie/order',
+        path: '/admin-movie/order',
         name: 'admin-movie-order',
         component: () => import('@views/admin/movie/order'),
         meta: {
           title: '订单管理',
           icon: 'iconfont icon-ConferenceRoom',
-          index: '/movie/order'
+          index: '/admin-movie/order'
         }
       },
       {
-        path: '/movie/ticket',
+        path: '/admin-movie/ticket',
         name: 'admin-movie-ticket',
         component: () => import('@views/admin/movie/ticket'),
         meta: {
           title: '退票管理',
           icon: 'iconfont icon-ConferenceRoom',
-          index: '/movie/ticket'
+          index: '/admin-movie/ticket'
         }
       },
       {
-        path: '/movie/comment',
+        path: '/admin-movie/comment',
         name: 'admin-movie-comment',
         component: () => import('@views/admin/movie/comment'),
         meta: {
           title: '影评管理',
           icon: 'iconfont icon-ConferenceRoom',
-          index: '/movie/comment'
+          index: '/admin-movie/comment'
         }
       },
       {
-        path: '/movie/reply',
+        path: '/admin-movie/reply',
         name: 'admin-movie-reply',
         component: () => import('@views/admin/movie/reply'),
         meta: {
           title: '影评回复',
           icon: 'iconfont icon-ConferenceRoom',
-          index: '/movie/reply'
+          index: '/admin-movie/reply'
         }
       }
     ]

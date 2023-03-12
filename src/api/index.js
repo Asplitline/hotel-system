@@ -54,6 +54,8 @@ const notice = {
 const comment = {
   getComments: _get('/apiMovieComments/list'),
   getCommentList: _get('/apiMovieComments/pageList'),
+  getCommentByMovieId: _get('/apiMovieComments/pageByMovieId'),
+  getCommentByUserId: _get('/apiMovieComments/pageByUserId'),
   addComment: _post('/apiMovieComments/insert'),
   editComment: _put('/apiMovieComments/update'),
   deleteComment: _delete('/apiMovieComments/delete', TRADITION_MODEL)
@@ -105,7 +107,19 @@ const movie = {
   getMovieList: _get('/apiMovies/pageList'),
   addMovie: _post('/apiMovies/insert'),
   editMovie: _put('/apiMovies/update'),
+  getMovieById: _get('/apiMovies/getById'),
   deleteMovie: _delete('/apiMovies/delete', TRADITION_MODEL)
+}
+
+const orderMovie = {
+  getMovieOrders: _get('/apiMovieOrders/list'),
+  getMovieOrdersList: _get('/apiMovieOrders/pageList'),
+  addMovieOrders: _post('/apiMovieOrders/insert'),
+  editMovieOrders: _put('/apiMovieOrders/update'),
+  getMovieOrdersById: _get('/apiMovieOrders/getById'),
+  getMovieOrdersByMovieId: _get('/apiMovieOrders/pageByMovieId'),
+  getMovieOrdersByUserId: _get('/apiMovieOrders/pageByUserId'),
+  deleteMovieOrders: _delete('/apiMovieOrders/delete', TRADITION_MODEL)
 }
 
 const statistic = {
@@ -126,5 +140,6 @@ export default {
   ...shoppingCar,
   ...advice,
   ...movie,
-  ...reply
+  ...reply,
+  ...orderMovie
 }

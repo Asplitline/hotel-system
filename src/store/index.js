@@ -76,6 +76,9 @@ const mutations = {
   }
 }
 const getters = {
+  isLogin(state) {
+    return state.currentUser !== null
+  },
   getCategoryById: (state) => (id) => {
     return state.allCategory.find((item) => item.id === id)
   },

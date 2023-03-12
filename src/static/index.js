@@ -69,12 +69,32 @@ export const priceList = [
   { id: 2, min: 5000, max: 10000, name: '5000-10000元' },
   { id: 3, min: 10000, max: 99999, name: '10000元以上' }
 ]
-
+const fillArray = (length, total = 0) => {
+  let leftArr = []
+  let rightArr = []
+  if (total) {
+    const n = (total - length) / 2
+    leftArr = Array.from({ length: n }).fill('-')
+    rightArr = Array.from({ length: n }).fill('-')
+  }
+  return [...leftArr, ...Array.from({ length }).fill('*'), ...rightArr].join('')
+}
+export const generateSeat = (num) => {
+  if (num === 30) {
+    return [6, 8, 8, 8].map((i) => fillArray(i, 8))
+  } else if (num === 42) {
+    return [8, 10, 10, 10, 4].map((i) => fillArray(i, 10))
+  } else if (num === 48) {
+    return [8, 10, 10, 10, 12].map((i) => fillArray(i, 12))
+  } else if (num === 60) {
+    return [8, 8, 12, 12, 12, 8].map((i) => fillArray(i, 12))
+  }
+}
 export const roomList = [
-  { value: 30, label: '1号厅' },
-  { value: 40, label: '2号厅' },
-  { value: 50, label: '3号厅' },
-  { value: 100, label: '4号厅' }
+  { value: 30, label: '普通厅', price: 48 },
+  { value: 42, label: '3D厅', price: 58 },
+  { value: 50, label: '激光巨幕厅', price: 68 },
+  { value: 60, label: 'IMAX厅', price: 88 }
 ]
 
 export const loadBtn = [

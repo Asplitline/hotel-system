@@ -1,11 +1,11 @@
 @import url('//at.alicdn.com/t/font_2476040_pt42709n307.css');
 @import url('//at.alicdn.com/t/font_3176903_2huzo6r49z.css');
+@import url(./variables.less);
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: 'PingFang SC', 'Helvetica Neue', Helvetica, 'microsoft yahei', arial, STHeiTi,
-    sans-serif;
+  font-family: 'PingFang SC', 'Helvetica Neue', Helvetica, 'microsoft yahei', arial, STHeiTi, sans-serif;
 }
 
 .w {
@@ -63,7 +63,7 @@ a {
 }
 
 .t-btn {
-  background-color: #c91523;
+  background-color: #3e54ac;
   padding: 8px 16px;
   font-size: 16px;
   border: none;
@@ -73,4 +73,81 @@ a {
   &:hover {
     opacity: 0.7;
   }
+}
+
+.btn-movie {
+  position: relative;
+  height: 40px;
+  line-height: 40px;
+  width: 100%;
+  border: none;
+  background-color: @color-primary;
+  color: @color-white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  &.pending {
+    background-color: @color-green;
+  }
+  &.offline {
+    background-color: @color-gray;
+  }
+  &.disabled {
+    pointer-events: none;
+  }
+  &::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    left: 51%;
+    right: 51%;
+    bottom: 0;
+    background: @color-primary;
+    height: 4px;
+    transition-property: left, right;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-out;
+  }
+  .xicon {
+    margin-left: 10px;
+  }
+  &:hover {
+    cursor: pointer;
+    .xicon {
+      animation-name: icon-hover;
+      animation-duration: 1s;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: 1;
+    }
+  }
+}
+
+@keyframes icon-hover {
+  16.65% {
+    transform: translateX(6px);
+  }
+  33.3% {
+    transform: translateX(-5px);
+  }
+  49.95% {
+    transform: translateX(4px);
+  }
+  66.6% {
+    transform: translateX(-2px);
+  }
+  83.25% {
+    transform: translateX(1px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.t-empty {
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(#fff, 0.4);
 }

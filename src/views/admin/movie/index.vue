@@ -125,12 +125,14 @@
         <el-form-item label="剧情简介" prop="plot">
           <el-input type="textarea" v-model="movieForm.plot" placeholder="请输入剧情简介"></el-input>
         </el-form-item>
-        <el-form-item label="展厅类型" prop="extend1">
-          <el-select v-model="movieForm.extend1" placeholder="请选择展厅类型">
+        <el-form-item label="影院类型" prop="extend1">
+          <el-select v-model="movieForm.extend1" placeholder="请选择展厅类型" @change="extend1Change">
             <el-option v-for="item in roomList" :key="item.value" :label="item.label" :value="item.label"> </el-option>
           </el-select>
         </el-form-item>
-
+        <el-form-item label="影票单价" prop="price">
+          <el-input v-model.number="movieForm.extend2" readonly type="number" placeholder="请输入影票单价"> </el-input>
+        </el-form-item>
         <!-- <el-form-item label="制作预算" prop="budget">
           <el-input v-model="movieForm.email" placeholder="电子邮箱"></el-input>
         </el-form-item> -->
@@ -154,7 +156,7 @@
 <script>
 import _api from '@api'
 import { aMixin } from '@mixins'
-import { ADD, EDIT, languageList, locationList, roomList, movieState, sexInfo, stateInfo } from '@static'
+import { ADD, EDIT, languageList, locationList, movieState, roomList, sexInfo, stateInfo } from '@static'
 import { bindIMG, bindURL, deepClone, getUid } from '@utils'
 import { mapActions, mapGetters } from 'vuex'
 export default {
@@ -180,7 +182,8 @@ export default {
         plot: [{ required: true, message: '请输入剧情简介', trigger: 'blur' }],
         language: [{ required: true, message: '请输入语言', trigger: 'blur' }],
         country: [{ required: true, message: '请输入制片国家/地区', trigger: 'blur' }],
-        extend1: [{ required: true, message: '请选择展厅类型', trigger: 'blur' }]
+        extend1: [{ required: true, message: '请选择展厅类型', trigger: 'blur' }],
+        extend2: [{ required: true, message: '请输入影票单价', trigger: 'blur' }]
       },
       dialogVisible: false
     }
@@ -240,6 +243,10 @@ export default {
     },
     search() {
       this.fetchMovie()
+    },
+    extend1Change(v) {
+      const room = roomList.find((i) => i.label === v) || { price: 48 }
+      this.$set(this.movieForm, 'extend2', room.price)
     }
   },
   computed: {
