@@ -7,7 +7,7 @@
           <img :src="bindIMG(item.url)" alt="" class="img" />
           <div class="title">
             <span>{{ item.title }}</span>
-            <span>8.6</span>
+            <!-- <span></span> -->
           </div>
           <ul class="cover-desc">
             <li>

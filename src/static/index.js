@@ -34,9 +34,20 @@ export const stateInfo = [
   { flag: 1, value: '正常', type: 'primary' }
 ]
 
+export const ticketState = [
+  { flag: 0, value: '未退票', type: 'info' },
+  { flag: 1, value: '已退票', type: 'danger' }
+]
+
 export const replyState = [
   { flag: 0, value: '未回复', type: 'info' },
   { flag: 1, value: '已回复', type: 'primary' }
+]
+
+export const checkState = [
+  { flag: 0, value: '等待审核', type: 'primary' },
+  { flag: 1, value: '已通过', type: 'success' },
+  { flag: 2, value: '已拒绝', type: 'danger' }
 ]
 
 export const goodsState = [

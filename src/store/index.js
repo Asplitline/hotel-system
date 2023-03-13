@@ -13,6 +13,7 @@ const state = {
   allItem: getSession('allItem'),
   allNotice: getSession('allNotice'),
   allMovie: getSession('allMovie'),
+  allDonate: getSession('allDonate'),
   allComment: getSession('allComment'),
   currentItem: getSession('currentItem'),
   currentUser: getSession('currentUser'),
@@ -59,10 +60,15 @@ const mutations = {
     setSession('currentItem', data)
     state.currentItem = data
   },
+  setAllDonate(state, data) {
+    setSession('allDonate', data)
+    state.allDonate = data
+  },
   setCurrentUser(state, data) {
     setSession('currentUser', data)
     state.currentUser = data
   },
+
   setMyCart(state, data) {
     const myCart = data.filter((i) => {
       return i.userId === state.currentUser.id.toString()
@@ -103,6 +109,9 @@ const getters = {
   },
   getCommentById: (state) => (id) => {
     return state.allComment.find((item) => item.id === id)
+  },
+  getDonateById: (state) => (id) => {
+    return state.allDonate.find((item) => item.id === id)
   },
   categories(state) {
     const parent = state.allCategory.filter((i) => i.pid === null)
@@ -152,6 +161,10 @@ const actions = {
   async fetchAllComment({ commit }) {
     const { data } = await _api.getComments()
     commit('setAllComment', data)
+  },
+  async fetchAllDonate({ commit }) {
+    const { data } = await _api.getDonate()
+    commit('setAllDonate', data)
   }
 }
 const modules = {}

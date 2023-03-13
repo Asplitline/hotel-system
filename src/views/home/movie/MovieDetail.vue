@@ -195,7 +195,7 @@
 import _api from '@api'
 import { hMixin } from '@mixins'
 import { generateSeat, roomList } from '@static'
-import { bindIMG, checkPhone, getUid } from '@utils'
+import { bindIMG, checkPhone } from '@utils'
 import { CartArrowDown } from '@v2icons/fa'
 import { mapActions, mapGetters, mapMutations, mapState } from 'vuex'
 
@@ -343,13 +343,17 @@ export default {
     },
     async comment() {
       const { success } = await _api.addComment({
-        id: getUid(),
+        // id: getUid(),
         movieId: this.item.id,
         userId: this.currentUser.id,
-        commentDate: Date.now(),
+        // commentDate: Date.now(),
+        // commentDate: Date.now(),
         comment: this.commentVal
       })
       this.handleSuccess(success, '评论', this.fetchCommentList)
+      if (success) {
+        this.commentVal = ''
+      }
     }
   },
 
