@@ -1,4 +1,4 @@
-export const SERVER_URL = process.env.VUE_APP_ENV === 'development' ? '/api' : 'http://localhost:8088'
+export const SERVER_URL = process.env.VUE_APP_ENV === 'development' ? '/api' : 'http://127.0.0.1:8088'
 // export const FILE_PREFIX = 'http://localhost:8088/images/'
 export const FILE_PREFIX = 'http://127.0.0.1:8089/'
 export const REG_EMAIL = /\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/

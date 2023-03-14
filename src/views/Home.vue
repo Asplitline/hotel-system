@@ -71,6 +71,10 @@ export default {
 
     menuList() {
       const allMenu = this.$router.options.routes
+      console.log(
+        'allMenu: ',
+        allMenu.filter((i) => i.isAuth !== true && notEmpty(i.children))[0].children.filter((i) => notEmpty(i.meta))
+      )
       return allMenu.filter((i) => i.isAuth !== true && notEmpty(i.children))[0].children.filter((i) => notEmpty(i.meta))
     },
     cartNum() {

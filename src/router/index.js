@@ -232,17 +232,17 @@ const routes = [
           icon: 'iconfont icon-ConferenceRoom',
           index: '/admin-movie/comment'
         }
-      },
-      {
-        path: '/admin-movie/reply',
-        name: 'admin-movie-reply',
-        component: () => import('@views/admin/movie/reply'),
-        meta: {
-          title: '影评回复',
-          icon: 'iconfont icon-ConferenceRoom',
-          index: '/admin-movie/reply'
-        }
       }
+      // {
+      //   path: '/admin-movie/reply',
+      //   name: 'admin-movie-reply',
+      //   component: () => import('@views/admin/movie/reply'),
+      //   meta: {
+      //     title: '影评回复',
+      //     icon: 'iconfont icon-ConferenceRoom',
+      //     index: '/admin-movie/reply'
+      //   }
+      // }
     ]
   },
   { path: '/', redirect: '/login' },

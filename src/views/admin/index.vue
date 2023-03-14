@@ -56,14 +56,14 @@ export default {
     SideMenu
   },
   computed: {
-    ...mapState(['aIndex', 'currentUser']),
+    ...mapState(['aIndex', 'hIndex', 'currentUser']),
     currentMenu() {
       // debugger
       return this.$router.options.routes.filter((i) => i.isAuth)
     }
   },
   methods: {
-    ...mapMutations(['clearInfo']),
+    ...mapMutations(['clearInfo', 'setHIndex']),
     bindIMG,
     notEmpty,
     toggleFold() {
@@ -74,6 +74,7 @@ export default {
     },
     goIndex() {
       this.$router.push({ name: 'Index' })
+      this.setHIndex('/index')
     },
     logOut() {
       this.clearInfo()

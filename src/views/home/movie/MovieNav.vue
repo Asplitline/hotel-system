@@ -4,7 +4,7 @@
       <dt class="nav-info">{{ data.name }}</dt>
       <dd v-for="item in data.children" :key="item.id" class="nav-bd" :class="{ active: active === item.id }" @click="setActive(item.id)">
         <a href="javascript:;">{{ item.name }}</a>
-        <i class="el-icon-circle-close close-btn" @click.stop="setActive('')"></i>
+        <i class="el-icon-circle-close close-btn" v-if="active === item.id" @click.stop="setActive('')"></i>
       </dd>
     </dl>
   </div>
@@ -51,6 +51,7 @@ export default {
   }
 
   .nav-bd {
+    position: relative;
     display: inline-block;
     padding: 6px 16px;
     border: 1px solid transparent;
