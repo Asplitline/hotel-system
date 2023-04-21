@@ -3,7 +3,7 @@
     <el-header style="height: 70px">
       <div class="l-header">
         <i :class="isFold ? 'el-icon-s-unfold' : 'el-icon-s-fold'" @click="toggleFold()"></i>
-        防疫物资无人售货管理系统
+        无人超市
       </div>
       <div class="r-header">
         <el-dropdown trigger="click" @command="handleCommand">
