@@ -29,7 +29,7 @@
       </el-table-column>
       <el-table-column prop="isRefunded" label="退票时间" min-width="120">
         <template v-slot="{ row }">
-          {{ row.refundDate | formatDate }}
+          {{ row.orderDate | formatDate }}
         </template>
       </el-table-column>
       <el-table-column label="操作" min-width="80">

@@ -16,7 +16,7 @@
 			</el-table-column>
 			<el-table-column label="购买时间" min-width="100">
 				<template v-slot="{row}">
-					{{row.creatTime || Date.now() | formatDate}}
+					{{row.createTime | formatDate}}
 				</template>
 			</el-table-column>
 			<el-table-column label="操作" min-width="100">
