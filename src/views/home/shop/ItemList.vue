@@ -4,21 +4,34 @@
     <template v-if="itemList.length !== 0">
       <li class="item-item" v-for="item in itemList" :key="item.id">
         <div class="item-cover">
-          <img :src="bindIMG(item.url)" alt="" class="img" @click="goItemDetail(item)" />
+          <img
+            :src="bindIMG(item.url)"
+            alt=""
+            class="img"
+            @click="goItemDetail(item)"
+          />
         </div>
         <h2 class="i-title" @click="goItemDetail(item)">{{ item.name }}</h2>
         <div class="item-footer">
           <p class="i-price">
             {{ item.price | $ }}
           </p>
-          <button class="add-cart">
-            <el-popconfirm title="确定要添加商品到购物车吗？" @confirm="handleAddCart(item)">
+          <button class="add-cart" v-if="item.num > 0">
+            <el-popconfirm
+              title="确定要添加商品到购物车吗？"
+              @confirm="handleAddCart(item)"
+            >
               <i class="iconfont icon-iconfontcart" slot="reference"></i>
             </el-popconfirm>
           </button>
+          <button class="add-cart sell disabled" v-else>已售罄</button>
         </div>
       </li>
-      <li class="item-item hidden-vs" v-for="index in blankNum" :key="index"></li>
+      <li
+        class="item-item hidden-vs"
+        v-for="index in blankNum"
+        :key="index"
+      ></li>
     </template>
     <template v-else>
       <div class="not-found">暂无商品信息</div>
@@ -95,7 +108,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import '~@css/variables.less';
+@import "~@css/variables.less";
 .item-list {
   display: flex;
   flex-wrap: wrap;
@@ -171,7 +184,10 @@ export default {
         background-color: @color-red;
         border-radius: 2px;
         transition: transform 0.1s linear;
-
+        &.sell {
+          width: 60px;
+          color: #fff;
+        }
         &:hover {
           cursor: pointer;
           transform: scale(1.1);

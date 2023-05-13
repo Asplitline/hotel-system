@@ -118,7 +118,8 @@
           <el-input v-model.number="itemForm.price" type="number" placeholder="商品价格"> </el-input>
         </el-form-item>
         <el-form-item label="数量" prop="num">
-          <el-input v-model.number="itemForm.num" type="number" placeholder="商品数量"> </el-input>
+          <el-input-number v-model="itemForm.num" @change="handleChange" :min="1" :max="999" label="商品数量"></el-input-number>
+          <!-- <el-input v-model.number="itemForm.num" type="number" placeholder="商品数量"> </el-input> -->
         </el-form-item>
         <!--todo 级联选择  -->
         <el-form-item label="产地" prop="address">

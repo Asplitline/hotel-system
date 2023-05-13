@@ -7,14 +7,14 @@ Vue.use(Vuex)
 const state = {
   aIndex: getSession('aIndex'),
   hIndex: getSession('hIndex'),
-  allCategory: getSession('allCategory'),
-  allUser: getSession('allUser'),
-  allRoom: getSession('allRoom'),
-  allItem: getSession('allItem'),
-  allNotice: getSession('allNotice'),
-  allMovie: getSession('allMovie'),
-  allDonate: getSession('allDonate'),
-  allComment: getSession('allComment'),
+  allCategory: getSession('allCategory', []),
+  allUser: getSession('allUser', []),
+  allRoom: getSession('allRoom', []),
+  allItem: getSession('allItem', []),
+  allNotice: getSession('allNotice', []),
+  allMovie: getSession('allMovie', []),
+  allDonate: getSession('allDonate', []),
+  allComment: getSession('allComment', []),
   currentItem: getSession('currentItem'),
   currentUser: getSession('currentUser'),
   myCart: getSession('myCart')
@@ -86,7 +86,9 @@ const getters = {
     return state.currentUser !== null
   },
   getCategoryById: (state) => (id) => {
-    return state.allCategory.find((item) => item.id === id)
+    return (
+      state.allCategory?.find((item) => item.id === id) || { name: '未知' }
+    )
   },
   getMiniCategory: (state) => () => {
     return state.allCategory?.filter(({ id, name, pid }) => {
@@ -94,42 +96,44 @@ const getters = {
     })
   },
   getUserById: (state) => (id) => {
-    return state.allUser.find((item) => item.id === +id)
+    return state.allUser?.find((item) => item.id === +id)
   },
   getRoomById: (state) => (id) => {
-    return state.allRoom.find((item) => item.id === id)
+    return state.allRoom?.find((item) => item.id === id)
   },
   getItemById: (state) => (id) => {
-    console.log('id: ', id)
-    return state.allItem.find((item) => item.id === id)
+    return state.allItem?.find((item) => item.id === id)
   },
   getMovieById: (state) => (id) => {
-    console.log('id: ', id)
-    return state.allMovie.find((item) => item.id === id)
+    return state.allMovie?.find((item) => item.id === id)
   },
   getCommentById: (state) => (id) => {
-    return state.allComment.find((item) => item.id === id)
+    return state.allComment?.find((item) => item.id === id)
   },
   getDonateById: (state) => (id) => {
-    return state.allDonate.find((item) => item.id === id)
+    return state.allDonate?.find((item) => item.id === id)
   },
   categories(state) {
     const parent = state.allCategory.filter((i) => i.pid === null)
     return parent
-      .map((i) => {
+      ?.map((i) => {
         const children = state.allCategory.filter((j) => j.pid === i.id)
         return {
           ...i,
           children
         }
       })
-      .filter((i) => i.children.length > 0)
+      ?.filter((i) => i.children.length > 0)
   },
   movieCategory(state, getters) {
-    return getters.categories.filter((i) => i.id === 'F41E15AE23DC4085A2126D676A1F7362')
+    return getters.categories.filter(
+      (i) => i.id === 'F41E15AE23DC4085A2126D676A1F7362'
+    )
   },
   goodsCategory(state, getters) {
-    return getters.categories.filter((i) => i.id === '872796769E594DA9B32245038C60C2E3')
+    return getters.categories.filter(
+      (i) => i.id === '872796769E594DA9B32245038C60C2E3'
+    )
   }
 }
 const actions = {

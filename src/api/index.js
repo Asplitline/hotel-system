@@ -123,7 +123,8 @@ const orderMovie = {
 }
 
 const statistic = {
-  getStatisticInfo: _post('/statistics')
+  getStatisticInfo: _post('/statistics'),
+  getStatisticInfo2: _get('/apiShopFile/tongji')
 }
 
 export default {

@@ -94,7 +94,7 @@
           <el-date-picker v-model="movieForm.releaseDate" type="date" placeholder="选择上映日期" style="width: 100%"> </el-date-picker>
         </el-form-item>
         <el-form-item label="电影时长(分钟)" prop="duration">
-          <el-input-number v-model="movieForm.duration" :min="1" :max="999" label="请输入电影时长"></el-input-number>
+          <el-input-number v-model="movieForm.duration" :min="60" :max="200" label="请输入电影时长"></el-input-number>
         </el-form-item>
         <el-form-item label="电影类型" prop="genre">
           <el-select v-model="movieForm.genre" placeholder="请选择电影类型">
@@ -183,7 +183,8 @@ export default {
         language: [{ required: true, message: '请输入语言', trigger: 'blur' }],
         country: [{ required: true, message: '请输入制片国家/地区', trigger: 'blur' }],
         extend1: [{ required: true, message: '请选择展厅类型', trigger: 'blur' }],
-        extend2: [{ required: true, message: '请输入影票单价', trigger: 'blur' }]
+        extend2: [{ required: true, message: '请输入影票单价', trigger: 'blur' }],
+        status: [{ required: true, message: '请选择电影状态', trigger: 'blur' }]
       },
       dialogVisible: false
     }

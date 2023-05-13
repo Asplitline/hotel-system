@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '@store'
+import { getSession } from '../utils'
 // -
 const Admin = () => import(/* webpackChunkName:'admin' */ '@views/admin')
 const Home = () => import(/* webpackChunkName:'home' */ '@views/Home')
@@ -94,16 +95,16 @@ const routes = [
       icon: 'iconfont icon-ConferenceRoom'
     },
     children: [
-      // {
-      //   path: 'dashboard',
-      //   name: 'Dashboard',
-      //   component: () => import('@views/admin/dashboard'),
-      //   meta: {
-      //     title: '仪表盘',
-      //     icon: 'iconfont icon-ConferenceRoom',
-      //     index: '/admin/dashboard'
-      //   }
-      // },
+      {
+        path: 'dashboard',
+        name: 'Dashboard',
+        component: () => import('@views/admin/dashboard'),
+        meta: {
+          title: '仪表盘',
+          icon: 'iconfont icon-ConferenceRoom',
+          index: '/admin/dashboard'
+        }
+      },
       {
         path: 'carousel',
         name: 'Carousel',
@@ -257,7 +258,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const path = to.path.split('/')[1]
   const user = store.state.currentUser
-  console.log(user)
+  console.log('object :', getSession('currentUser'))
   if (path !== 'login') {
     if (user) {
       next()

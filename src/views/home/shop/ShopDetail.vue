@@ -2,7 +2,9 @@
   <div class="item-detail">
     <!-- <div class="h-header">体检详情<a href="javascript:;" @click="back()">返回</a></div> -->
     <div class="h-header">
-      <i class="fa fa-chevron-circle-left" aria-hidden="true" @click="back()">返回</i>
+      <i class="fa fa-chevron-circle-left" aria-hidden="true" @click="back()"
+        >返回</i
+      >
     </div>
     <div class="h-content">
       <div class="l-content">
@@ -23,18 +25,26 @@
             <span>商品库存</span><span class="h-num">{{ item.num }}</span>
           </p>
           <p>
-            <span>商品价格</span><span class="h-price">{{ item.price | $ }}</span>
+            <span>商品价格</span
+            ><span class="h-price">{{ item.price | $ }}</span>
           </p>
           <p>
-            <span>商品简介</span><span class="h-desc">{{ item.description }}</span>
+            <span>商品简介</span
+            ><span class="h-desc">{{ item.description }}</span>
           </p>
         </div>
         <div class="r-bottom">
-          <el-popconfirm title="确定要添加商品到购物车吗？" @confirm="handleAddCart(item)">
+          <el-popconfirm
+            title="确定要添加商品到购物车吗？"
+            v-if="item.num > 0"
+            @confirm="handleAddCart(item)"
+          >
             <button class="add-cart" slot="reference">添加购物车</button>
           </el-popconfirm>
+          <button class="add-cart disabled" v-else>已售罄</button>
           <button class="my-cart" @click="goto">
-            我的购物车 <span class="corner-ico" v-if="cartNum > 0">{{ cartNum }}</span>
+            我的购物车
+            <span class="corner-ico" v-if="cartNum > 0">{{ cartNum }}</span>
           </button>
         </div>
       </div>
@@ -103,7 +113,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import '~@css/variables.less';
+@import "~@css/variables.less";
 .h-content {
   display: flex;
   margin-bottom: 20px;
@@ -197,7 +207,7 @@ export default {
   .r-bottom {
     display: flex;
     justify-content: space-evenly;
-    [class*='-cart'] {
+    [class*="-cart"] {
       outline: none;
       width: 120px;
       height: 40px;
