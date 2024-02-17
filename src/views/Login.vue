@@ -1,10 +1,9 @@
 <template>
 	<div class="login">
 		<div class="login-wrap">
-			<div class="ms-login" :class="{'active':isLogin}">
-				<div class="ms-title">防疫物资无人售货 - 登录界面</div>
-				<el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="0px"
-					class="ms-content" key="loginForm">
+			<div class="ms-login" :class="{ 'active': isLogin }">
+				<div class="ms-title">花店商城 - 登录界面</div>
+				<el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="0px" class="ms-content" key="loginForm">
 					<el-form-item prop="username">
 						<el-input v-model="loginForm.username" placeholder="账号">
 							<el-button slot="prepend" icon="el-icon-user"></el-button>
@@ -12,7 +11,7 @@
 					</el-form-item>
 					<el-form-item prop="password">
 						<el-input type="password" placeholder="密码" v-model="loginForm.password"
-							@keydown.enter.native="submitForm('loginForm',0)">
+							@keydown.enter.native="submitForm('loginForm', 0)">
 							<el-button slot="prepend" icon="el-icon-lock"></el-button>
 						</el-input>
 					</el-form-item>
@@ -22,17 +21,17 @@
 								<el-button type="info" @click="toggleForm('loginForm')">注册</el-button>
 							</el-col>
 							<el-col :span="12">
-								<el-button type="primary" @click="submitForm('loginForm',0)">登录
+								<el-button type="primary" @click="submitForm('loginForm', 0)">登录
 								</el-button>
 							</el-col>
 						</el-row>
 					</div>
 				</el-form>
 			</div>
-			<div class="ms-register" :class="{'active':!isLogin}">
-				<div class="ms-title">防疫物资无人售货 - 注册界面</div>
-				<el-form :model="registerForm" :rules="rules" ref="registerForm" label-width="0px"
-					class="ms-content" key="registerForm">
+			<div class="ms-register" :class="{ 'active': !isLogin }">
+				<div class="ms-title">花店商城 - 注册界面</div>
+				<el-form :model="registerForm" :rules="rules" ref="registerForm" label-width="0px" class="ms-content"
+					key="registerForm">
 					<el-form-item prop="username">
 						<el-input v-model="registerForm.username" placeholder="账号">
 							<el-button slot="prepend" icon="el-icon-user"></el-button>
@@ -52,9 +51,8 @@
 					<el-form-item prop="checkCode">
 						<el-input v-model="registerForm.checkCode" placeholder="验证码">
 							<el-button slot="prepend" icon="el-icon-unlock"> </el-button>
-							<el-button class="toggle-button" slot="append"
-								:icon="loadBtn[loadFlag?1:0].icon" @click="getValidateCode()"
-								:disabled="showEmail" :class="{disabled:showEmail}">
+							<el-button class="toggle-button" slot="append" :icon="loadBtn[loadFlag ? 1 : 0].icon" @click="getValidateCode()"
+								:disabled="showEmail" :class="{ disabled: showEmail }">
 							</el-button>
 						</el-input>
 					</el-form-item>
@@ -64,7 +62,7 @@
 								<el-button type="info" @click="toggleForm('registerForm')">登录</el-button>
 							</el-col>
 							<el-col :span="12">
-								<el-button type="primary" @click="submitForm('registerForm',1)">注册
+								<el-button type="primary" @click="submitForm('registerForm', 1)">注册
 								</el-button>
 							</el-col>
 						</el-row>
@@ -73,7 +71,6 @@
 			</div>
 		</div>
 	</div>
-
 </template>
 
 <script>
@@ -88,7 +85,7 @@ import { convertURL } from '@utils'
 import { mapMutations } from 'vuex'
 export default {
 	mixins: [hMixin],
-	data() {
+	data () {
 		const validateEamil = (rule, value, callback) => {
 			this.initEmail()
 			if (!value) {
@@ -129,7 +126,7 @@ export default {
 	},
 	methods: {
 		...mapMutations(['setCurrentUser']),
-		submitForm(formName, flag) {
+		submitForm (formName, flag) {
 			this.$refs[formName].validate(async (valid) => {
 				if (!valid) return
 				if (flag === LOGIN) {
@@ -164,16 +161,16 @@ export default {
 				}
 			})
 		},
-		toggleForm(formName) {
+		toggleForm (formName) {
 			this.isLogin = !this.isLogin
 			this.$refs[formName].resetFields()
 			this.initEmail()
 		},
-		initEmail() {
+		initEmail () {
 			this.loadFlag = false
 			this.showEmail = true
 		},
-		async getValidateCode() {
+		async getValidateCode () {
 			this.loadFlag = true
 			try {
 				this.checkCode = await _api.checkCode({
@@ -183,7 +180,7 @@ export default {
 				console.log(error)
 			}
 		},
-		handleData({ password, username, email }) {
+		handleData ({ password, username, email }) {
 			return {
 				level: 0,
 				createTime: Date.now(),
@@ -198,7 +195,7 @@ export default {
 			}
 		}
 	},
-	created() {
+	created () {
 		console.log(process)
 	}
 }
@@ -206,10 +203,12 @@ export default {
 
 <style lang="less" scoped>
 @import '~@css/variables.less';
+
 .login {
 	min-height: 100vh;
 	position: relative;
 	background-color: #d8e3e7;
+
 	.login-wrap {
 		border-radius: 20px;
 		position: absolute;
@@ -242,17 +241,21 @@ export default {
 		transition: all 1s;
 		transform-origin: 0 0;
 	}
+
 	.ms-login {
 		position: absolute;
 		top: 0;
 		left: 0;
 		transform: rotate(90deg);
+
 		&.active {
 			z-index: 2;
 			transform: rotate(0);
 		}
+
 		.ms-content {
 			margin-top: 20px;
+
 			.el-form-item {
 				margin-bottom: 40px;
 			}
@@ -261,6 +264,7 @@ export default {
 
 	.ms-register {
 		transform: rotate(90deg);
+
 		&.active {
 			z-index: 2;
 			transform: rotate(0deg);
@@ -271,14 +275,17 @@ export default {
 		padding: 0 40px 40px;
 		background: transparent;
 	}
+
 	.ms-btn {
 		text-align: center;
 	}
+
 	.ms-btn button {
 		width: 100%;
 		height: 36px;
 		margin-bottom: 10px;
 	}
+
 	.toggle-button {
 		border-radius: 0;
 	}
@@ -288,12 +295,15 @@ export default {
 	background-color: @color-green;
 	vertical-align: middle;
 	height: 40px;
+
 	/deep/i:before {
 		color: #fff;
 		font-size: 20px;
 	}
+
 	/deep/&.disabled {
 		background-color: transparent;
+
 		i::before {
 			color: #999;
 		}
@@ -305,5 +315,4 @@ export default {
 	margin-left: 60px;
 	letter-spacing: 2px;
 	font-size: 14px;
-}
-</style>
+}</style>

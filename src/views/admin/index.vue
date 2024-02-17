@@ -2,8 +2,8 @@
 	<el-container class="admin">
 		<el-header style="height:70px">
 			<div class="l-header">
-				<i :class="isFold?'el-icon-s-unfold':'el-icon-s-fold'" @click="toggleFold()"></i>
-				防疫物资无人售货管理系统
+				<i :class="isFold ? 'el-icon-s-unfold' : 'el-icon-s-fold'" @click="toggleFold()"></i>
+				花店商城管理系统
 			</div>
 			<div class="r-header">
 				<el-dropdown trigger="click" @command="handleCommand">
@@ -20,10 +20,9 @@
 			</div>
 		</el-header>
 		<el-container>
-			<el-aside :width="isFold?'64px':'200px'" class="t-sider">
-				<el-menu background-color="#324157" active-text-color="#409eff" text-color="#fff"
-					:default-active="$route.path" :collapse="isFold" :collapse-transition="false"
-					router>
+			<el-aside :width="isFold ? '64px' : '200px'" class="t-sider">
+				<el-menu background-color="#324157" active-text-color="#409eff" text-color="#fff" :default-active="$route.path"
+					:collapse="isFold" :collapse-transition="false" router>
 					<SideMenu v-for="item in currentMenu" :key="item.name" :item="item"></SideMenu>
 				</el-menu>
 			</el-aside>
@@ -40,7 +39,7 @@ import { mapMutations, mapState } from 'vuex'
 import { bindIMG, notEmpty } from '@utils'
 import SideMenu from '@components/sideMenu'
 export default {
-	data() {
+	data () {
 		return {
 			isFold: false,
 			aMenuList,
@@ -52,7 +51,7 @@ export default {
 	},
 	computed: {
 		...mapState(['aIndex', 'currentUser']),
-		currentMenu() {
+		currentMenu () {
 			// debugger
 			return this.$router.options.routes.filter((i) => i.isAuth)
 		}
@@ -61,21 +60,21 @@ export default {
 		...mapMutations(['clearInfo']),
 		bindIMG,
 		notEmpty,
-		toggleFold() {
+		toggleFold () {
 			this.isFold = !this.isFold
 		},
-		handleCommand(command) {
+		handleCommand (command) {
 			this[command] && this[command]()
 		},
-		goIndex() {
+		goIndex () {
 			this.$router.push({ name: 'Index' })
 		},
-		logOut() {
+		logOut () {
 			this.clearInfo()
 			this.$router.push({ name: 'Login' })
 		}
 	},
-	created() {
+	created () {
 		// this.active = this.$route.meta.index
 	}
 }
@@ -83,11 +82,13 @@ export default {
 
 <style lang="less" scoped>
 @import '~@css/variables.less';
+
 .admin {
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
 	background-color: #fff;
+
 	.el-header {
 		display: flex;
 		justify-content: space-between;
@@ -96,26 +97,32 @@ export default {
 		background-color: #242f42;
 		color: #fff;
 	}
+
 	.el-container {
 		flex: 1;
 	}
+
 	.el-aside {
 		// background-color: #ccc;
 		height: 100%;
 	}
 }
+
 .el-header {
 	.l-header {
 		font-size: 22px;
 		line-height: 70px;
-		& > i {
+
+		&>i {
 			cursor: pointer;
 			padding: 10px;
+
 			&:hover {
 				color: #ccc;
 			}
 		}
 	}
+
 	.r-header {
 		.el-dropdown-link {
 			display: flex;
@@ -123,10 +130,12 @@ export default {
 			align-items: center;
 			height: inherit;
 		}
+
 		.el-dropdown {
 			height: 70px;
 			color: #fff;
 		}
+
 		/deep/.el-avatar {
 			border: 2px solid #f0f0f0;
 		}
@@ -155,8 +164,8 @@ export default {
 	// 	}
 	// }
 }
+
 // *****
 .el-dropdown-menu {
 	top: 58px !important;
-}
-</style>
+}</style>
