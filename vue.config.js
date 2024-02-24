@@ -52,10 +52,10 @@ module.exports = {
     },
     proxy: {
       '/api': {
-        target: 'http://localhost:8088/',
+        target: 'http://127.0.0.1:8088/',
         changeOrigin: true,
         pathRewrite: {
-          '^/api': '' //路径重写
+          '^/api': '' // 路径重写
         }
       }
     }
