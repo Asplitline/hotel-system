@@ -1,14 +1,14 @@
 <template>
 	<div class="goods-list">
-		<h2 class="goods-title"><i class="iconfont" :class="info.icon"></i>{{info.title}}</h2>
+		<h2 class="goods-title"><i class="iconfont" :class="info.icon"></i>{{ info.title }}</h2>
 		<ul class="h-list" v-if="filterGoods.length">
 			<li class="h-item" v-for="item in filterGoods" :key="item.id">
 				<a href="javascript:;" class="h-content">
 					<img :src="bindIMG(item.url)" @click="goItemDetail(item)">
-					<span class="h-title" @click="goItemDetail(item)">{{item.name}}</span>
+					<span class="h-title" @click="goItemDetail(item)">{{ item.name }}</span>
 				</a>
 				<div class="h-info">
-					<p class="h-price">价格:{{item.price|$}}</p>
+					<p class="h-price">价格:{{ item.price | $ }}</p>
 					<el-popconfirm title="确定要添加药品到购物车吗？" @confirm="handleAddCart(item)">
 						<button class="h-cart" slot="reference">
 							<i class="iconfont icon-iconfontcart"></i>加入购物车
@@ -38,18 +38,18 @@ export default {
 			type: Array
 		}
 	},
-	data() {
+	data () {
 		return {}
 	},
 	methods: {
 		...mapMutations(['setCurrentItem']),
 		...mapActions(['fetchMyCart']),
 		bindIMG,
-		goItemDetail(data) {
+		goItemDetail (data) {
 			this.setCurrentItem(data)
 			this.$router.push({ name: 'ShopDetail', params: { id: data.id } })
 		},
-		async handleAddCart(item) {
+		async handleAddCart (item) {
 			const { success } = await _api.addShoppingCar({
 				createTime: Date.now(),
 				goodsId: item.id,
@@ -65,23 +65,23 @@ export default {
 			success && this.fetchMyCart()
 		},
 		// 跳转到药品详情
-		goHotelDetail(data) {
+		goHotelDetail (data) {
 			this.setCurrentItem(data)
 			this.$router.push({ name: 'ShopDetail', params: { id: data.id } })
 		}
 	},
 	computed: {
 		...mapState(['currentUser']),
-		filterGoods() {
+		filterGoods () {
 			const idx = this.info.index
 			return this.data.slice((idx - 1) * 6, idx * 6)
 		},
-		blankNum() {
+		blankNum () {
 			const rest = this.filterGoods.length % 3
 			return rest === 3 ? 0 : rest
 		}
 	},
-	created() {}
+	created () { }
 }
 </script>
 
@@ -213,4 +213,5 @@ export default {
 			}
 		}
 	}
-}</style>
+}
+</style>

@@ -3,10 +3,10 @@
 		<!-- <div class="home-text">name: {{ name }}</div> -->
 		<!-- <el-row :gutter="20" class="panel-group"> -->
 		<el-row :gutter="20" class="panel-group">
-			<el-col :span="4" class="panel-card">
+			<el-col :span="6" class="panel-card">
 				<div class="panel-card__item" @click="goto('category')">
 					<div class="panel-card__item--left">
-						<span class="number">{{info.goodsLxNum}}</span>
+						<span class="number">{{ info.goodsLxNum }}</span>
 						<span class="title">分类</span>
 					</div>
 					<div class="panel-card__item--right">
@@ -14,10 +14,10 @@
 					</div>
 				</div>
 			</el-col>
-			<el-col :span="4" class="panel-card">
+			<el-col :span="6" class="panel-card">
 				<div class="panel-card__item" @click="goto('item')">
 					<div class="panel-card__item--left">
-						<span class="number">{{info.goodsNum}}</span>
+						<span class="number">{{ info.goodsNum }}</span>
 						<span class="title">药品</span>
 					</div>
 					<div class="panel-card__item--right">
@@ -25,10 +25,10 @@
 					</div>
 				</div>
 			</el-col>
-			<el-col :span="8" class="panel-card">
+			<el-col :span="6" class="panel-card">
 				<div class="panel-card__item" @click="goto('comment')">
 					<div class="panel-card__item--left">
-						<span class="number">{{info.userNum}}</span>
+						<span class="number">{{ info.userNum }}</span>
 						<span class="title">用户</span>
 					</div>
 					<div class="panel-card__item--right">
@@ -37,7 +37,7 @@
 					</div>
 				</div>
 			</el-col>
-			<el-col :span="4" class="panel-card">
+			<!-- <el-col :span="4" class="panel-card">
 				<div class="panel-card__item" @click="goto('reply')">
 					<div class="panel-card__item--left">
 						<span class="number">{{info.donateNum}}</span>
@@ -47,11 +47,11 @@
 						<i class="fa fa-heartbeat " aria-hidden="true"></i>
 					</div>
 				</div>
-			</el-col>
-			<el-col :span="4" class="panel-card">
-				<div class="panel-card__item" @click="goto('auser')">
+			</el-col> -->
+			<el-col :span="6" class="panel-card">
+				<div class="panel-card__item" @click="goto('aUser')">
 					<div class="panel-card__item--left">
-						<span class="number">{{info.orderNum}}</span>
+						<span class="number">{{ info.orderNum }}</span>
 						<span class="title">订单</span>
 					</div>
 					<div class="panel-card__item--right">
@@ -70,22 +70,21 @@
 import _api from '@api'
 export default {
 	name: 'Home',
-	data() {
+	data () {
 		return {
 			info: {}
 		}
 	},
 	methods: {
-		async fetchInfo() {
+		async fetchInfo () {
 			const data = await _api.getStatisticInfo()
-			console.log(data)
 			this.info = data
 		},
-		goto(name) {
+		goto (name) {
 			this.$router.push({ name })
 		}
 	},
-	mounted() {
+	mounted () {
 		this.fetchInfo()
 	}
 }
@@ -156,4 +155,5 @@ export default {
 			transform: translateY(4px);
 		}
 	}
-}</style>
+}
+</style>

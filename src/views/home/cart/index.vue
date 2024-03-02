@@ -5,7 +5,7 @@
 			<div class="cart-tb">
 				<el-row class="cart-bd" v-for="i in myCartList" :key="i.id">
 					<el-col :span="5" class="cart-col goods">
-						<img :src="bindIMG(i.goods.url)" alt="">
+						<img :src="bindIMG(i.goods && i.goods.url)" alt="">
 					</el-col>
 					<el-col :span="8" class="cart-col info">
 						<p class="goods-title">{{ i.goods.name }}</p>
@@ -79,7 +79,7 @@ export default {
 				const goods = this.getItemById(i.goodsId)
 				return {
 					...i,
-					goods
+					goods: goods
 				}
 			})
 		}

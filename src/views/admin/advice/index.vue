@@ -5,55 +5,50 @@
 		<el-table :data="filterTableData" style="width: 100%" max-height="650px">
 			<el-table-column prop="title" label="标题" min-width="120">
 			</el-table-column>
-			<el-table-column prop="content" label="反馈内容" min-width="120">
+			<el-table-column prop="content" label="留言内容" min-width="120">
 			</el-table-column>
 			<el-table-column prop="state" label="状态" min-width="60">
-				<template v-slot="{row}">
-					<el-tag :type="replyState[row.state].type">{{replyState[row.state].value}}
+				<template v-slot="{ row }">
+					<el-tag :type="replyState[row.state].type">{{ replyState[row.state].value }}
 					</el-tag>
 				</template>
 			</el-table-column>
 			<el-table-column label="评论时间" min-width="80">
-				<template v-slot="{row}">
-					{{row.ctime | formatDate}}
+				<template v-slot="{ row }">
+					{{ row.createTime | formatDate }}
 				</template>
 			</el-table-column>
 			<el-table-column label="回复时间" min-width="80">
-				<template v-slot="{row}">
-					{{row.utime | formatDate}}
+				<template v-slot="{ row }">
+					{{ row.updateTime | formatDate }}
 				</template>
 			</el-table-column>
 			<el-table-column label="操作" min-width="80">
-				<template v-slot="{row}">
-					<el-link type="primary" @click="showReplyDialog(row)"
-						:disabled="row.state == 1">
-						修改反馈</el-link>
-					<el-link type="danger"
-						@click="deleteById(deleteAddvice,fetchAddvice,row.id,'评论')">
-						删除反馈</el-link>
+				<template v-slot="{ row }">
+					<el-link type="primary" @click="showReplyDialog(row)" :disabled="row.state == 1">
+						修改留言</el-link>
+					<el-link type="danger" @click="deleteById(deleteAddvice, fetchAddvice, row.id, '评论')">
+						删除留言</el-link>
 				</template>
 			</el-table-column>
 		</el-table>
 		<!--  -->
-		<el-pagination @size-change="handleSizeChange(fetchAddvice,$event)"
-			@current-change="handleCurrentChange(fetchAddvice,$event)"
-			:current-page="query.page" :page-sizes="[1, 2, 5, 10]" :page-size="query.size"
-			layout="total, sizes, prev, pager, next, jumper" :total="total">
+		<el-pagination @size-change="handleSizeChange(fetchAddvice, $event)"
+			@current-change="handleCurrentChange(fetchAddvice, $event)" :current-page="query.page" :page-sizes="[1, 2, 5, 10]"
+			:page-size="query.size" layout="total, sizes, prev, pager, next, jumper" :total="total">
 		</el-pagination>
 
-		<el-dialog title="用户反馈" :visible.sync="replyDialogVisible" width="30%"
-			:close-on-click-modal="false">
+		<el-dialog title="留言管理" :visible.sync="replyDialogVisible" width="30%" :close-on-click-modal="false">
 			<el-form :model="replyForm" :rules="replyRules" ref="replyForm">
 				<el-form-item label="标题" prop="title">
 					<el-input type="type" v-model="replyForm.title" autocomplete="off" readonly>
 					</el-input>
 				</el-form-item>
-				<el-form-item label="用户反馈" prop="content">
-					<el-input type="textarea" v-model="replyForm.content" autocomplete="off"
-						readonly>
+				<el-form-item label="用户留言" prop="content">
+					<el-input type="textarea" v-model="replyForm.content" autocomplete="off" readonly>
 					</el-input>
 				</el-form-item>
-				<el-form-item label="医生回复" prop="content">
+				<el-form-item label="后台回复" prop="description">
 					<el-input type="textarea" v-model="replyForm.description" autocomplete="off">
 					</el-input>
 				</el-form-item>
@@ -76,7 +71,7 @@ import { deepClone } from '@utils'
 import { replyState } from '@static'
 import { mapActions, mapGetters } from 'vuex'
 export default {
-	data() {
+	data () {
 		return {
 			searchForm: {},
 			tableData: [],
@@ -92,18 +87,18 @@ export default {
 	},
 	mixins: [aMixin],
 	methods: {
-		...mapActions(['fetchAllUser', 'fetchAllRoom']),
+		...mapActions(['fetchAllUser']),
 		deleteAddvice: _api.deleteAddvice,
-		async fetchAddvice() {
+		async fetchAddvice () {
 			const { list, total } = await _api.getAddviceList(this.query)
 			this.tableData = list
 			this.total = total
 		},
-		showReplyDialog(row) {
+		showReplyDialog (row) {
 			this.replyForm = deepClone(row)
 			this.replyDialogVisible = true
 		},
-		submitReplyForm(formName) {
+		submitReplyForm (formName) {
 			this.$refs[formName].validate(async (valid) => {
 				if (!valid) return
 				const { success } = await _api.editAddvice({
@@ -123,14 +118,13 @@ export default {
 	},
 	computed: {
 		...mapGetters(['getUserById', 'getRoomById']),
-		filterTableData() {
+		filterTableData () {
 			return this.tableData
 		}
 	},
-	created() {
+	created () {
 		this.fetchAddvice()
 		this.fetchAllUser()
-		this.fetchAllRoom()
 	}
 }
 </script>

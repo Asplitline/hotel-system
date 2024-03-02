@@ -162,8 +162,8 @@ export default {
 	padding-bottom: 0;
 
 	.avatar {
-		width: auto;
-		height: 200px;
+		width: 100%;
+		height: auto;
 	}
 }
 </style>

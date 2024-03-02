@@ -4,34 +4,35 @@
 			<el-table-column prop="goodsName" label="药品" min-width="100">
 			</el-table-column>
 			<el-table-column prop="price" label="价格" min-width="100">
-				<template v-slot="{row}">
-					<el-tag type="danger" effect="plain">{{row.price | $}}</el-tag>
+				<template v-slot="{ row }">
+					<el-tag type="danger" effect="plain">{{ row.price | $ }}</el-tag>
 				</template>
 			</el-table-column>
 			<el-table-column prop="status" label="状态" min-width="100">
-				<template v-slot="{row}">
-					<el-tag :type="orderState[row.status].type">{{orderState[row.status].label}}
+				<template v-slot="{ row }">
+					<el-tag :type="orderState[row.status].type">{{ orderState[row.status].label }}
 					</el-tag>
 				</template>
 			</el-table-column>
 			<el-table-column label="购买时间" min-width="100">
-				<template v-slot="{row}">
-					{{row.creatTime || Date.now() | formatDate}}
+				<template v-slot="{ row }">
+					{{ row.creatTime || Date.now() | formatDate }}
 				</template>
 			</el-table-column>
 			<el-table-column label="操作" min-width="100">
-				<template v-slot="{row}">
-					<el-popconfirm title="是否确认收货" @confirm="handleOrder(row,3)">
-						<el-link type="success" :disabled="row.status!==2" slot="reference">
-							确认收获</el-link>
+				<template v-slot="{ row }">
+					<el-popconfirm title="是否确认收货" @confirm="handleOrder(row, 3)">
+						<el-link type="success" :disabled="row.status !== 2" slot="reference">
+							确认收货</el-link>
 					</el-popconfirm>
-					<el-link type="danger" @click="deleteById(deleteOrder,fetchOrder,row.id,'支付记录')" :disabled="row.status!==3">
+					<el-link type="danger" @click="deleteById(deleteOrder, fetchOrder, row.id, '支付记录')"
+						:disabled="row.status !== 3">
 						删除记录</el-link>
 				</template>
 			</el-table-column>
 		</el-table>
-		<el-pagination class="t-pagination" @size-change="handleSizeChange(fetchOrder,$event)"
-			@current-change="handleCurrentChange(fetchOrder,$event)" :current-page="query.page" :page-size="query.size"
+		<el-pagination class="t-pagination" @size-change="handleSizeChange(fetchOrder, $event)"
+			@current-change="handleCurrentChange(fetchOrder, $event)" :current-page="query.page" :page-size="query.size"
 			layout="total, prev, pager, next" :total="total">
 		</el-pagination>
 	</div>

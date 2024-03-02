@@ -8,7 +8,7 @@
 			<div class="r-header">
 				<el-dropdown trigger="click" @command="handleCommand">
 					<span class="el-dropdown-link">
-						<el-avatar :src="bindIMG(currentUser.url)">
+						<el-avatar :src="bindIMG(currentUser && currentUser.url)">
 						</el-avatar>
 						<i class="el-icon-arrow-down el-icon--right"></i>
 					</span>
@@ -35,7 +35,7 @@
 
 <script>
 import { aMenuList } from '@static'
-import { mapMutations, mapState } from 'vuex'
+import { mapMutations, mapState, mapGetters } from 'vuex'
 import { bindIMG, notEmpty } from '@utils'
 import SideMenu from '@components/sideMenu'
 export default {
@@ -51,9 +51,17 @@ export default {
 	},
 	computed: {
 		...mapState(['aIndex', 'currentUser']),
+		...mapGetters(['isAdmin']),
 		currentMenu () {
-			// debugger
-			return this.$router.options.routes.filter((i) => i.isAuth)
+			return this.$router.options.routes.filter((i) => i.isAuth).filter(item => {
+				return (item.meta.onlyAdmin && this.isAdmin) || !item.meta.onlyAdmin
+			}).map(item => {
+				const children = item.children.filter(i => (i.meta.onlyAdmin && this.isAdmin) || !i.meta.onlyAdmin)
+				return {
+					...item,
+					children
+				}
+			})
 		}
 	},
 	methods: {
@@ -168,4 +176,5 @@ export default {
 // *****
 .el-dropdown-menu {
 	top: 58px !important;
-}</style>
+}
+</style>

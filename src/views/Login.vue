@@ -51,8 +51,8 @@
 					<el-form-item prop="checkCode">
 						<el-input v-model="registerForm.checkCode" placeholder="验证码">
 							<el-button slot="prepend" icon="el-icon-unlock"> </el-button>
-							<el-button class="toggle-button" slot="append" :icon="loadBtn[loadFlag ? 1 : 0].icon" @click="getValidateCode()"
-								:disabled="showEmail" :class="{ disabled: showEmail }">
+							<el-button class="toggle-button" slot="append" :icon="loadBtn[loadFlag ? 1 : 0].icon"
+								@click="getValidateCode()" :disabled="showEmail" :class="{ disabled: showEmail }">
 							</el-button>
 						</el-input>
 					</el-form-item>
@@ -137,8 +137,7 @@ export default {
 					if (success) {
 						this.$message.success('登录成功，跳转中....')
 						this.setCurrentUser(data)
-						// console.log(data.level, typeof data.level)
-						if (Number(data.level) === 1) {
+						if (+data.level === 1 || +data.level === 2) {
 							this.$router.push({ name: 'Admin' })
 						} else if (Number(data.level) === 0) {
 							this.$router.push({ name: 'Index' })
@@ -315,4 +314,5 @@ export default {
 	margin-left: 60px;
 	letter-spacing: 2px;
 	font-size: 14px;
-}</style>
+}
+</style>

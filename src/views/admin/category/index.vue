@@ -12,33 +12,34 @@
 			</el-row>
 		</el-form>
 		<!--  -->
-		<el-table :data="tableData" style="width: 100%" max-height="650px" row-key="id" :tree-props="{children: 'children'}">
+		<el-table :data="tableData" style="width: 100%" max-height="650px" row-key="id"
+			:tree-props="{ children: 'children' }">
 			>
 			<el-table-column prop="name" label="药品类型" min-width="100">
 			</el-table-column>
 			<el-table-column prop="description" label="类型描述" min-width="150">
 			</el-table-column>
 			<el-table-column prop="createTime" label="创建时间" min-width="150">
-				<template v-slot="{row}">
-					{{row.createTime|formatDate}}
+				<template v-slot="{ row }">
+					{{ row.createTime | formatDate }}
 				</template>
 			</el-table-column>
 			<el-table-column prop="updateTime" label="更新时间" min-width="150">
-				<template v-slot="{row}">
-					{{row.updateTime|formatDate}}
+				<template v-slot="{ row }">
+					{{ row.updateTime | formatDate }}
 				</template>
 			</el-table-column>
 			<el-table-column label="操作" min-width="100">
-				<template v-slot="{row}">
-					<el-link type="primary" @click="showDialog(1,row)">修改药品类型</el-link>
-					<el-link type="danger" @click="deleteById(deleteCategory,fetchCategory,row.id,'药品类型')">删除药品类型
+				<template v-slot="{ row }">
+					<el-link type="primary" @click="showDialog(1, row)">修改药品类型</el-link>
+					<el-link type="danger" @click="deleteById(deleteCategory, fetchCategory, row.id, '药品类型')">删除药品类型
 					</el-link>
 				</template>
 			</el-table-column>
 		</el-table>
 
 		<!--  -->
-		<el-dialog :title="categoryForm.flag === 0?'添加药品类型':'修改药品类型'" :visible.sync="dialogVisible" width="30%"
+		<el-dialog :title="categoryForm.flag === 0 ? '添加药品类型' : '修改药品类型'" :visible.sync="dialogVisible" width="30%"
 			class="a-dialog" @close="clearDialog('categoryForm')" :close-on-click-modal="false">
 			<el-form :model="categoryForm" :rules="categoryRules" ref="categoryForm" size="small" label-width="100px">
 				<el-upload class="avatar-uploader" :action="bindURL('/uploadfile')" :show-file-list="false"
@@ -62,8 +63,8 @@
 			<span slot="footer" class="dialog-footer">
 				<el-button type="info" @click="dialogVisible = false" size="small">取 消
 				</el-button>
-				<el-button type="success" @click="submitDialog('categoryForm',categoryForm.flag)" size="small">
-					{{categoryForm.flag === 0?'添加':'修改'}}
+				<el-button type="success" @click="submitDialog('categoryForm', categoryForm.flag)" size="small">
+					{{ categoryForm.flag === 0 ? '添加' : '修改' }}
 				</el-button>
 			</span>
 		</el-dialog>
@@ -77,7 +78,7 @@ import _api from '@api'
 import { getUid, deepClone, bindURL, bindIMG } from '@utils'
 import { mapActions } from 'vuex'
 export default {
-	data() {
+	data () {
 		return {
 			searchForm: {},
 			tableData: [],
@@ -106,7 +107,7 @@ export default {
 		bindURL,
 		bindIMG,
 
-		async fetchCategory() {
+		async fetchCategory () {
 			const { data: list } = await _api.getCategories()
 			const parent = list.filter((i) => i.pid == null)
 			this.parentCategory = parent
@@ -119,7 +120,7 @@ export default {
 			})
 		},
 		// 显示对话框
-		showDialog(flag, data) {
+		showDialog (flag, data) {
 			this.dialogVisible = true
 			if (flag === ADD) {
 				//
@@ -129,11 +130,11 @@ export default {
 			this.categoryForm.flag = flag
 		},
 		// 头像上传
-		handleAvatarSuccess(res, file) {
+		handleAvatarSuccess (res, file) {
 			this.$set(this.categoryForm, 'icon', res)
 		},
 		// 提交对话框
-		submitDialog(formName, flag) {
+		submitDialog (formName, flag) {
 			this.$refs[formName].validate(async (valid) => {
 				if (!valid) return
 				this[formName].updateTime = Date.now()
@@ -155,10 +156,11 @@ export default {
 		}
 	},
 	computed: {},
-	mounted() {
+	mounted () {
 		this.fetchCategory()
 	},
-	created() {}
+	created () {
+	}
 }
 </script>
 

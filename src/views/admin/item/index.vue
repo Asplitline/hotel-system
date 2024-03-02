@@ -24,7 +24,7 @@
 		</el-form>
 		<el-table :data="tableData" style="width: 100%" max-height="650px" class="demo-table">
 			<el-table-column type="expand">
-				<template v-slot="{row}">
+				<template v-slot="{ row }">
 					<el-form label-position="left" inline class="demo-table-expand">
 						<el-form-item label="药品名称">
 							<span>{{ row.name }}</span>
@@ -48,47 +48,47 @@
 							<span>{{ row.createTime | formatDate }}</span>
 						</el-form-item>
 						<el-form-item label="修改时间">
-							<span>{{ row.updateTime | formatDate}}</span>
+							<span>{{ row.updateTime | formatDate }}</span>
 						</el-form-item>
 					</el-form>
 				</template>
 			</el-table-column>
 			<el-table-column prop="url" label="药品图片" min-width="160">
-				<template v-slot="{row}">
+				<template v-slot="{ row }">
 					<img :src="bindIMG(row.url)" alt="" class="tb-avatar" />
 				</template>
 			</el-table-column>
 			<el-table-column prop="roomId" label="药品名称" min-width="160">
-				<template v-slot="{row}">
-					{{row.name}}
+				<template v-slot="{ row }">
+					{{ row.name }}
 				</template>
 			</el-table-column>
 			<el-table-column prop="typeInfo.name" label="药品分类" min-width="100">
 			</el-table-column>
 			<el-table-column prop="price" label="药品价格" min-width="80">
-				<template v-slot="{row}">
-					<el-tag type="danger" effect="plain">{{row.price | $}}</el-tag>
+				<template v-slot="{ row }">
+					<el-tag type="danger" effect="plain">{{ row.price | $ }}</el-tag>
 				</template>
 			</el-table-column>
 			<el-table-column prop="address" label="上架状态" min-width="100">
-				<template v-slot="{row}">
-					<el-tag :type="row.statusInfo.type">{{row.statusInfo.label }}</el-tag>
+				<template v-slot="{ row }">
+					<el-tag :type="row.statusInfo.type">{{ row.statusInfo.label }}</el-tag>
 				</template>
 			</el-table-column>
 			<el-table-column label="操作" min-width="120">
-				<template v-slot="{row}">
-					<el-link :type="row.status===0?'success':'warning'" @click="toggleStatus(row)">
-						{{row.status===0?'上架药品':'下架药品'}} </el-link>
-					<el-link type="primary" @click="showDialog(1,row)">
+				<template v-slot="{ row }">
+					<el-link :type="row.status === 0 ? 'success' : 'warning'" @click="toggleStatus(row)">
+						{{ row.status === 0 ? '上架药品' : '下架药品' }} </el-link>
+					<el-link type="primary" @click="showDialog(1, row)">
 						修改药品</el-link>
-					<el-link type="danger" @click="deleteById(deleteItem,fetchItem,row.id,'用户')">
+					<el-link type="danger" @click="deleteById(deleteItem, fetchItem, row.id, '用户')">
 						删除药品
 					</el-link>
 				</template>
 			</el-table-column>
 		</el-table>
 
-		<el-dialog :title="flag === 0?'添加药品':'修改药品'" :visible.sync="dialogVisible" width="30%" class="a-dialog"
+		<el-dialog :title="flag === 0 ? '添加药品' : '修改药品'" :visible.sync="dialogVisible" width="30%" class="a-dialog"
 			@close="clearDialog('itemForm')" :close-on-click-modal="false">
 			<el-form :model="itemForm" :rules="itemRules" ref="itemForm" size="small" label-width="100px">
 				<el-form-item prop="url" label-width="0">
@@ -137,13 +137,13 @@
 			<span slot="footer" class="dialog-footer">
 				<el-button type="info" @click="dialogVisible = false" size="small">取 消
 				</el-button>
-				<el-button type="success" @click="submitDialog('itemForm',flag)" size="small">
-					{{flag === 0?'添加':'修改'}}
+				<el-button type="success" @click="submitDialog('itemForm', flag)" size="small">
+					{{ flag === 0 ? '添加' : '修改' }}
 				</el-button>
 			</span>
 		</el-dialog>
-		<el-pagination @size-change="handleSizeChange(fetchItem,$event)"
-			@current-change="handleCurrentChange(fetchItem,$event)" :current-page="query.page" :page-sizes="[1, 2, 5, 10]"
+		<el-pagination @size-change="handleSizeChange(fetchItem, $event)"
+			@current-change="handleCurrentChange(fetchItem, $event)" :current-page="query.page" :page-sizes="[1, 2, 5, 10]"
 			:page-size="query.size" layout="total, sizes, prev, pager, next, jumper" :total="total">
 		</el-pagination>
 	</el-card>
@@ -158,13 +158,13 @@ import _api from '@api'
 import { mapActions, mapGetters, mapState } from 'vuex'
 import { deepClone, bindURL, bindIMG } from '@utils'
 export default {
-	data() {
+	data () {
 		return {
 			searchForm: {},
 			tableData: [],
 			itemForm: {},
 			itemRules: {
-				url: [{ required: true, message: '请选择药品图片', trigger: 'blur' }],
+				// url: [{ required: true, message: '请选择药品图片', trigger: 'blur' }],
 				name: [{ required: true, message: '请输入药品名称', trigger: 'blur' }],
 				type: [{ required: true, message: '请选择药品类型', trigger: 'blur' }],
 				price: [{ required: true, message: '请输入药品价格', trigger: 'blur' }],
@@ -187,10 +187,10 @@ export default {
 		deleteItem: _api.deleteItem,
 		bindURL,
 		bindIMG,
-		search() {
+		search () {
 			this.fetchItem(this.searchForm.name)
 		},
-		async fetchItem(keyword) {
+		async fetchItem (keyword) {
 			const { list, total } = await _api.getItemList({ ...this.query, keyword })
 			this.total = total
 			this.tableData = list.map((i) => {
@@ -198,7 +198,6 @@ export default {
 				const statusInfo = this.goodsState.find(
 					(j) => j.value === Number(i.status)
 				)
-
 				return {
 					...i,
 					typeInfo,
@@ -206,11 +205,11 @@ export default {
 				}
 			})
 		},
-		async handleItem(data, flag) {},
-		handleAvatarSuccess(res, file) {
+		async handleItem (data, flag) { },
+		handleAvatarSuccess (res, file) {
 			this.$set(this.itemForm, 'url', res)
 		},
-		showDialog(flag, row) {
+		showDialog (flag, row) {
 			this.flag = flag
 			if (flag === 0) {
 			} else {
@@ -218,7 +217,7 @@ export default {
 			}
 			this.dialogVisible = true
 		},
-		submitDialog(formName, flag) {
+		submitDialog (formName, flag) {
 			this.$refs[formName].validate(async (valid) => {
 				if (!valid) return
 				if (flag === 0) {
@@ -239,7 +238,7 @@ export default {
 				}
 			})
 		},
-		async toggleStatus(row) {
+		async toggleStatus (row) {
 			console.log(row)
 			const status = row.status === 0 ? 1 : 0
 			const { success } = await _api.editItem({
@@ -255,13 +254,13 @@ export default {
 		}
 	},
 	computed: {
-		...mapGetters(['getUserById', 'getRoomById', 'getCategoryById']),
-		...mapState(['allRoom', 'allCategory']),
-		categories() {
-			const parent = this.allCategory.filter((i) => i.pid === null)
+		...mapGetters(['getUserById', 'getCategoryById']),
+		...mapState(['allCategory']),
+		categories () {
+			const parent = this.allCategory?.filter((i) => i.pid === null) || []
 			return parent
 				.map((i) => {
-					const children = this.allCategory.filter((j) => j.pid === i.id)
+					const children = this.allCategory?.filter((j) => j.pid === i.id) || []
 					return {
 						...i,
 						children
@@ -270,9 +269,10 @@ export default {
 				.filter((i) => i.children.length > 0)
 		}
 	},
-	mounted() {
+	async mounted () {
+		await this.fetchAllCategory()
+
 		this.fetchAllUser()
-		this.fetchAllCategory()
 		this.fetchItem()
 	}
 }

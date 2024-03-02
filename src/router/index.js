@@ -41,13 +41,22 @@ const routes = [
         component: () => import("@views/home/shop/ShopDetail"),
         props: true,
       },
+      // {
+      //   path: "/donate",
+      //   name: "Donate",
+      //   component: () => import("@views/home/donate"),
+      //   meta: {
+      //     title: "捐赠中心",
+      //     index: "/donate",
+      //   },
+      // },
       {
-        path: "/donate",
-        name: "Donate",
-        component: () => import("@views/home/donate"),
+        path: "/comment",
+        name: "Comment",
+        component: () => import("@views/home/comment"),
         meta: {
-          title: "捐赠中心",
-          index: "/donate",
+          title: "留言",
+          index: "/comment",
         },
       },
       {
@@ -105,11 +114,12 @@ const routes = [
     path: "/staff",
     name: "Staff",
     component: Admin,
-    redirect: "/user/aUser",
+    redirect: "/staff/auser",
     isAuth: true,
     meta: {
-      title: "人员管理",
+      title: "基础管理",
       icon: "iconfont icon-ConferenceRoom",
+      onlyAdmin: true,
     },
     children: [
       {
@@ -120,6 +130,16 @@ const routes = [
           title: "用户管理",
           icon: "iconfont icon-ConferenceRoom",
           index: "/staff/auser",
+        },
+      },
+      {
+        path: "supplier",
+        name: "ASupplier",
+        component: () => import("@views/admin/supplier"),
+        meta: {
+          title: "供应商管理",
+          icon: "iconfont icon-ConferenceRoom",
+          index: "/staff/supplier",
         },
       },
     ],
@@ -143,6 +163,7 @@ const routes = [
           title: "药品分类",
           icon: "iconfont icon-ConferenceRoom",
           index: "/goods/category",
+          onlyAdmin: true,
         },
       },
       {
@@ -183,9 +204,19 @@ const routes = [
         name: "Advice",
         component: () => import("@views/admin/advice"),
         meta: {
-          title: "用户反馈",
+          title: "留言管理",
           icon: "iconfont icon-ConferenceRoom",
           index: "/service/advice",
+        },
+      },
+      {
+        path: "procureOrder",
+        name: "procureOrder",
+        component: () => import("@views/admin/procureOrder"),
+        meta: {
+          title: "采购管理",
+          icon: "iconfont icon-ConferenceRoom",
+          index: "/service/procureOrder",
         },
       },
       // {
@@ -212,7 +243,6 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const path = to.path.split("/")[1];
   const user = store.state.currentUser;
-  console.log(user);
   if (path !== "login") {
     if (user) {
       next();
@@ -222,9 +252,11 @@ router.beforeEach((to, from, next) => {
   } else {
     if (user) {
       const level = Number(user.level);
+      console.log("level", level);
       if (level === 0) {
         next({ name: "Home" });
       } else if (level === 1 || level === 2) {
+        console.log("111", 111);
         next({ name: "Admin" });
       } else {
         next(false);
