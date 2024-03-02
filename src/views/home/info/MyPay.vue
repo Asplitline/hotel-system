@@ -1,7 +1,7 @@
 <template>
 	<div class="my-order">
 		<el-table :data="tableData" style="width: 100%">
-			<el-table-column prop="goodsName" label="商品" min-width="100">
+			<el-table-column prop="goodsName" label="药品" min-width="100">
 			</el-table-column>
 			<el-table-column prop="price" label="价格" min-width="100">
 				<template v-slot="{row}">
@@ -25,15 +25,14 @@
 						<el-link type="success" :disabled="row.status!==2" slot="reference">
 							确认收获</el-link>
 					</el-popconfirm>
-					<el-link type="danger" @click="deleteById(deleteOrder,fetchOrder,row.id,'支付记录')"
-						:disabled="row.status!==3">
+					<el-link type="danger" @click="deleteById(deleteOrder,fetchOrder,row.id,'支付记录')" :disabled="row.status!==3">
 						删除记录</el-link>
 				</template>
 			</el-table-column>
 		</el-table>
 		<el-pagination class="t-pagination" @size-change="handleSizeChange(fetchOrder,$event)"
-			@current-change="handleCurrentChange(fetchOrder,$event)" :current-page="query.page"
-			:page-size="query.size" layout="total, prev, pager, next" :total="total">
+			@current-change="handleCurrentChange(fetchOrder,$event)" :current-page="query.page" :page-size="query.size"
+			layout="total, prev, pager, next" :total="total">
 		</el-pagination>
 	</div>
 </template>
@@ -49,7 +48,7 @@ export default {
 		}
 	},
 	mixins: [hMixin],
-	data() {
+	data () {
 		return {
 			tableData: [],
 			orderState
@@ -57,17 +56,17 @@ export default {
 	},
 	methods: {
 		deleteOrder: _api.deleteGoodsOrder,
-		async fetchOrder() {
+		async fetchOrder () {
 			const { list } = await _api.getGoodsOrderList()
 			this.tableData = list.filter((i) => i.userId === this.id.toString())
 		},
-		async handleOrder(i, status) {
+		async handleOrder (i, status) {
 			const { success } = await _api.editGoodsOrder({ id: i.id, status })
 			success && this.fetchOrder()
 		}
 	},
 	computed: {},
-	created() {
+	created () {
 		this.fetchOrder()
 	}
 }
@@ -77,9 +76,11 @@ export default {
 .el-pagination {
 	margin-top: 10px;
 }
+
 .el-link {
 	margin-right: 10px;
 }
+
 .t-pagination {
 	margin-top: 20px;
 	text-align: center;

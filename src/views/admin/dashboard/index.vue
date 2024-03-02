@@ -18,7 +18,7 @@
 				<div class="panel-card__item" @click="goto('item')">
 					<div class="panel-card__item--left">
 						<span class="number">{{info.goodsNum}}</span>
-						<span class="title">商品</span>
+						<span class="title">药品</span>
 					</div>
 					<div class="panel-card__item--right">
 						<i class="fa fa-shopping-bag" aria-hidden="true"></i>
@@ -97,12 +97,15 @@ export default {
 		margin: 30px;
 	}
 }
+
 .panel {
 	&-group {
 		/* background-color: #f0f0f0; */
 	}
+
 	&-card {
 		transition: all 0.5s;
+
 		&__item {
 			box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.05);
 			border-radius: 0.625rem;
@@ -121,31 +124,36 @@ export default {
 			display: flex;
 			align-items: center;
 			text-align: center;
+
 			/* justify-content: center; */
 			&--left {
 				flex: 3;
 				display: flex;
 				flex-direction: column;
+
 				.number {
 					font-size: 2.375rem;
 					font-weight: 700;
 					line-height: 1.65857;
 				}
+
 				.title {
 					font-size: 1.125rem;
 					color: #bab8b8;
 				}
 			}
+
 			&--right {
 				flex: 2;
+
 				.fa {
 					font-size: 3.75rem;
 				}
 			}
 		}
+
 		&:hover {
 			transform: translateY(4px);
 		}
 	}
-}
-</style>
+}</style>

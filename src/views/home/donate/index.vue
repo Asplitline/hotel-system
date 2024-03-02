@@ -51,10 +51,8 @@
 					</template>
 				</el-table-column>
 			</el-table>
-			<el-pagination class="t-pagination"
-				@size-change="handleSizeChange(fetchDonate,$event)"
-				@current-change="handleCurrentChange(fetchDonate,$event)"
-				:current-page="query.page" :page-size="query.size"
+			<el-pagination class="t-pagination" @size-change="handleSizeChange(fetchDonate,$event)"
+				@current-change="handleCurrentChange(fetchDonate,$event)" :current-page="query.page" :page-size="query.size"
 				layout="total, prev, pager, next" :total="total">
 			</el-pagination>
 		</div>
@@ -76,7 +74,7 @@ export default {
 				description: [
 					{ required: true, message: '请输入捐赠描述', trigger: blur }
 				],
-				comment: [{ required: true, message: '请选择捐赠商品', trigger: blur }],
+				comment: [{ required: true, message: '请选择捐赠药品', trigger: blur }],
 				source: [{ required: true, message: '请选择捐赠类型', trigger: blur }]
 			},
 			tableData: [],
@@ -142,16 +140,20 @@ export default {
 	color: @color-red;
 	text-align: center;
 	border-bottom: 1px solid #f0f0f0;
+
 	&.second {
 		margin-top: 100px;
 	}
 }
+
 .donate-bottom {
 	text-align: center;
+
 	.donate-btn {
 		width: 80%;
 	}
 }
+
 .t-pagination {
 	margin-top: 20px;
 	text-align: center;
