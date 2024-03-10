@@ -1,15 +1,15 @@
 <template>
 	<!-- todo infiniteScroll -->
 	<ul class="item-list">
-		<template v-if="itemList.length!==0">
+		<template v-if="itemList.length !== 0">
 			<li class="item-item" v-for="item in itemList" :key="item.id">
 				<div class="item-cover">
 					<img :src="bindIMG(item.url)" alt="" class="img" @click="goItemDetail(item)">
 				</div>
-				<h2 class="i-title" @click="goItemDetail(item)">{{item.name}}</h2>
+				<h2 class="i-title" @click="goItemDetail(item)">{{ item.name }}</h2>
 				<div class="item-footer">
 					<p class="i-price">
-						{{item.price | $}}
+						{{ item.price | $ }}
 					</p>
 					<button class="add-cart">
 						<el-popconfirm title="确定要添加商品到购物车吗？" @confirm="handleAddCart(item)">
@@ -42,7 +42,7 @@ export default {
 			}
 		}
 	},
-	data() {
+	data () {
 		return {
 			itemList: []
 		}
@@ -51,7 +51,7 @@ export default {
 		...mapMutations(['setCurrentItem', 'addCart']),
 		...mapActions(['fetchMyCart']),
 		bindIMG,
-		async handleAddCart(item) {
+		async handleAddCart (item) {
 			const { success } = await _api.addShoppingCar({
 				createTime: Date.now(),
 				goodsId: item.id,
@@ -66,30 +66,30 @@ export default {
 			})
 			success && this.fetchMyCart()
 		},
-		goItemDetail(data) {
+		goItemDetail (data) {
 			this.setCurrentItem(data)
 			this.$router.push({ name: 'ShopDetail', params: { id: data.id } })
 		},
-		getLevelName(str) {
+		getLevelName (str) {
 			const lv = Number(str[0]) - 1
 			return floorList[lv].name
 		}
 	},
 	computed: {
 		...mapState(['currentUser']),
-		totalNum() {
+		totalNum () {
 			return this.itemList.length
 		},
-		blankNum() {
+		blankNum () {
 			return this.totalNum % 4 === 0 ? 0 : 4 - (this.totalNum % 4)
 		}
 	},
 	watch: {
-		data(val) {
+		data (val) {
 			this.itemList = val
 		}
 	},
-	created() {
+	created () {
 		this.itemList = this.data
 	}
 }
@@ -97,10 +97,12 @@ export default {
 
 <style lang="less" scoped>
 @import '~@css/variables.less';
+
 .item-list {
 	display: flex;
 	flex-wrap: wrap;
 	padding: 10px;
+
 	.item-item {
 		width: 22%;
 		box-sizing: border-box;
@@ -113,9 +115,11 @@ export default {
 		display: inline-block;
 		height: 350px;
 		margin-right: 4%;
+
 		&:nth-child(4n) {
 			margin-right: 0;
 		}
+
 		.item-cover {
 			width: 100%;
 			height: 0;
@@ -123,16 +127,19 @@ export default {
 			position: relative;
 			overflow: hidden;
 			transition: transform 0.3s linear;
+
 			&:hover {
 				cursor: pointer;
 				transform: translateY(-10px);
 			}
+
 			.img {
 				position: absolute;
 				width: 100%;
 				height: 100%;
 			}
 		}
+
 		.i-title {
 			font-weight: normal;
 			font-size: 18px;
@@ -141,26 +148,33 @@ export default {
 			cursor: pointer;
 			overflow: hidden;
 			text-overflow: ellipsis;
-			display: -webkit-box; /*弹性伸缩盒子模型*/
-			-webkit-box-orient: vertical; /*伸缩盒子子排列方式*/
-			-webkit-line-clamp: 2; /*设置显示文本行数*/
+			display: -webkit-box;
+			/*弹性伸缩盒子模型*/
+			-webkit-box-orient: vertical;
+			/*伸缩盒子子排列方式*/
+			-webkit-line-clamp: 2;
+
+			/*设置显示文本行数*/
 			&:hover {
 				text-decoration: underline;
 				color: @color-red;
 			}
 		}
+
 		.item-footer {
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
+
 			.i-price {
 				font-size: 20px;
 				position: relative;
 				letter-spacing: 2px;
-				color: #c91523;
+				color: #1abc9c;
 				margin: 0;
 				flex: 1;
 			}
+
 			.add-cart {
 				display: flex;
 				align-items: center;
@@ -177,12 +191,14 @@ export default {
 					cursor: pointer;
 					transform: scale(1.1);
 				}
+
 				.iconfont {
 					font-size: 20px;
 					color: #fff;
 				}
 			}
 		}
+
 		// &:hover {
 		// 	border-color: #c8c8c8;
 		// 	transform: translateY(4px);
@@ -190,5 +206,4 @@ export default {
 		// 	cursor: pointer;
 		// }
 	}
-}
-</style>
+}</style>

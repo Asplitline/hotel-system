@@ -1,14 +1,14 @@
 <template>
 	<div class="goods-list">
-		<h2 class="goods-title"><i class="iconfont" :class="info.icon"></i>{{info.title}}</h2>
+		<h2 class="goods-title"><i class="iconfont" :class="info.icon"></i>{{ info.title }}</h2>
 		<ul class="h-list" v-if="filterGoods.length">
 			<li class="h-item" v-for="item in filterGoods" :key="item.id">
 				<a href="javascript:;" class="h-content">
 					<img :src="bindIMG(item.url)" @click="goItemDetail(item)">
-					<span class="h-title" @click="goItemDetail(item)">{{item.name}}</span>
+					<span class="h-title" @click="goItemDetail(item)">{{ item.name }}</span>
 				</a>
 				<div class="h-info">
-					<p class="h-price">价格:{{item.price|$}}</p>
+					<p class="h-price">价格:{{ item.price | $ }}</p>
 					<el-popconfirm title="确定要添加商品到购物车吗？" @confirm="handleAddCart(item)">
 						<button class="h-cart" slot="reference">
 							<i class="iconfont icon-iconfontcart"></i>加入购物车
@@ -38,18 +38,18 @@ export default {
 			type: Array
 		}
 	},
-	data() {
+	data () {
 		return {}
 	},
 	methods: {
 		...mapMutations(['setCurrentItem']),
 		...mapActions(['fetchMyCart']),
 		bindIMG,
-		goItemDetail(data) {
+		goItemDetail (data) {
 			this.setCurrentItem(data)
 			this.$router.push({ name: 'ShopDetail', params: { id: data.id } })
 		},
-		async handleAddCart(item) {
+		async handleAddCart (item) {
 			const { success } = await _api.addShoppingCar({
 				createTime: Date.now(),
 				goodsId: item.id,
@@ -65,33 +65,35 @@ export default {
 			success && this.fetchMyCart()
 		},
 		// 跳转到商品详情
-		goHotelDetail(data) {
+		goHotelDetail (data) {
 			this.setCurrentItem(data)
 			this.$router.push({ name: 'ShopDetail', params: { id: data.id } })
 		}
 	},
 	computed: {
 		...mapState(['currentUser']),
-		filterGoods() {
+		filterGoods () {
 			const idx = this.info.index
 			return this.data.slice((idx - 1) * 6, idx * 6)
 		},
-		blankNum() {
+		blankNum () {
 			const rest = this.filterGoods.length % 3
 			return rest === 3 ? 0 : rest
 		}
 	},
-	created() {}
+	created () { }
 }
 </script>
 
 <style lang="less" scoped>
 @import '~@css/variables.less';
+
 .goods-list {
 	background-color: #fff;
 	padding: 0 10px 10px;
 	margin: 20px 0;
 	overflow: hidden;
+
 	.goods-title {
 		// border-left: 3px solid @color-main;
 		display: flex;
@@ -103,21 +105,26 @@ export default {
 		font-size: 30px;
 		margin-top: 40px;
 		margin-bottom: 30px;
+
 		.iconfont {
 			font-size: 28px;
+
 			&.icon-new {
 				font-size: 30px;
 				color: @color-green;
 			}
+
 			&.icon-fire {
 				color: @color-red;
 			}
 		}
 	}
+
 	.h-list {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: space-around;
+
 		// padding: 10px;
 		.h-item {
 			width: 31.6%;
@@ -125,6 +132,7 @@ export default {
 			margin-bottom: 30px;
 			border: 1px solid #f2f2f2;
 			box-shadow: 0 0 10px rgba(4, 0, 0, 5%);
+
 			.h-content {
 				box-sizing: border-box;
 
@@ -132,11 +140,13 @@ export default {
 				align-items: center;
 				width: 100%;
 				padding: 14px;
+
 				img {
 					width: 150px;
 					height: 150px;
 					vertical-align: bottom;
 				}
+
 				.h-title {
 					flex: 1;
 					display: block;
@@ -145,12 +155,16 @@ export default {
 					font-size: 14px;
 					color: #333;
 					text-align: center;
-					display: -webkit-box; /*弹性伸缩盒子模型*/
-					-webkit-box-orient: vertical; /*伸缩盒子子排列方式*/
-					-webkit-line-clamp: 2; /*设置显示文本行数*/
+					display: -webkit-box;
+					/*弹性伸缩盒子模型*/
+					-webkit-box-orient: vertical;
+					/*伸缩盒子子排列方式*/
+					-webkit-line-clamp: 2;
+					/*设置显示文本行数*/
 					text-overflow: ellipsis;
 					overflow: hidden;
 					transition: color 0.25s ease;
+
 					&:hover {
 						color: @color-red;
 					}
@@ -161,7 +175,7 @@ export default {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
-				background-color: #f75f3c;
+				background-color: #7f8c8d;
 
 				.h-price {
 					flex: 1;
@@ -171,12 +185,13 @@ export default {
 					height: 100%;
 					margin: 0;
 				}
+
 				.h-cart {
 					display: flex;
 					align-items: center;
 					line-height: 50px;
 					height: 50px;
-					background: #ffa133;
+					background: #16a085;
 					color: #fff;
 					text-align: center;
 					font-size: 16px;
@@ -185,9 +200,11 @@ export default {
 					outline: none;
 					height: 100%;
 					padding: 0 16px;
+
 					&:hover {
 						opacity: 0.9;
 					}
+
 					.iconfont {
 						font-size: 24px;
 						margin-right: 4px;

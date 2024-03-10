@@ -6,7 +6,7 @@
 			<el-col :span="4" class="panel-card">
 				<div class="panel-card__item" @click="goto('category')">
 					<div class="panel-card__item--left">
-						<span class="number">{{info.goodsLxNum}}</span>
+						<span class="number">{{ info.goodsLxNum }}</span>
 						<span class="title">分类</span>
 					</div>
 					<div class="panel-card__item--right">
@@ -17,7 +17,7 @@
 			<el-col :span="4" class="panel-card">
 				<div class="panel-card__item" @click="goto('item')">
 					<div class="panel-card__item--left">
-						<span class="number">{{info.goodsNum}}</span>
+						<span class="number">{{ info.goodsNum }}</span>
 						<span class="title">商品</span>
 					</div>
 					<div class="panel-card__item--right">
@@ -28,7 +28,7 @@
 			<el-col :span="8" class="panel-card">
 				<div class="panel-card__item" @click="goto('comment')">
 					<div class="panel-card__item--left">
-						<span class="number">{{info.userNum}}</span>
+						<span class="number">{{ info.userNum }}</span>
 						<span class="title">用户</span>
 					</div>
 					<div class="panel-card__item--right">
@@ -40,7 +40,7 @@
 			<el-col :span="4" class="panel-card">
 				<div class="panel-card__item" @click="goto('reply')">
 					<div class="panel-card__item--left">
-						<span class="number">{{info.donateNum}}</span>
+						<span class="number">{{ info.donateNum }}</span>
 						<span class="title">捐献</span>
 					</div>
 					<div class="panel-card__item--right">
@@ -51,7 +51,7 @@
 			<el-col :span="4" class="panel-card">
 				<div class="panel-card__item" @click="goto('auser')">
 					<div class="panel-card__item--left">
-						<span class="number">{{info.orderNum}}</span>
+						<span class="number">{{ info.orderNum }}</span>
 						<span class="title">订单</span>
 					</div>
 					<div class="panel-card__item--right">
@@ -70,22 +70,22 @@
 import _api from '@api'
 export default {
 	name: 'Home',
-	data() {
+	data () {
 		return {
 			info: {}
 		}
 	},
 	methods: {
-		async fetchInfo() {
+		async fetchInfo () {
 			const data = await _api.getStatisticInfo()
 			console.log(data)
 			this.info = data
 		},
-		goto(name) {
-			this.$router.push({ name })
+		goto (name) {
+			// this.$router.push({ name })
 		}
 	},
-	mounted() {
+	mounted () {
 		this.fetchInfo()
 	}
 }
@@ -97,12 +97,15 @@ export default {
 		margin: 30px;
 	}
 }
+
 .panel {
 	&-group {
 		/* background-color: #f0f0f0; */
 	}
+
 	&-card {
 		transition: all 0.5s;
+
 		&__item {
 			box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.05);
 			border-radius: 0.625rem;
@@ -121,31 +124,36 @@ export default {
 			display: flex;
 			align-items: center;
 			text-align: center;
+
 			/* justify-content: center; */
 			&--left {
 				flex: 3;
 				display: flex;
 				flex-direction: column;
+
 				.number {
 					font-size: 2.375rem;
 					font-weight: 700;
 					line-height: 1.65857;
 				}
+
 				.title {
 					font-size: 1.125rem;
 					color: #bab8b8;
 				}
 			}
+
 			&--right {
 				flex: 2;
+
 				.fa {
 					font-size: 3.75rem;
 				}
 			}
 		}
+
 		&:hover {
 			transform: translateY(4px);
 		}
 	}
-}
-</style>
+}</style>

@@ -2,7 +2,7 @@
 	<div class="login">
 		<div class="login-wrap">
 			<div class="ms-login" :class="{ 'active': isLogin }">
-				<div class="ms-title">花店商城 - 登录界面</div>
+				<div class="ms-title">电子商城 - 登录界面</div>
 				<el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="0px" class="ms-content" key="loginForm">
 					<el-form-item prop="username">
 						<el-input v-model="loginForm.username" placeholder="账号">
@@ -29,7 +29,7 @@
 				</el-form>
 			</div>
 			<div class="ms-register" :class="{ 'active': !isLogin }">
-				<div class="ms-title">花店商城 - 注册界面</div>
+				<div class="ms-title">电子商城 - 注册界面</div>
 				<el-form :model="registerForm" :rules="rules" ref="registerForm" label-width="0px" class="ms-content"
 					key="registerForm">
 					<el-form-item prop="username">

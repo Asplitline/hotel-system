@@ -13,22 +13,22 @@
 				</div>
 			</div>
 			<div class="r-content">
-				<div class="r-hd">{{item.name}}</div>
+				<div class="r-hd">{{ item.name }}</div>
 				<div class="r-bd">
 					<p>
-						<span>商品类型</span><span>{{typeName}}</span>
+						<span>商品类型</span><span>{{ typeName }}</span>
 					</p>
 					<p>
-						<span>商品产地</span><span>{{item.address}}</span>
+						<span>商品产地</span><span>{{ item.address }}</span>
 					</p>
 					<p>
-						<span>商品库存</span><span class="h-num">{{item.num}}</span>
+						<span>商品库存</span><span class="h-num">{{ item.num }}</span>
 					</p>
 					<p>
-						<span>商品价格</span><span class="h-price">{{item.price | $}}</span>
+						<span>商品价格</span><span class="h-price">{{ item.price | $ }}</span>
 					</p>
 					<p>
-						<span>商品简介</span><span class="h-desc">{{item.description }}</span>
+						<span>商品简介</span><span class="h-desc">{{ item.description }}</span>
 					</p>
 				</div>
 				<div class="r-bottom">
@@ -36,7 +36,7 @@
 						<button class="add-cart" slot="reference">添加购物车</button>
 					</el-popconfirm>
 					<button class="my-cart" @click="goto">我的购物车 <span class="corner-ico"
-							v-if="cartNum>0">{{cartNum}}</span></button>
+							v-if="cartNum > 0">{{ cartNum }}</span></button>
 				</div>
 			</div>
 
@@ -52,7 +52,7 @@ import _api from '@api'
 
 export default {
 	props: ['id'],
-	data() {
+	data () {
 		return {
 			myDate: '',
 			replyDialogVisible: false,
@@ -64,7 +64,7 @@ export default {
 		...mapMutations(['setCurrentItem']),
 		...mapActions(['fetchMyCart', 'fetchAllCategory']),
 		bindIMG,
-		async handleAddCart(item) {
+		async handleAddCart (item) {
 			const { success } = await _api.addShoppingCar({
 				createTime: Date.now(),
 				goodsId: item.id,
@@ -79,7 +79,7 @@ export default {
 			})
 			success && this.fetchMyCart()
 		},
-		goto() {
+		goto () {
 			this.$router.push({ name: 'Cart' })
 		}
 	},
@@ -91,14 +91,14 @@ export default {
 			currentUser: 'currentUser'
 		}),
 		...mapGetters(['getCategoryById']),
-		cartNum() {
+		cartNum () {
 			return this.myCart.length
 		},
-		typeName() {
+		typeName () {
 			return this.getCategoryById(this.item.type)?.name ?? '未知'
 		}
 	},
-	mounted() {
+	mounted () {
 		this.fetchAllCategory()
 	}
 }
@@ -106,6 +106,7 @@ export default {
 
 <style lang="less" scoped>
 @import '~@css/variables.less';
+
 .h-content {
 	display: flex;
 	margin-bottom: 20px;
@@ -116,12 +117,14 @@ export default {
 	margin-bottom: 10px;
 	text-align: left;
 	font-size: 30px;
-	color: #c91523;
+	color: #1abc9c;
 	height: 40px;
+
 	i:hover {
 		cursor: pointer;
 		opacity: 0.7;
 	}
+
 	i::before {
 		margin-right: 10px;
 	}
@@ -132,6 +135,7 @@ export default {
 	margin-bottom: 12px;
 	color: #666;
 }
+
 .l-content {
 	flex: 2;
 	height: 100%;
@@ -139,11 +143,13 @@ export default {
 	border: 1px solid #f0f0f0;
 	box-sizing: border-box;
 	padding: 20px;
+
 	.img-warp {
 		position: relative;
 		width: 100%;
 		height: 0;
 		padding-bottom: 100%;
+
 		img {
 			position: absolute;
 			width: 100%;
@@ -158,6 +164,7 @@ export default {
 	padding: 0 30px;
 	display: flex;
 	flex-direction: column;
+
 	.r-hd {
 		color: #111;
 		padding-top: 10px;
@@ -165,40 +172,49 @@ export default {
 		font-size: 24px;
 		margin-bottom: 5px;
 	}
+
 	.r-bd {
 		flex: 1;
 		padding: 20px 0;
+
 		p {
 			margin: 0;
 			margin-bottom: 20px;
 		}
+
 		span {
 			display: inline-block;
+
 			&:first-child {
 				width: 120px;
 				text-align: left;
 				letter-spacing: 2px;
 				color: #999;
 			}
+
 			&:last-child {
 				//   width: 100%;
 				text-align: left;
 				letter-spacing: 0.3em;
 			}
+
 			&.h-price {
 				color: @color-red;
 				//   font-size: larger;
 				transform: scale(1.2);
 				letter-spacing: 2px;
 			}
+
 			&.h-num {
 				// color: @color-red;
 			}
 		}
 	}
+
 	.r-bottom {
 		display: flex;
 		justify-content: space-evenly;
+
 		[class*='-cart'] {
 			outline: none;
 			width: 120px;
@@ -209,15 +225,18 @@ export default {
 			background-color: @color-red;
 			color: #fff;
 			cursor: pointer;
+
 			&:hover {
 				opacity: 0.7;
 			}
 		}
+
 		.my-cart {
 			position: relative;
 			border: 1px solid #dfdfdf;
 			background: #f9f9f9;
 			color: #666;
+
 			.corner-ico {
 				position: absolute;
 				right: 0;
@@ -239,8 +258,10 @@ export default {
 	margin: 30px 0;
 	border-color: #f8f8f8;
 }
+
 .h-comment {
 	margin-top: 20px;
+
 	.h-edit {
 		position: relative;
 		display: flex;
@@ -250,6 +271,7 @@ export default {
 		align-items: center;
 		// width: 100%;
 		background-color: #eee;
+
 		input {
 			flex: 1;
 			border-radius: 2px;
@@ -260,10 +282,12 @@ export default {
 			padding-left: 1em;
 			box-sizing: border-box;
 			color: #666;
+
 			&:focus {
 				box-shadow: 0 0 3px 3px rgba(#888, 0.3);
 			}
 		}
+
 		button {
 			height: 40px;
 			border-radius: 2px;
@@ -274,9 +298,11 @@ export default {
 			color: #fff;
 			border: 1px solid @color-green;
 			cursor: pointer;
+
 			&:hover {
 				background-color: rgba(@color-green, 0.8);
 			}
+
 			&.disabled {
 				cursor: not-allowed;
 				// background-color: @color-green;
@@ -285,6 +311,7 @@ export default {
 				// color: #ddd;
 			}
 		}
+
 		span {
 			position: absolute;
 			left: 27px;
@@ -293,8 +320,10 @@ export default {
 			color: #888;
 		}
 	}
+
 	.no-login {
 		letter-spacing: 2px;
+
 		a {
 			color: @color-red;
 		}
@@ -306,30 +335,37 @@ export default {
 	//   background-color: #e8e8e8;
 	margin-top: 20px;
 	border: 1px solid #ccc;
+
 	.h-item {
 		padding: 10px 0;
 		border-bottom: 1px solid #ddd;
+
 		img {
 			width: 40px;
 			height: 40px;
 			vertical-align: middle;
 			border-radius: 50%;
 		}
+
 		span {
 			color: #444;
 			vertical-align: middle;
 			margin-left: 8px;
 		}
+
 		.h-author {
 			color: @color-main;
 		}
+
 		.h-date {
 			font-size: 14px;
+
 			em {
 				color: #666;
 				font-style: normal;
 			}
 		}
+
 		div {
 			margin-left: 50px;
 			width: 600px;
@@ -349,9 +385,9 @@ export default {
 
 ::v-deep .md-empty {
 	background-color: #fafafa;
+
 	p {
 		color: @color-blue;
 		font-size: 20px;
 	}
-}
-</style>
+}</style>

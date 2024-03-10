@@ -8,10 +8,10 @@
 						<img :src="bindIMG(i.goods.url)" alt="">
 					</el-col>
 					<el-col :span="8" class="cart-col info">
-						<p class="goods-title">{{i.goods.name}}</p>
-						<p class="goods-desc">{{i.goods.description}}</p>
+						<p class="goods-title">{{ i.goods.name }}</p>
+						<p class="goods-desc">{{ i.goods.description }}</p>
 					</el-col>
-					<el-col :span="5" class="cart-col price"><span>{{i.goods.price|$}}</span>
+					<el-col :span="5" class="cart-col price"><span>{{ i.goods.price | $ }}</span>
 					</el-col>
 					<el-col :span="6" class="cart-col handle">
 						<el-popconfirm title="是否要将商品从购物车中移出？" @confirm="removeCart(i)">
@@ -25,19 +25,17 @@
 			</div>
 
 			<div class="cart-tool">
-				<el-popconfirm title="确定要清空购物车吗？" @confirm="clearShopCar"
-					style="margin-right:auto;">
+				<el-popconfirm title="确定要清空购物车吗？" @confirm="clearShopCar" style="margin-right:auto;">
 					<a href="javascript:;" class="cart-clear" slot="reference">清空购物车</a>
 				</el-popconfirm>
 
 				<div class="cart-total">
-					<p class="cart-total__p">共 <span class="num">{{totalNum}}</span> 件商品</p>
-					<p class="cart-total__p"><span class="price">{{totalPrice|$}}</span></p>
+					<p class="cart-total__p">共 <span class="num">{{ totalNum }}</span> 件商品</p>
+					<p class="cart-total__p"><span class="price">{{ totalPrice | $ }}</span></p>
 				</div>
 				<el-popconfirm title="是否要购买商品" @confirm="purchaseAll">
 
-					<button class="btn-all" :class="{disabled:totalNum===0}"
-						slot="reference">立即购买</button>
+					<button class="btn-all" :class="{ disabled: totalNum === 0 }" slot="reference">立即购买</button>
 				</el-popconfirm>
 			</div>
 		</template>
@@ -45,7 +43,7 @@
 		<el-empty class="md-empty" v-else>
 			<template #description>
 				<p>购物车为空</p>
-				<router-link :to=" {name:'Shop'}" style="color:red;margin-left:4px;">前往商城
+				<router-link :to="{ name: 'Shop' }" style="color:red;margin-left:4px;">前往商城
 				</router-link>
 			</template>
 
@@ -59,13 +57,13 @@ import { mapActions, mapGetters, mapState } from 'vuex'
 import { bindIMG } from '@utils'
 import _api from '@api'
 export default {
-	data() {
+	data () {
 		return {}
 	},
 	computed: {
 		...mapState(['myCart']),
 		...mapGetters(['getItemById']),
-		totalPrice() {
+		totalPrice () {
 			return (
 				this.myCartList &&
 				this.myCartList.reduce((pre, nxt) => {
@@ -73,10 +71,10 @@ export default {
 				}, 0)
 			)
 		},
-		totalNum() {
+		totalNum () {
 			return this.myCartList.length
 		},
-		myCartList() {
+		myCartList () {
 			return this.myCart.map((i) => {
 				const goods = this.getItemById(i.goodsId)
 				return {
@@ -89,12 +87,12 @@ export default {
 	methods: {
 		...mapActions(['fetchMyCart', 'fetchAllItem']),
 		bindIMG,
-		async removeCart(item) {
+		async removeCart (item) {
 			console.log(item)
 			const { success } = await _api.deleteShoppingCar(item.id)
 			success && this.fetchData()
 		},
-		handleGoods(i) {
+		handleGoods (i) {
 			return {
 				createTime: Date.now(),
 				goodsId: i.goods.id,
@@ -106,12 +104,12 @@ export default {
 				userId: i.userId
 			}
 		},
-		async purchaseGoods(i) {
+		async purchaseGoods (i) {
 			const { success } = await _api.addGoodsOrder(this.handleGoods(i))
 			success && this.removeCart(i)
 			success && this.fetchData()
 		},
-		async purchaseAll() {
+		async purchaseAll () {
 			const cartList = []
 			this.myCartList.forEach((i) => {
 				cartList.push(this.handleGoods(i))
@@ -119,17 +117,17 @@ export default {
 			const { success } = await _api.addGoodsOrderList(cartList)
 			success && this.clearShopCar()
 		},
-		async clearShopCar() {
+		async clearShopCar () {
 			const ids = this.myCartList.map((i) => i.id)
 			const { success } = await _api.deleteShoppingCarList(ids)
 			success && this.fetchData()
 		},
-		fetchData() {
+		fetchData () {
 			this.fetchAllItem()
 			this.fetchMyCart()
 		}
 	},
-	mounted() {
+	mounted () {
 		this.fetchData()
 	}
 }
@@ -149,28 +147,36 @@ export default {
 
 .cart-tb {
 	padding: 0 10px;
+
 	.cart-col {
 		padding: 20px 0;
+
 		img {
 			width: 80%;
 			margin: 0 auto;
 		}
+
 		&.goods {
 			display: flex;
 		}
+
 		&.info {
 			padding-right: 40px;
+
 			p {
 				margin: 0;
 			}
+
 			.goods-title {
 				font-size: 20px;
+
 				&:hover {
 					color: @color-red;
 					text-decoration: underline;
 					cursor: pointer;
 				}
 			}
+
 			.goods-desc {
 				margin-top: 20px;
 				font-size: 16px;
@@ -184,19 +190,23 @@ export default {
 				overflow: hidden;
 			}
 		}
+
 		&.price {
 			display: flex;
 			justify-content: center;
 			height: 100%;
+
 			span {
 				color: @color-red;
 				font-size: 24px;
 			}
 		}
+
 		&.handle {
 			display: flex;
 			align-items: center;
 			justify-content: space-around;
+
 			[class^='link-'] {
 				display: inline-block;
 				font-size: 16px;
@@ -204,52 +214,63 @@ export default {
 				padding: 6px 16px;
 				color: #fff;
 				border-radius: 1px;
+
 				&:hover {
 					cursor: pointer;
 					opacity: 0.7;
 				}
 			}
+
 			.link-del {
-				background-color: #ffa133;
+				background-color: #16a085;
 			}
 		}
 	}
 }
+
 .cart-tool {
 	display: flex;
 	align-items: center;
 	padding-left: 20px;
 	height: 70px;
 	background-color: #f7f7f7;
+
 	.cart-clear {
 		color: @color-red;
 		margin-right: auto;
+
 		&:hover {
 			text-decoration: underline;
 		}
 	}
+
 	.cart-total {
 		display: flex;
 		align-items: center;
+
 		&__p {
 			display: flex;
 			align-items: center;
 			height: 40px;
 			margin: 0;
 			margin-right: 30px;
+
 			span {
 				color: @color-red;
 				font-size: 16px;
 				margin: 0 4px;
 			}
+
 			.num {
 				font-size: 20px;
 			}
+
 			.price {
 				font-size: 24px;
 			}
 		}
 	}
+
 	.btn-all {
 		border: none;
 		height: 70px;
@@ -257,6 +278,7 @@ export default {
 		background-color: @color-red;
 		padding: 0 20px;
 		color: #fff;
+
 		&:hover {
 			cursor: pointer;
 			opacity: 0.7;
