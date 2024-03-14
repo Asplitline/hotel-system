@@ -31,7 +31,7 @@ const routes = [
         name: "Shop",
         component: () => import("@views/home/shop"),
         meta: {
-          title: "药店",
+          title: "超市",
           index: "/shop",
         },
       },
@@ -151,7 +151,7 @@ const routes = [
     redirect: "/goods/category",
     isAuth: true,
     meta: {
-      title: "药品管理",
+      title: "商品管理",
       icon: "iconfont icon-ConferenceRoom",
     },
     children: [
@@ -160,7 +160,7 @@ const routes = [
         name: "Category",
         component: () => import("@views/admin/category"),
         meta: {
-          title: "药品分类",
+          title: "商品分类",
           icon: "iconfont icon-ConferenceRoom",
           index: "/goods/category",
           onlyAdmin: true,
@@ -171,7 +171,7 @@ const routes = [
         name: "Item",
         component: () => import("@views/admin/item"),
         meta: {
-          title: "药品管理",
+          title: "商品管理",
           icon: "iconfont icon-ConferenceRoom",
           index: "/goods/item",
         },

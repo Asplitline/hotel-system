@@ -33,26 +33,26 @@
 				<el-table-column prop="name" label="标题" width="180">
 				</el-table-column>
 				<el-table-column prop="comment" label="内容">
-					<template v-slot="{row}">
-						<p v-for="(i,idx) in handleComment(row.comment)" :key="idx">{{i}} * 1</p>
+					<template v-slot="{ row }">
+						<p v-for="(i, idx) in handleComment(row.comment)" :key="idx">{{ i }} * 1</p>
 					</template>
 				</el-table-column>
 				<el-table-column prop="source" label="类型">
 				</el-table-column>
 				<el-table-column prop="updateTime" label="更新时间">
-					<template v-slot="{row}">
-						{{row.updateTime | formatDate}}
+					<template v-slot="{ row }">
+						{{ row.updateTime | formatDate }}
 					</template>
 				</el-table-column>
 				<el-table-column prop="state" label="状态" width="180">
-					<template v-slot="{row}">
-						<el-tag :type="donateState[row.state].type">{{donateState[row.state].label}}
+					<template v-slot="{ row }">
+						<el-tag :type="donateState[row.state].type">{{ donateState[row.state].label }}
 						</el-tag>
 					</template>
 				</el-table-column>
 			</el-table>
-			<el-pagination class="t-pagination" @size-change="handleSizeChange(fetchDonate,$event)"
-				@current-change="handleCurrentChange(fetchDonate,$event)" :current-page="query.page" :page-size="query.size"
+			<el-pagination class="t-pagination" @size-change="handleSizeChange(fetchDonate, $event)"
+				@current-change="handleCurrentChange(fetchDonate, $event)" :current-page="query.page" :page-size="query.size"
 				layout="total, prev, pager, next" :total="total">
 			</el-pagination>
 		</div>
@@ -66,7 +66,7 @@ import _api from '@api'
 import { hMixin } from '@mixins'
 export default {
 	mixins: [hMixin],
-	data() {
+	data () {
 		return {
 			donateForm: {},
 			donateRules: {
@@ -74,7 +74,7 @@ export default {
 				description: [
 					{ required: true, message: '请输入捐赠描述', trigger: blur }
 				],
-				comment: [{ required: true, message: '请选择捐赠药品', trigger: blur }],
+				comment: [{ required: true, message: '请选择捐赠商品', trigger: blur }],
 				source: [{ required: true, message: '请选择捐赠类型', trigger: blur }]
 			},
 			tableData: [],
@@ -84,7 +84,7 @@ export default {
 	},
 	methods: {
 		...mapActions(['fetchAllItem']),
-		handleDonate() {
+		handleDonate () {
 			this.$refs.donateForm.validate(async (valid) => {
 				if (!valid) return
 				console.log(
@@ -111,20 +111,20 @@ export default {
 				success && this.fetchDonate()
 			})
 		},
-		async fetchDonate() {
+		async fetchDonate () {
 			const { list, total } = await _api.getDonateList(this.query)
 			console.log(total)
 			this.total = total
 			this.tableData = list
 		},
-		handleComment(i) {
+		handleComment (i) {
 			return i.split('__')
 		}
 	},
 	computed: {
 		...mapState(['allItem'])
 	},
-	mounted() {
+	mounted () {
 		this.fetchDonate()
 	}
 }

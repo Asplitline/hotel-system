@@ -9,7 +9,7 @@
 				</a>
 				<div class="h-info">
 					<p class="h-price">价格:{{ item.price | $ }}</p>
-					<el-popconfirm title="确定要添加药品到购物车吗？" @confirm="handleAddCart(item)">
+					<el-popconfirm title="确定要添加商品到购物车吗？" @confirm="handleAddCart(item)">
 						<button class="h-cart" slot="reference">
 							<i class="iconfont icon-iconfontcart"></i>加入购物车
 						</button>
@@ -64,7 +64,7 @@ export default {
 			})
 			success && this.fetchMyCart()
 		},
-		// 跳转到药品详情
+		// 跳转到商品详情
 		goHotelDetail (data) {
 			this.setCurrentItem(data)
 			this.$router.push({ name: 'ShopDetail', params: { id: data.id } })
@@ -175,7 +175,7 @@ export default {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
-				background-color: #f75f3c;
+				background-color: #95a5a6;
 
 				.h-price {
 					flex: 1;
@@ -191,7 +191,7 @@ export default {
 					align-items: center;
 					line-height: 50px;
 					height: 50px;
-					background: #ffa133;
+					background: #f39c12;
 					color: #fff;
 					text-align: center;
 					font-size: 16px;

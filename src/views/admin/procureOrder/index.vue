@@ -12,7 +12,7 @@
 		</el-form>
 
 		<el-table :data="tableData" style="width: 100%">
-			<el-table-column prop="drugName" label="药品" min-width="100">
+			<el-table-column prop="drugName" label="商品" min-width="100">
 			</el-table-column>
 			<el-table-column prop="supplierName" label="供应商" min-width="100">
 			</el-table-column>
@@ -53,7 +53,7 @@
 			:close-on-click-modal="false">
 			<el-form :model="currentForm" :rules="rules" ref="currentForm" size="small" label-width="100px"
 				:disabled="currentForm.flag === 2">
-				<el-form-item label="药品" prop="goodsid">
+				<el-form-item label="商品" prop="goodsid">
 					<el-select v-model="currentForm.goodsid">
 						<el-option v-for="i in allItem" :key="i.id" :value="i.id" :label="i.name">
 						</el-option>
@@ -109,10 +109,10 @@ export default {
 			procureOrderState,
 			currentForm: {},
 			rules: {
-				name: { required: true, message: '请输入药品类型', trigger: 'blur' },
+				name: { required: true, message: '请输入商品类型', trigger: 'blur' },
 				goodsid: {
 					required: true,
-					message: '请选择药品',
+					message: '请选择商品',
 					trigger: 'blur'
 				},
 				supplier: {

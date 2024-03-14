@@ -1,7 +1,7 @@
 <template>
 	<div class="my-order">
 		<el-table :data="tableData" style="width: 100%">
-			<el-table-column prop="goodsName" label="药品" min-width="100">
+			<el-table-column prop="goodsName" label="商品" min-width="100">
 			</el-table-column>
 			<el-table-column prop="price" label="价格" min-width="100">
 				<template v-slot="{ row }">

@@ -5,7 +5,7 @@
 				<el-carousel-item v-for="item in list" :key="item.id">
 					<img class="banner-img" :src="bindIMG(item.filePath)" alt="" @click="showNotice(item)">
 					<div class="mask">
-						<p>{{item.originalFileName}}</p>
+						<p>{{ item.originalFileName }}</p>
 					</div>
 				</el-carousel-item>
 			</el-carousel>
@@ -14,8 +14,8 @@
 			<goodsList :data="goods" :info="i" v-for="i in baseInfo" :key="i.index" />
 		</div>
 		<el-dialog :visible.sync="dialogVisible" width="30%" class="notice-dialog" @close="handleNotice()">
-			<h2>{{currentNotice.originalFileName}}</h2>
-			<p>{{currentNotice.fullFilePath}}</p>
+			<h2>{{ currentNotice.originalFileName }}</h2>
+			<p>{{ currentNotice.fullFilePath }}</p>
 		</el-dialog>
 	</div>
 </template>
@@ -30,7 +30,7 @@ export default {
 		goodsList
 		// search
 	},
-	data() {
+	data () {
 		return {
 			list: [],
 			goods: [],
@@ -39,37 +39,37 @@ export default {
 			currentNotice: {},
 			baseInfo: [
 				{ title: '品牌上新', icon: 'icon-new', index: 1 },
-				{ title: '热卖药品', icon: 'icon-fire', index: 2 }
+				{ title: '热卖商品', icon: 'icon-fire', index: 2 }
 			]
 		}
 	},
 	methods: {
 		...mapActions(['fetchAllCategory', 'fetchAllRoom']),
 		bindIMG,
-		async fetchGoods() {
+		async fetchGoods () {
 			const { data } = await _api.getItem()
 			this.goods = data.slice(0, 12)
 		},
-		async fetchShopFile() {
+		async fetchShopFile () {
 			const { data } = await _api.getShopFile()
 			this.list = data.slice(0, 4)
 		},
-		showNotice(data) {
+		showNotice (data) {
 			this.autoplay = false
 			this.dialogVisible = true
 			this.currentNotice = data
 		},
-		handleNotice() {
+		handleNotice () {
 			this.autoplay = true
 		}
 	},
 	computed: {
 		...mapGetters(['getCategoryById']),
-		sortRoom() {
+		sortRoom () {
 			return []
 		}
 	},
-	created() {
+	created () {
 		this.fetchShopFile()
 		this.fetchGoods()
 	}
@@ -137,4 +137,5 @@ export default {
 			line-height: 30px;
 		}
 	}
-}</style>
+}
+</style>

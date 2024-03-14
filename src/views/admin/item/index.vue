@@ -5,7 +5,7 @@
 			<el-row type="flex" justify="space-between">
 				<el-col :span="6">
 					<el-form-item>
-						<el-input v-model="searchForm.name" placeholder="输入药品名称" clearable @clear="search" />
+						<el-input v-model="searchForm.name" placeholder="输入商品名称" clearable @clear="search" />
 					</el-form-item>
 					<el-form-item>
 						<el-button type="primary" icon="el-icon-search" @click="search">
@@ -16,7 +16,7 @@
 				<el-col :span="4">
 					<el-form-item>
 						<el-button type="success" @click="showDialog(0)">
-							新增药品
+							新增商品
 						</el-button>
 					</el-form-item>
 				</el-col>
@@ -26,22 +26,22 @@
 			<el-table-column type="expand">
 				<template v-slot="{ row }">
 					<el-form label-position="left" inline class="demo-table-expand">
-						<el-form-item label="药品名称">
+						<el-form-item label="商品名称">
 							<span>{{ row.name }}</span>
 						</el-form-item>
-						<el-form-item label="药品 ID">
+						<el-form-item label="商品 ID">
 							<span>{{ row.id }}</span>
 						</el-form-item>
-						<el-form-item label="药品分类">
+						<el-form-item label="商品分类">
 							<span>{{ row.typeInfo.name }}</span>
 						</el-form-item>
-						<el-form-item label="药品产地">
+						<el-form-item label="商品产地">
 							<span>{{ row.address }}</span>
 						</el-form-item>
-						<el-form-item label="药品库存">
+						<el-form-item label="商品库存">
 							<span>{{ row.num }}</span>
 						</el-form-item>
-						<el-form-item label="药品价格">
+						<el-form-item label="商品价格">
 							<span>{{ row.price }}</span>
 						</el-form-item>
 						<el-form-item label="添加时间">
@@ -53,19 +53,19 @@
 					</el-form>
 				</template>
 			</el-table-column>
-			<el-table-column prop="url" label="药品图片" min-width="160">
+			<el-table-column prop="url" label="商品图片" min-width="160">
 				<template v-slot="{ row }">
 					<img :src="bindIMG(row.url)" alt="" class="tb-avatar" />
 				</template>
 			</el-table-column>
-			<el-table-column prop="roomId" label="药品名称" min-width="160">
+			<el-table-column prop="roomId" label="商品名称" min-width="160">
 				<template v-slot="{ row }">
 					{{ row.name }}
 				</template>
 			</el-table-column>
-			<el-table-column prop="typeInfo.name" label="药品分类" min-width="100">
+			<el-table-column prop="typeInfo.name" label="商品分类" min-width="100">
 			</el-table-column>
-			<el-table-column prop="price" label="药品价格" min-width="80">
+			<el-table-column prop="price" label="商品价格" min-width="80">
 				<template v-slot="{ row }">
 					<el-tag type="danger" effect="plain">{{ row.price | $ }}</el-tag>
 				</template>
@@ -78,17 +78,17 @@
 			<el-table-column label="操作" min-width="120">
 				<template v-slot="{ row }">
 					<el-link :type="row.status === 0 ? 'success' : 'warning'" @click="toggleStatus(row)">
-						{{ row.status === 0 ? '上架药品' : '下架药品' }} </el-link>
+						{{ row.status === 0 ? '上架商品' : '下架商品' }} </el-link>
 					<el-link type="primary" @click="showDialog(1, row)">
-						修改药品</el-link>
+						修改商品</el-link>
 					<el-link type="danger" @click="deleteById(deleteItem, fetchItem, row.id, '用户')">
-						删除药品
+						删除商品
 					</el-link>
 				</template>
 			</el-table-column>
 		</el-table>
 
-		<el-dialog :title="flag === 0 ? '添加药品' : '修改药品'" :visible.sync="dialogVisible" width="30%" class="a-dialog"
+		<el-dialog :title="flag === 0 ? '添加商品' : '修改商品'" :visible.sync="dialogVisible" width="30%" class="a-dialog"
 			@close="clearDialog('itemForm')" :close-on-click-modal="false">
 			<el-form :model="itemForm" :rules="itemRules" ref="itemForm" size="small" label-width="100px">
 				<el-form-item prop="url" label-width="0">
@@ -100,7 +100,7 @@
 				</el-form-item>
 
 				<el-form-item label="名称" prop="name">
-					<el-input v-model="itemForm.name" placeholder="药品名称"></el-input>
+					<el-input v-model="itemForm.name" placeholder="商品名称"></el-input>
 				</el-form-item>
 				<el-form-item label="分类" prop="type">
 					<!-- <el-select v-model="itemForm.type" placeholder="所属分类">
@@ -118,19 +118,19 @@
 				</el-form-item>
 
 				<el-form-item label="价格" prop="price">
-					<el-input v-model.number="itemForm.price" type="number" placeholder="药品价格">
+					<el-input v-model.number="itemForm.price" type="number" placeholder="商品价格">
 					</el-input>
 				</el-form-item>
 				<el-form-item label="数量" prop="num">
-					<el-input v-model.number="itemForm.num" type="number" placeholder="药品数量">
+					<el-input v-model.number="itemForm.num" type="number" placeholder="商品数量">
 					</el-input>
 				</el-form-item>
 				<!--todo 级联选择  -->
 				<el-form-item label="产地" prop="address">
-					<el-input v-model="itemForm.address" placeholder="药品产地"></el-input>
+					<el-input v-model="itemForm.address" placeholder="商品产地"></el-input>
 				</el-form-item>
 				<el-form-item label="描述" prop="description">
-					<el-input type="textarea" v-model="itemForm.description" placeholder="药品描述">
+					<el-input type="textarea" v-model="itemForm.description" placeholder="商品描述">
 					</el-input>
 				</el-form-item>
 			</el-form>
@@ -164,16 +164,16 @@ export default {
 			tableData: [],
 			itemForm: {},
 			itemRules: {
-				// url: [{ required: true, message: '请选择药品图片', trigger: 'blur' }],
-				name: [{ required: true, message: '请输入药品名称', trigger: 'blur' }],
-				type: [{ required: true, message: '请选择药品类型', trigger: 'blur' }],
-				price: [{ required: true, message: '请输入药品价格', trigger: 'blur' }],
-				num: [{ required: true, message: '请输入药品数量', trigger: 'blur' }],
+				// url: [{ required: true, message: '请选择商品图片', trigger: 'blur' }],
+				name: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
+				type: [{ required: true, message: '请选择商品类型', trigger: 'blur' }],
+				price: [{ required: true, message: '请输入商品价格', trigger: 'blur' }],
+				num: [{ required: true, message: '请输入商品数量', trigger: 'blur' }],
 				address: [
-					{ required: true, message: '请输入药品产地', trigger: 'blur' }
+					{ required: true, message: '请输入商品产地', trigger: 'blur' }
 				],
 				description: [
-					{ required: true, message: '请输入药品描述', trigger: 'blur' }
+					{ required: true, message: '请输入商品描述', trigger: 'blur' }
 				]
 			},
 			dialogVisible: false,

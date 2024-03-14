@@ -16,27 +16,27 @@
 				<div class="r-hd">{{ item.name }}</div>
 				<div class="r-bd">
 					<p>
-						<span>药品类型</span><span>{{ typeName }}</span>
+						<span>商品类型</span><span>{{ typeName }}</span>
 					</p>
 					<p>
-						<span>药品产地</span><span>{{ item.address }}</span>
+						<span>商品产地</span><span>{{ item.address }}</span>
 					</p>
 					<p>
-						<span>药品库存</span><span class="h-num">{{ item.num }}</span>
+						<span>商品库存</span><span class="h-num">{{ item.num }}</span>
 					</p>
 					<p>
-						<span>药品价格</span><span class="h-price">{{ item.price | $ }}</span>
+						<span>商品价格</span><span class="h-price">{{ item.price | $ }}</span>
 					</p>
 					<p>
-						<span>药品简介</span><span class="h-desc">{{ item.description }}</span>
+						<span>商品简介</span><span class="h-desc">{{ item.description }}</span>
 					</p>
 				</div>
 				<div class="r-bottom">
-					<el-popconfirm title="确定要添加药品到购物车吗？" @confirm="handleAddCart(item)">
+					<el-popconfirm title="确定要添加商品到购物车吗？" @confirm="handleAddCart(item)">
 						<button class="add-cart" slot="reference">添加购物车</button>
 					</el-popconfirm>
-					<button class="my-cart" @click="goto">我的购物车 <span class="corner-ico"
-							v-if="cartNum > 0">{{ cartNum }}</span></button>
+					<button class="my-cart" @click="goto">我的购物车 <span class="corner-ico" v-if="cartNum > 0">{{ cartNum
+					}}</span></button>
 				</div>
 			</div>
 
@@ -92,7 +92,7 @@ export default {
 		}),
 		...mapGetters(['getCategoryById']),
 		cartNum () {
-			return this.myCart.length
+			return this.myCart?.length
 		},
 		typeName () {
 			return this.getCategoryById(this.item.type)?.name ?? '未知'
@@ -117,7 +117,7 @@ export default {
 	margin-bottom: 10px;
 	text-align: left;
 	font-size: 30px;
-	color: #167979;
+	color: #d35400;
 	height: 40px;
 
 	i:hover {

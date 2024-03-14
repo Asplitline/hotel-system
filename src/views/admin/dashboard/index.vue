@@ -18,7 +18,7 @@
 				<div class="panel-card__item" @click="goto('item')">
 					<div class="panel-card__item--left">
 						<span class="number">{{ info.goodsNum }}</span>
-						<span class="title">药品</span>
+						<span class="title">商品</span>
 					</div>
 					<div class="panel-card__item--right">
 						<i class="fa fa-shopping-bag" aria-hidden="true"></i>

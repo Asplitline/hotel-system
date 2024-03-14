@@ -1,6 +1,6 @@
 <template>
 	<div class="search">
-		<el-input placeholder="搜索药品..." :value="value" @input="$emit('input', $event)" @clear="clear" :clearable="true">
+		<el-input placeholder="搜索商品..." :value="value" @input="$emit('input', $event)" @clear="clear" :clearable="true">
 			<el-button slot="append" icon="el-icon-search" @click="submit()"></el-button>
 		</el-input>
 	</div>
@@ -11,14 +11,14 @@ export default {
 	props: ['value'],
 	name: 'search',
 	methods: {
-		submit() {
+		submit () {
 			this.$emit('s-click')
 		},
-		clear() {
+		clear () {
 			this.$emit('s-clear')
 		}
 	},
-	created() {
+	created () {
 		console.log(this.value)
 	}
 }

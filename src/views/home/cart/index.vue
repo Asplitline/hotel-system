@@ -14,10 +14,10 @@
 					<el-col :span="5" class="cart-col price"><span>{{ i.goods.price | $ }}</span>
 					</el-col>
 					<el-col :span="6" class="cart-col handle">
-						<el-popconfirm title="是否要将药品从购物车中移出？" @confirm="removeCart(i)">
+						<el-popconfirm title="是否要将商品从购物车中移出？" @confirm="removeCart(i)">
 							<a href="javascript:;" class="link-del" slot="reference">移出购物车</a>
 						</el-popconfirm>
-						<el-popconfirm title="是否要购买药品" @confirm="purchaseGoods(i)">
+						<el-popconfirm title="是否要购买商品" @confirm="purchaseGoods(i)">
 							<a href="javascript:;" class="link-add" slot="reference">购买</a>
 						</el-popconfirm>
 					</el-col>
@@ -30,10 +30,10 @@
 				</el-popconfirm>
 
 				<div class="cart-total">
-					<p class="cart-total__p">共 <span class="num">{{ totalNum }}</span> 件药品</p>
+					<p class="cart-total__p">共 <span class="num">{{ totalNum }}</span> 件商品</p>
 					<p class="cart-total__p"><span class="price">{{ totalPrice | $ }}</span></p>
 				</div>
-				<el-popconfirm title="是否要购买药品" @confirm="purchaseAll">
+				<el-popconfirm title="是否要购买商品" @confirm="purchaseAll">
 
 					<button class="btn-all" :class="{ disabled: totalNum === 0 }" slot="reference">立即购买</button>
 				</el-popconfirm>
@@ -43,7 +43,7 @@
 		<el-empty class="md-empty" v-else>
 			<template #description>
 				<p>购物车为空</p>
-				<router-link :to="{ name: 'Shop' }" style="color:red;margin-left:4px;">前往药店
+				<router-link :to="{ name: 'Shop' }" style="color:red;margin-left:4px;">前往超市
 				</router-link>
 			</template>
 
@@ -222,7 +222,7 @@ export default {
 			}
 
 			.link-del {
-				background-color: #ffa133;
+				background-color: #f39c12;
 			}
 		}
 	}

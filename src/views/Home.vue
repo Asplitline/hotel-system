@@ -2,7 +2,7 @@
 	<el-container class="home">
 		<el-header style="height:60px">
 			<div class="w">
-				<el-menu :default-active="hIndex" mode="horizontal" background-color="#167979" class="h-nav" text-color="#fff"
+				<el-menu :default-active="hIndex" mode="horizontal" background-color="#d35400" class="h-nav" text-color="#fff"
 					active-text-color="#fff" router @select="selectMenu">
 					<el-menu-item :index="item.meta.index" v-for="item in menuList" class="h-nav-item" :key="item.meta.index">
 						{{ item.meta.title }}
@@ -70,7 +70,7 @@ export default {
 				.children.filter((i) => notEmpty(i.meta))
 		},
 		cartNum () {
-			return this.myCart.length
+			return this.myCart?.length
 		}
 	},
 	mounted () {
@@ -97,7 +97,7 @@ export default {
 }
 
 .el-header {
-	background-color: #167979;
+	background-color: #d35400;
 
 	.w {
 		display: flex;
@@ -147,4 +147,5 @@ export default {
 	color: @color-red;
 	border-radius: 10px 10px 10px 4px;
 	font-size: 14px;
-}</style>
+}
+</style>

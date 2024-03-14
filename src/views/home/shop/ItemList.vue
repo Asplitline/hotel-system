@@ -12,7 +12,7 @@
 						{{ item.price | $ }}
 					</p>
 					<button class="add-cart">
-						<el-popconfirm title="确定要添加药品到购物车吗？" @confirm="handleAddCart(item)">
+						<el-popconfirm title="确定要添加商品到购物车吗？" @confirm="handleAddCart(item)">
 							<i class="iconfont icon-iconfontcart" slot="reference"></i>
 						</el-popconfirm>
 					</button>
@@ -22,7 +22,7 @@
 			<li class="item-item hidden-vs" v-for="index in blankNum" :key="index"></li>
 		</template>
 		<template v-else>
-			<div class="not-found">暂无药品信息</div>
+			<div class="not-found">暂无商品信息</div>
 		</template>
 	</ul>
 </template>
@@ -170,7 +170,7 @@ export default {
 				font-size: 20px;
 				position: relative;
 				letter-spacing: 2px;
-				color: #167979;
+				color: #d35400;
 				margin: 0;
 				flex: 1;
 			}

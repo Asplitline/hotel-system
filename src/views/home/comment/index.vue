@@ -55,7 +55,7 @@ export default {
 			currentForm: {},
 			rules: {
 				title: [{ required: true, message: '请输入留言标题', trigger: blur }],
-				content: [{ required: true, message: '请选择留言药品', trigger: blur }],
+				content: [{ required: true, message: '请选择留言商品', trigger: blur }],
 			},
 			tableData: [],
 			source,
